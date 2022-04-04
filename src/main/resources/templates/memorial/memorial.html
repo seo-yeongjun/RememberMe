@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Remember Me::내가 준비 하는 온라인 추모관</title>
+    <!--폰트어썸-->
+    <script src="https://kit.fontawesome.com/4df461b32c.js" crossorigin="anonymous"></script>
+    <!--fullpage-->
+    <link rel="stylesheet" href="css/fullpage.css">
+    <script type="text/javascript" src="js/fullpage.js"></script>
+    <script type="text/javascript" src="js/scrolloverflow.min.js"></script>
+    <!--구글 폰트-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Hi+Melody&family=Nanum+Brush+Script&family=Nanum+Myeongjo:wght@400;800&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@100;500&display=swap"
+          rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/image-uploader.min.css">
+    <script type="text/javascript" src="js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="js/image-uploader.min.js"></script>
+    <!--부트스트랩-->
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <script src="js/bootstrap.js"></script>
+</head>
+<body id="page-top">
+<!-- 네비게이션-->
+<nav class="p-3 bg-dark text-white fixed-top navbar navbar-expand-lg">
+    <div class="container">
+        <div class="d-flex">
+            <ul class="nav mb-2 justify-content-center mb-md-0" id="menu">
+                <li data-menuanchor="home"><a href="#home" class="nav-link px-2 text-white">홈</a></li>
+                <li data-menuanchor="wreath"><a href="#wreath" class="nav-link px-2 text-white">헌화</a></li>
+                <li data-menuanchor="remember"><a href="#remember" class="nav-link px-2 text-white">기억 공유</a></li>
+                <li data-menuanchor="photo"><a href="#photo" class="nav-link px-2 text-white">갤러리</a></li>
+                <li data-menuanchor="location"><a href="#location" class="nav-link px-2 text-white">위치</a></li>
+                <li data-menuanchor="event"><a href="#event" class="nav-link px-2 text-white">일정</a></li>
+            </ul>
+            <!--모바일 네비게이션-->
+            <button class="navbar-toggler text-uppercase font-weight-bold text-white rounded mx-2 p-0" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse" style="flex-grow: 0" id="navbarResponsive">
+            <button type="button" class="btn text-white btn-facebook me-3 nav-item mx-0 mx-lg-1"><i
+                    class="fa fa-facebook"></i></button>
+            <button type="button" class="btn text-white btn-instagram me-3 nav-item mx-0 mx-lg-1"><i
+                    class="fa fa-instagram"></i></button>
+            <button type="button" class="btn text-white btn-secondary nav-item mx-0 mx-lg-1"  data-bs-toggle="modal" data-bs-target="#alarm"><i
+                    class="fa fa-bell"></i></button>
+            <a class="text-white btn" href="#">관리 하기</a>
+        </div>
+    </div>
+</nav>
+<div id="fullpage">
+    <!--프로핊 세션-->
+    <div class="section active bg-bada">
+        <div class="container bg-black bg-opacity-25 rounded p-5">
+            <div class="home-div">
+                <div class="home-photo">
+                    <img data-src="img/faceImp.jpeg" class="vw-face">
+                    <span class="text-white fs-name mt-2" style="font-family: 'Stylish',serif">김희솔</span>
+                </div>
+                <div class="w-yr d-flex flex-column fw-bold" style="font-family: 'Noto Sans',serif">
+                    <span class="text-white fw-bold fs-5 mt-4 text-center w-100"> 1997년 02월 03일 ~<br class="f-date"> 2021년 03월 10일</span>
+                    <hr class="text-white border border-2">
+                    <ul class="text-white">
+                        <li>1996.0.0 서울 oo구 출생</li>
+                        <li>201o oo고등학교 졸업</li>
+                        <li>201o 강원 춘천시 OOO 근무</li>
+                        <li>1996.0.0 서울 oo구 출생</li>
+                        <li>201o oo고등학교 졸업</li>
+                        <li>201o 강원 춘천시 OOO 근무</li>
+                        <li>1996.0.0 서울 oo구 출생</li>
+                        <li>201o oo고등학교 졸업</li>
+                        <li>201o 강원 춘천시 OOO 근무</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 헌화 세션-->
+    <div class="section">
+        <div class="container align-items-center d-flex flex-column">
+            <iframe data-src="flowers.html" class="w-75 vh-50 rounded"></iframe>
+            <button class="btn btn-outline-light p-0 mx-2 mt-4 d-flex flex-column align-items-center"
+                    data-bs-toggle="modal" data-bs-target="#write">
+                <img src="img/flower-btn.png" style="width: 90px">
+                <span>헌화하기</span>
+            </button>
+        </div>
+    </div>
+    <!--기억 공유 세션-->
+    <div class="section bg-bada">
+        <div class="container d-flex flex-column border  border-1 border-light py-4 rounded bg-white bg-opacity-50 memorize">
+            <div class="w-75">
+                <input type="text" placeholder="이름" class="form-text rounded"
+                       style="background-color: rgba(255,255,255,0.6) !important;">
+                <select class="form-select-sm">
+                    <option>가족</option>
+                    <option>친구</option>
+                    <option>지인</option>
+                    <option>기타</option>
+                </select>
+            </div>
+            <form action="" class="d-flex flex-column align-items-center">
+                <div class="input-photo w-100"></div>
+            </form>
+            <div class="d-flex flex-column align-items-center">
+            <textarea placeholder="김희솔님과의 추억이나 기억,&#13;&#10; 나누고 싶은 이야기를 공유해 주세요." class="w-100 form-text rounded"
+                      rows="7" style="background-color: rgba(255,255,255,0.6) !important;"></textarea>
+                <button class="btn btn-outline-secondary mt-3 w-50">공유 하기</button>
+            </div>
+        </div>
+        <div class=" w-75 container d-flex flex-column border align-items-center border-1 border-light py-4 rounded bg-white bg-opacity-50 my-5">
+            <div class="bg-gray w-100 rounded p-4 bg-opacity-25 mb-4">
+                <span class="fw-bold fw-bolder" style="font-family: 'Nanum Myeongjo',serif;font-size: 20px;">이신수</span>
+                <span style="font-family: 'Noto Sans',serif; font-size: 15px">친구</span>
+                <span style="font-family: 'Nanum Brush Script',serif; font-size: 19px; color:gray">2021.03.21</span>
+                <br>
+                <span style="font-family: 'Hi Melody',serif;font-size: 20px">
+                     xxxxx xxxx xxxxxx바랍니다.<br>
+                             xxxxx xxxx xxxxxx바랍니다.<br>
+                             xxxxx xxxx xxxxxx바랍니다.<br>
+                             xxxxx xxxx xxxxxx바랍니다.<br>
+                             xxxxx xxxx xxxxxx바랍니다.<br>
+                </span>
+            </div>
+            <div class="bg-gray w-100 rounded p-4 bg-opacity-25 mb-4">
+                <span class="fw-bold fw-bolder" style="font-family: 'Nanum Myeongjo',serif;font-size: 20px;">이신수</span>
+                <span style="font-family: 'Noto Sans',serif; font-size: 15px">친구</span>
+                <span style="font-family: 'Nanum Brush Script',serif; font-size: 19px; color:gray">2021.03.21</span>
+                <br>
+                <span style="font-family: 'Hi Melody',serif;font-size: 20px">
+                     xxxxx xxxx xxxxxx바랍니다.<br>
+                             xxxxx xxxx xxxxxx바랍니다.<br>
+                             xxxxx xxxx xxxxxx바랍니다.<br>
+                             xxxxx xxxx xxxxxx바랍니다.<br>
+                             xxxxx xxxx xxxxxx바랍니다.<br>
+                </span>
+            </div>
+            <div class="bg-gray w-100 rounded p-4 bg-opacity-25 mb-4">
+                <span class="fw-bold fw-bolder" style="font-family: 'Nanum Myeongjo',serif;font-size: 20px;">이신수</span>
+                <span style="font-family: 'Noto Sans',serif; font-size: 15px">친구</span>
+                <span style="font-family: 'Nanum Brush Script',serif; font-size: 19px; color:gray">2021.03.21</span>
+                <br>
+                <span style="font-family: 'Hi Melody',serif;font-size: 20px">
+                     xxxxx xxxx xxxxxx바랍니다.<br>
+                             xxxxx xxxx xxxxxx바랍니다.<br>
+                             xxxxx xxxx xxxxxx바랍니다.<br>
+                             xxxxx xxxx xxxxxx바랍니다.<br>
+                             xxxxx xxxx xxxxxx바랍니다.<br>
+                </span>
+            </div>
+            <div class="bg-gray w-100 rounded p-4 bg-opacity-25 mb-4">
+                <span class="fw-bold fw-bolder" style="font-family: 'Nanum Myeongjo',serif;font-size: 20px;">이신수</span>
+                <span style="font-family: 'Noto Sans',serif; font-size: 15px">친구</span>
+                <span style="font-family: 'Nanum Brush Script',serif; font-size: 19px; color:gray">2021.03.21</span>
+                <br>
+                <span style="font-family: 'Hi Melody',serif;font-size: 20px">
+                     xxxxx xxxx xxxxxx바랍니다.<br>
+                             xxxxx xxxx xxxxxx바랍니다.<br>
+                             xxxxx xxxx xxxxxx바랍니다.<br>
+                             xxxxx xxxx xxxxxx바랍니다.<br>
+                             xxxxx xxxx xxxxxx바랍니다.<br>
+                </span>
+            </div>
+        </div>
+    </div>
+    <!-- 사진 세션-->
+    <div class="section pho">
+
+        <div class="carousel slide carousel-fade" id="carouselExampleControls">
+            <div class="carousel-inner" align="center">
+                <!--아이템-->
+                <div class="carousel-item active">
+                    <div class="item p-1 bg-white bg-opacity-75 rounded text-center">
+                        <img data-src="img/faceImp.jpeg" alt="Card image cap">
+                        <div class="mt-3">
+                            <p class="">from. xxx</p>
+                        </div>
+                    </div>
+                </div>
+                <!--아이템-->
+                <div class="carousel-item ">
+                    <div class="item p-1 bg-white bg-opacity-75 rounded text-center">
+                        <video data-src="img/v.mov" controls></video>
+                        <div class="mt-3">
+                            <p class="">from. xxx</p>
+                        </div>
+                    </div>
+                </div>
+                <!--아이템-->
+                <div class="carousel-item">
+                    <div class="item p-1 bg-white bg-opacity-75 rounded text-center">
+                        <img data-src="img/sky.jpg" alt="Card image cap">
+                        <div class="mt-3">
+                            <p class="">from. xxx</p>
+                        </div>
+                    </div>
+                </div>
+                <!--아이템-->
+                <div class="carousel-item ">
+                    <div class="item p-1 bg-white bg-opacity-75 rounded text-center">
+                        <video data-src="img/v.mov" controls vid></video>
+                        <div class="mt-3">
+                            <p class="">from. xxx</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--컨트롤러-->
+        <div class="carousel-controls photo-index d-flex flex-row justify-content-between bg-black bg-opacity-25 pt-2 px-3">
+            <div class="d-flex align-items-center"><a href="index.html"><img style="height: 60px" src="img/logo-white.svg"></a></div>
+            <div class="d-flex align-items-center">
+                <a class="prev text-black" role="button"><i class="fa fa-arrow-left fa-2x"></i></a>
+                <a class="play text-black" href="#" role="button"><i class="fa fa-play fa-2x"></i></a>
+                <a class="pause text-black" style="display:none" href="#" role="button"><i class="fa fa-pause fa-2x"></i></a>
+                <a class="next text-black" role="button"><i class="fa fa-arrow-right fa-2x"></i></a>
+            </div>
+            <div class="d-flex flex-column mb-2">
+                <button class="btn btn-light"
+                        data-bs-toggle="modal" data-bs-target="#photoList">리스트 보기
+                </button>
+                <button class="btn btn-secondary mt-2"
+                        data-bs-toggle="modal" data-bs-target="#photoAdd">사진 추가
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- 위치 세션-->
+    <div class="section">
+        <div class="container d-flex flex-column align-items-center">
+            <span>예시) 네이버 api 추가 예정</span><img class="w-75" src="img/location-imp.png">
+            <button class="w-50 btn btn-outline-dark bg-white mt-5">주소 복사하기</button>
+        </div>
+    </div>
+    <div class="section">
+        <div class="d-flex align-items-center flex-column">
+            <div class="row flex-nowrap border border-3 overflow-auto p-4 w-75 rounded"
+                 style="background-color: #99cccc">
+                <div class="col-md-5 col-lg-3 m-2 border text-center bg-opacity-75 bg-white rounded">
+                    <div class="mx-auto">
+                        <div class="m-1 d-flex flex-column">
+                            <span class="fw-bold fs-3">행사의 제목란</span>
+                            <span class="mt-2 fs-4">2023.03.10</span>
+                            <span class="mt-2 fs-5">오후 8:00~</span>
+                            <p class="mt-3">행사의 내용을 적는 칸행사의 내용을 적는 칸행사의 내용을 적는 칸행사의 내용을 적는 칸행사의 내용을 적는 칸</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-light mt-4"><i class="fa fa-bell mx-2"></i>알림 성정</button>
+        </div>
+        <div class="position-absolute bottom-0 w-100 bg-gray">
+            <div class="container p-1">
+                <div class="col-lg-4 d-flex">
+                   <a href="index.html"><img src="img/logo.svg" style="height:80px"/></a>
+                    <p class="mb-0 fs-5 text-white-50 pt-4" style="font-family:'Nanum Myeongjo'">
+                        새로운 추모 문화를 만들다.
+                    </p>
+                </div>
+                <div class="col-lg-4">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--헌화 모달-->
+<div class="modal fade" id="alarm" tabindex="-1" aria-labelledby="write" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <span>알람 및 공유</span>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center pb-5">
+                <button class="btn btn-outline-dark w-75 mb-4">공유 하기</button>
+                <div class="container d-flex flex-column border border-1 align-items-center rounded bg-gray p-2 bg-opacity-50 mb-4">
+                    <div>
+                        <label>
+                            <input type="checkbox">
+                            새로운 일정이 발생하면 메일을 받습니다.
+                        </label>
+                        <label>
+                            <input type="checkbox">
+                            김희솔님의 기일 7일전에 메일을 받습니다.
+                        </label>
+                    </div>
+                    <button type="submit" class="w-50 btn btn-outline-primary mt-3">알림 요청</button>
+                </div>
+                <span>알림 요청은 로그인이 필요합니다.</span>
+            </div>
+        </div>
+    </div>
+</div>
+<!--헌화 모달-->
+<div class="modal fade" id="write" tabindex="-1" aria-labelledby="write" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <img src="img/flower-btn.png" style="width: 40px;">
+                <span class="text-black-50">to.김희솔</span>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center pb-5">
+                <div class="container d-flex flex-column align-items-start">
+                    <div class="float-start">
+                        <input type="text" placeholder="이름">
+                        <select>
+                            <option>가족</option>
+                            <option>친구</option>
+                            <option>지인</option>
+                            <option>기타</option>
+                        </select>
+                    </div>
+                    <textarea placeholder="50자 이상의 글은 기억공유 페이지를 이용해 주세요." class="w-75" maxlength="50"></textarea>
+                    <button class="btn btn-outline-dark mt-3">헌화</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--사진 리스트 모달-->
+<div class="modal fade" id="photoList" tabindex="-1" aria-labelledby="photoList" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <i class="fa fa-photo"></i>
+                <span class="text-black-50 mx-2">사진 목록</span>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="row justify-content-center m-2 rounded pb-1">
+                <div class="col-md-10 col-lg-12 m-2 mb-2 pt-3 pb-3 ">
+                    <div class="mx-auto d-flex flex-column align-items-center mb-3">
+                        <img src="img/faceImp.jpeg" class="w-75">
+                    </div>
+                    <div class="mx-auto d-flex flex-column align-items-center mb-3">
+                        <img src="img/faceImp.jpeg" class="w-75">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--사진 추가 모달-->
+<div class="modal fade" id="photoAdd" tabindex="-1" aria-labelledby="photoAdd" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <i class="fa fa-photo"></i>
+                <span class="text-black-50 mx-2">사진 목록</span>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="row justify-content-center m-2 rounded pb-1">
+                <form action="" enctype="multipart/form-data" class="d-flex flex-column align-items-center">
+                    <div class="input-photos w-100"></div>
+                    <button class="btn btn-outline-secondary w-50 mt-3" type="submit">추가</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    new fullpage('#fullpage', {
+        sectionsColor: ['#98a4a4', '#ecc2c2', '#C0C0C0', '#ADD8E6', '#ecf1cb', '#cccccc'],
+        anchors: ['home', 'wreath', 'remember', 'photo', 'location', 'event'],
+        navigation: true,
+        showActiveTooltip: true,
+        menu: '#menu',
+        normalScrollElements: '#photoList',
+        scrollOverflow: true,
+        slideSelector: '.slideNone'
+    });
+
+    $(document).ready(function () {
+        var a = $('.input-photos').imageUploader();
+        var b = $('.input-photo').imageUploader();
+        b.settings.maxFiles = 1;
+
+
+        var car = $('.carousel').carousel({
+            interval: 3000,
+            pause: "false"
+        })
+
+        $('.carousel-controls .next').click(function () {
+            car.carousel('next');
+        });
+        $('.carousel-controls .prev').click(function () {
+            car.carousel('prev');
+        });
+        $('.carousel-controls .play').click(function () {
+            car.carousel('cycle');
+            $('.carousel-controls .play').hide();
+            $('.carousel-controls .pause').show();
+        });
+        $('.carousel-controls .pause').click(function () {
+            car.carousel('pause');
+            $('.carousel-controls .play').show();
+            $('.carousel-controls .pause').hide();
+        });
+
+    });
+</script>
+</html>

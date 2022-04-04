@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <title>Remember Me::내가 준비 하는 온라인 추모관</title>
+    <!--폰트어썸-->
+    <script src="https://kit.fontawesome.com/4df461b32c.js" crossorigin="anonymous"></script>
+    <script src="js/scripts.js"></script>
+    <!-- 구글 폰트-->
+
+
+    <link href="css/styles.css" rel="stylesheet"/>
+</head>
+<body id="page-top">
+<!-- 네비게이션-->
+<nav class="navbar navbar-expand-lg text-uppercase fixed-top" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand" href="index.html"><img class="logo" src="img/logo-white.svg"></a>
+        <!--모바일 네비게이션-->
+        <button class="navbar-toggler text-uppercase font-weight-bold text-white rounded" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="#">샘플 추모관</a></li>
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="join.html"><i
+                        class="fa-solid fa-user-pen"></i> 회원 가입</a></li>
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="login.html"><i
+                        class="fa-solid fa-user"></i> 로그인</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- 메인 이미지 -->
+<header class="masthead-memorial bg-home text-white text-center">
+    <img class="logo" style="width:40%" src="img/logo.svg">
+    <div class="container d-flex align-items-center flex-column">
+        <!-- 헤드 카피-->
+        <h2 class="mt-lg-4">새로운 추모 문화를 만듭니다.</h2>
+        <h4>추모관 만들기</h4>
+    </div>
+</header>
+<!-- 로그인 세션-->
+<section class="page-section bg-light" id="login">
+    <div class="container" style="width: 100% ;max-width: 800px; margin: 0 auto">
+        <div class="bg-white border p-5 rounded">
+            <form class="new_memorial" id="new_memorial" enctype="multipart/form-data"
+                  action="" accept-charset="UTF-8" method="post"><input
+                    type="hidden"
+                    value="">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3>추모대상 정보</h3>
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label>이름
+                                    <input autofocus="autofocus" placeholder="이름" class="form-control" type="text"
+                                           id="memorial_name">
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label>생년월일
+                                    <input type="date" class="form-control" id="memorial_birth_date">
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label>기일
+                                    <input type="date" class="form-control" id="memorial_death_date">
+                                </label>
+                            </div>
+                            <div class="form-group d-flex flex-column">
+                                <div class="form-group">
+                                    <label>공개 여부
+                                        <select class="form-select">
+                                            <option>모두에게 공개</option>
+                                            <option>비밀번호 입력 시 공개</option>
+                                        </select>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        <input type="password" class="form-control mt-3" placeholder="비밀번호">
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-group">
+                                <div class="d-flex justify-content-between">
+                                    <h3>메인 인물 사진</h3>
+                                </div>
+                                <img id="img_prev" style="height: 200px; margin: 10px auto"
+                                     src="img/noImg.png">
+                                <input class="form-control" type="file"
+                                       id="memorial_main_image">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-dark float-end" type="submit">추모관 생성</button>
+                </div>
+            </form>
+        </div>
+    </div><!-- .container -->
+</section>
+<!-- footer-->
+<footer class="footer text-center">
+    <div class="container">
+        <div class="row">
+            <!-- Footer Logo-->
+            <div class="col-lg-4 mb-5 mb-lg-0">
+                <img class="logo" src="img/logo-white.svg">
+                <div class="text-center mt-2 lead">리멤버 미, 새로운 추모 문화</div>
+            </div>
+            <!-- Footer Social-->
+            <div class="col-lg-4 mb-5 mb-lg-0">
+            </div>
+            <!-- Footer About Text-->
+            <div class="col-lg-4 mt-3">
+                <h5 class="text-uppercase mb-2">연락처</h5>
+                <p class="mb-0">
+                    zanygeek8371@gmail.com
+                </p>
+                <p class="mb-0">
+                    010-6735-6203
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+<script>
+    function readImage(input) {
+        // 인풋 태그에 파일이 있는 경우
+        if (input.files && input.files[0]) {
+            // 이미지 파일인지 검사 (생략)
+            // FileReader 인스턴스 생성
+            const reader = new FileReader()
+            // 이미지가 로드가 된 경우
+            reader.onload = e => {
+                const previewImage = document.getElementById("img_prev")
+                previewImage.src = e.target.result
+            }
+            // reader가 이미지 읽도록 하기
+            reader.readAsDataURL(input.files[0])
+        }
+    }
+
+    // input file에 change 이벤트 부여
+    const inputImage = document.getElementById("memorial_main_image")
+    inputImage.addEventListener("change", e => {
+        readImage(e.target)
+    })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
