@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.UUID;
 
+//회원가입시 메일 확인을 위한 토큰
 @Getter
 @Setter
 @Entity

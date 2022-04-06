@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
@@ -52,20 +52,21 @@
                     <p class="hidden-xs">리멤버 미,</p>
                     <h2>로그인</h2>
                     <hr>
-                    <input id="email" type="text" class="form-control" placeholder="Email address"
-                           autofocus="autofocus" value="">
-                    <input id="password" type="password" class="form-control" placeholder="Password">
-                    <button id="btn-sign-in" class="btn btn-lg btn-outline-primary mt-3 w-100" type="submit"
-                            data-token="7i19jd"><span class="glyphicon glyphicon-log-in"></span>&nbsp;Login
-                    </button>
-                    <div class="m-4">
-                    <a class="p-0" style="font-size:12px;" href="#">비밀번호 찾기</a>
-                        <a class="p-2" style="font-size:12px;" href="#">회원 가입</a>
-                    </div>
-                    <div id="result-text" class="result-error"></div>
-                    <div style="display:none">
-                        비밀번호가 틀렸습니다.
-                    </div>
+                    <form th:action="@{/login}" th:object="${form}" method="post">
+                        <input id="email" type="text" class="form-control" th:field="*{userId}" placeholder="아이디"
+                               autofocus="autofocus" value="">
+                        <span class="ui-state-error-text text-warning" th:errors="*{userId}">존재하지 않는 아이디 입니다.</span>
+                        <input id="password" th:field="*{password}" type="password" class="form-control" placeholder="Password">
+                        <span th:errors="*{password}" class="ui-state-error-text text-warning">비밀번호가 틀렸습니다.</span>
+                        <button id="btn-sign-in" class="btn btn-lg btn-outline-primary mt-3 w-100" type="submit"
+                                data-token="7i19jd"><span class="glyphicon glyphicon-log-in"></span>&nbsp;Login
+                        </button>
+                        <div class="m-4">
+                            <a class="p-0" style="font-size:12px;" href="#">비밀번호 찾기</a>
+                            <a class="p-2" style="font-size:12px;" href="#">회원 가입</a>
+                        </div>
+                        <div id="result-text" class="result-error"></div>
+                    </form>
                 </div>
             </div>
         </div>

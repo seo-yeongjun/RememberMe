@@ -17,8 +17,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.cors().disable().logout().disable()
+    protected void configure(HttpSecurity security) throws Exception {
+        security.cors().disable().logout().disable()
                 .csrf().disable()
                 .formLogin().disable()
                 .headers().frameOptions().disable();

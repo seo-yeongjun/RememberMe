@@ -27,11 +27,13 @@ public class JoinController {
     @Autowired
     MemberTokenRepository memberTokenRepository;
 
+    //join get
     @GetMapping
     public String join(@ModelAttribute("form") JoinForm form) {
         return "member/join";
     }
 
+    //join post
     @PostMapping
     public String join(Model model, @ModelAttribute("form") @Validated JoinForm form, BindingResult bindingResult) {
         //validation 검사
@@ -46,6 +48,8 @@ public class JoinController {
         }
     }
 
+
+    //메일 토큰 확인
     @RequestMapping("/confirmMail")
     public String confirmMail(@RequestParam("token") String token) {
         MemberToken checkToken = memberTokenRepository.findByConfirmToken(token);
