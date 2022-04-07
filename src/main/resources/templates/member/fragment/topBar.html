@@ -1,0 +1,30 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="topBar">
+    <!-- 네비게이션-->
+    <nav class="navbar navbar-expand-lg text-uppercase fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/}"><img class="logo" src="img/logo-white.svg"></a>
+            <!--모바일 네비게이션-->
+            <button class="navbar-toggler text-uppercase font-weight-bold rounded" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="#about">소개</a>
+                    </li>
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="#contact">문의하기</a></li>
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="memorial.html">샘플 추모관</a></li>
+                    <li class="nav-item mx-0 mx-lg-1" th:unless="${member}">
+                        <a class="nav-link py-3 px-0 px-lg-3"  th:href="@{/join}"><i class="fa-solid fa-user-pen"></i> 회원 가입</a></li>
+                    <li class="nav-item mx-0 mx-lg-1"  th:unless="${member}">
+                        <a class="nav-link py-3 px-0 px-lg-3" th:href="@{/login}"><i class="fa-solid fa-user"></i> 로그인</a></li>
+                    <li class="nav-item mx-0 mx-lg-1"  th:if="${member}">
+                        <a class="nav-link py-3 px-0 px-lg-3" th:href="@{/logout}"><i class="fa-solid fa-user"></i> 로그아웃</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</th:block>
+</html>
