@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface MemberRepository extends JpaRepository<Member, Integer> {
     Member findByEmail(String email);
     Member findByUserId(String userId);
+    void deleteByEnabledIsFalseAndUserId(String userId);
 }

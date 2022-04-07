@@ -6,37 +6,18 @@
     <title>Remember Me::내가 준비 하는 온라인 추모관</title>
     <!--폰트어썸-->
     <script src="https://kit.fontawesome.com/4df461b32c.js" crossorigin="anonymous"></script>
-    <script src="js/scripts.js"></script>
+    <script th:src="@{/js/scripts.js}"></script>
     <!-- 구글 폰트-->
 
 
-    <link href="css/styles.css" rel="stylesheet"/>
+    <link th:href="@{/css/styles.css}" rel="stylesheet"/>
 </head>
 <body id="page-top">
-<!-- 네비게이션-->
-<nav class="navbar navbar-expand-lg text-uppercase fixed-top" id="mainNav">
-    <div class="container">
-        <a class="navbar-brand" href="index.html"><img class="logo" src="img/logo-white.svg"></a>
-        <!--모바일 네비게이션-->
-        <button class="navbar-toggler text-uppercase font-weight-bold text-white rounded" type="button"
-                data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive"
-                aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fas fa-bars"></i>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="#">샘플 추모관</a></li>
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="join.html"><i
-                        class="fa-solid fa-user-pen"></i> 회원 가입</a></li>
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="login.html"><i
-                        class="fa-solid fa-user"></i> 로그인</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<!-- 탑바-->
+<th:block th:replace="@{/member/fragment/topBar.html} :: topBar"></th:block>
 <!-- 메인 이미지 -->
 <header class="masthead-memorial bg-home text-white text-center">
-    <img class="logo" style="width:40%" src="img/logo.svg">
+    <img class="logo" style="width:40%" th:src="@{/img/logo.svg}">
     <div class="container d-flex align-items-center flex-column">
         <!-- 헤드 카피-->
         <h2 class="mt-lg-4">새로운 추모 문화를 만듭니다.</h2>
@@ -78,7 +59,7 @@
         <div class="row">
             <!-- Footer Logo-->
             <div class="col-lg-4 mb-5 mb-lg-0">
-                <img class="logo" src="img/logo-white.svg">
+                <img class="logo" th:src="@{/img/logo-white.svg}">
                 <div class="text-center mt-2 lead">리멤버 미, 새로운 추모 문화</div>
             </div>
             <!-- Footer Social-->

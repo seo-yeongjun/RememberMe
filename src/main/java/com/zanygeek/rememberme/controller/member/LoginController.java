@@ -1,5 +1,6 @@
 package com.zanygeek.rememberme.controller.member;
 
+import com.zanygeek.rememberme.SessionConst;
 import com.zanygeek.rememberme.entity.Member;
 import com.zanygeek.rememberme.form.LoginForm;
 import com.zanygeek.rememberme.service.LoginService;
@@ -37,7 +38,7 @@ public class LoginController {
             if (member == null) {
                 return "error";
             } else {
-                session.setAttribute("member", member);
+                session.setAttribute(SessionConst.member, member);
             }
         }
         return "redirect:/";
@@ -47,7 +48,7 @@ public class LoginController {
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if(session!=null) {
-            session.removeAttribute("member");}
+            session.removeAttribute(SessionConst.member);}
         return "redirect:/";
     }
 }
