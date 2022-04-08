@@ -6,37 +6,18 @@
     <title>Remember Me::내가 준비 하는 온라인 추모관</title>
     <!--폰트어썸-->
     <script src="https://kit.fontawesome.com/4df461b32c.js" crossorigin="anonymous"></script>
-    <script src="js/scripts.js"></script>
+    <script th:src="@{/js/scripts.js}"></script>
     <!-- 구글 폰트-->
 
 
-    <link href="css/styles.css" rel="stylesheet"/>
+    <link th:href="@{/css/styles.css}" rel="stylesheet"/>
 </head>
 <body id="page-top">
-<!-- 네비게이션-->
-<nav class="navbar navbar-expand-lg text-uppercase fixed-top" id="mainNav">
-    <div class="container">
-        <a class="navbar-brand" href="index.html"><img class="logo" src="img/logo-white.svg"></a>
-        <!--모바일 네비게이션-->
-        <button class="navbar-toggler text-uppercase font-weight-bold text-white rounded" type="button"
-                data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive"
-                aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fas fa-bars"></i>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="#">샘플 추모관</a></li>
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="join.html"><i
-                        class="fa-solid fa-user-pen"></i> 회원 가입</a></li>
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="login.html"><i
-                        class="fa-solid fa-user"></i> 로그인</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<!--탑바-->
+<th:block th:replace="@{/member/fragment/topBar.html} :: topBar"></th:block>
 <!-- 메인 이미지 -->
 <header class="masthead-memorial bg-home text-white text-center">
-    <img class="logo" style="width:40%" src="img/logo.svg">
+    <img class="logo" style="width:40%" th:src="@{/img/logo.svg}">
     <div class="container d-flex align-items-center flex-column">
         <!-- 헤드 카피-->
         <h2 class="mt-lg-4">새로운 추모 문화를 만듭니다.</h2>
@@ -48,41 +29,39 @@
     <div class="container" style="width: 100% ;max-width: 800px; margin: 0 auto">
         <div class="bg-white border p-5 rounded">
             <form class="new_memorial" id="new_memorial" enctype="multipart/form-data"
-                  action="" accept-charset="UTF-8" method="post"><input
-                    type="hidden"
-                    value="">
+                  th:action="@{/memorial/new}" th:object="${memorial}" accept-charset="UTF-8" method="post">
                 <div class="row">
                     <div class="col-md-6">
                         <h3>추모대상 정보</h3>
                         <div class="form-group">
                             <div class="form-group">
                                 <label>이름
-                                    <input autofocus="autofocus" placeholder="이름" class="form-control" type="text"
+                                    <input autofocus="autofocus" th:field="*{name}" placeholder="이름" class="form-control" type="text"
                                            id="memorial_name">
                                 </label>
                             </div>
                             <div class="form-group">
                                 <label>생년월일
-                                    <input type="date" class="form-control" id="memorial_birth_date">
+                                    <input type="date" th:field="*{birthDate}" class="form-control" id="memorial_birth_date">
                                 </label>
                             </div>
                             <div class="form-group">
                                 <label>기일
-                                    <input type="date" class="form-control" id="memorial_death_date">
+                                    <input type="date" th:field="*{deathDate}" class="form-control" id="memorial_death_date">
                                 </label>
                             </div>
                             <div class="form-group d-flex flex-column">
                                 <div class="form-group">
                                     <label>공개 여부
-                                        <select class="form-select">
-                                            <option>모두에게 공개</option>
-                                            <option>비밀번호 입력 시 공개</option>
+                                        <select class="form-select" th:field="*{locked}">
+                                            <option value="false">모두에게 공개</option>
+                                            <option value="true">비밀번호 입력 시 공개</option>
                                         </select>
                                     </label>
                                 </div>
                                 <div class="form-group">
                                     <label>
-                                        <input type="password" class="form-control mt-3" placeholder="비밀번호">
+                                        <input type="password" th:field="*{password}" class="form-control mt-3" placeholder="비밀번호">
                                     </label>
                                 </div>
                             </div>
@@ -95,8 +74,8 @@
                                     <h3>메인 인물 사진</h3>
                                 </div>
                                 <img id="img_prev" style="height: 200px; margin: 10px auto"
-                                     src="img/noImg.png">
-                                <input class="form-control" type="file"
+                                     th:src="@{/img/noImg.png}">
+                                <input class="form-control" type="file" name="uploadPhoto" accept="image/*"
                                        id="memorial_main_image">
                             </div>
                         </div>
@@ -115,7 +94,7 @@
         <div class="row">
             <!-- Footer Logo-->
             <div class="col-lg-4 mb-5 mb-lg-0">
-                <img class="logo" src="img/logo-white.svg">
+                <img class="logo" th:src="@{/img/logo-white.svg}">
                 <div class="text-center mt-2 lead">리멤버 미, 새로운 추모 문화</div>
             </div>
             <!-- Footer Social-->

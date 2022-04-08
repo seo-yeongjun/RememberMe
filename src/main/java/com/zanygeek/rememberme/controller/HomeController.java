@@ -14,7 +14,6 @@ public class HomeController {
     public String home(Model model, @SessionAttribute(name = SessionConst.member, required = false) Member member){
         if(member!=null){
             model.addAttribute("member", member);
-            System.out.println(member);
         }
         return "index";
     }
