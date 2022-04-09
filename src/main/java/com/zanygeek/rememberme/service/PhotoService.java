@@ -51,4 +51,9 @@ public class PhotoService {
     public Photo save(Photo photo){
         return photoRepository.save(photo);
     }
+
+
+    public Photo getMainPhoto(Memorial memorial){
+       return photoRepository.findByMemorialIdAndMainIsTrue(memorial.getId());
+    }
 }

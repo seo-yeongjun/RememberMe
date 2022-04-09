@@ -16,8 +16,7 @@ public class MemberInterceptor implements HandlerInterceptor {
         HttpSession session = request.getSession(false);
         if (session==null||session.getAttribute(SessionConst.member) == null) {
             response.sendRedirect("/login");
-            return false;
-        } else
-            return true;
+        }
+        return true;
     }
 }

@@ -7,20 +7,20 @@
     <!--폰트어썸-->
     <script src="https://kit.fontawesome.com/4df461b32c.js" crossorigin="anonymous"></script>
     <!--fullpage-->
-    <link rel="stylesheet" href="css/fullpage.css">
-    <script type="text/javascript" src="js/fullpage.js"></script>
-    <script type="text/javascript" src="js/scrolloverflow.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/fullpage.css}">
+    <script type="text/javascript" th:src="@{/js/fullpage.js}"></script>
+    <script type="text/javascript" th:src="@{/js/scrolloverflow.min.js}"></script>
     <!--구글 폰트-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Hi+Melody&family=Nanum+Brush+Script&family=Nanum+Myeongjo:wght@400;800&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@100;500&display=swap"
           rel="stylesheet">
-    <link type="text/css" rel="stylesheet" href="css/image-uploader.min.css">
-    <script type="text/javascript" src="js/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" src="js/image-uploader.min.js"></script>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/image-uploader.min.css}">
+    <script type="text/javascript" th:src="@{/js/jquery-3.6.0.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/image-uploader.min.js}"></script>
     <!--부트스트랩-->
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <script src="js/bootstrap.js"></script>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <script th:src="@{/js/bootstrap.js}"></script>
 </head>
 <body id="page-top">
 <!-- 네비게이션-->
@@ -49,7 +49,7 @@
                     class="fa fa-instagram"></i></button>
             <button type="button" class="btn text-white btn-secondary nav-item mx-0 mx-lg-1"  data-bs-toggle="modal" data-bs-target="#alarm"><i
                     class="fa fa-bell"></i></button>
-            <a class="text-white btn" href="#">관리 하기</a>
+            <a class="text-white btn" href="#" th:if="${owner}">관리 하기</a>
         </div>
     </div>
 </nav>
@@ -59,22 +59,15 @@
         <div class="container bg-black bg-opacity-25 rounded p-5">
             <div class="home-div">
                 <div class="home-photo">
-                    <img data-src="img/faceImp.jpeg" class="vw-face">
-                    <span class="text-white fs-name mt-2" style="font-family: 'Stylish',serif">김희솔</span>
+                    <img th:data-src="${mainImg.url}" class="vw-face">
+                    <span class="text-white fs-name mt-2" style="font-family: 'Stylish',serif" th:text="${memorial.name}">김희솔</span>
                 </div>
                 <div class="w-yr d-flex flex-column fw-bold" style="font-family: 'Noto Sans',serif">
-                    <span class="text-white fw-bold fs-5 mt-4 text-center w-100"> 1997년 02월 03일 ~<br class="f-date"> 2021년 03월 10일</span>
+                    <span class="text-white fw-bold fs-5 mt-4 text-center w-100"> <span th:text="${#dates.format(memorial.birthDate, 'yyyy-MM-dd')}+' ~ '"></span><br class="f-date"><span th:text="${#dates.format(memorial.deathDate, 'yyyy-MM-dd')}"></span></span>
                     <hr class="text-white border border-2">
                     <ul class="text-white">
-                        <li>1996.0.0 서울 oo구 출생</li>
-                        <li>201o oo고등학교 졸업</li>
-                        <li>201o 강원 춘천시 OOO 근무</li>
-                        <li>1996.0.0 서울 oo구 출생</li>
-                        <li>201o oo고등학교 졸업</li>
-                        <li>201o 강원 춘천시 OOO 근무</li>
-                        <li>1996.0.0 서울 oo구 출생</li>
-                        <li>201o oo고등학교 졸업</li>
-                        <li>201o 강원 춘천시 OOO 근무</li>
+                        <p th:text="${memorial.mainText}" th:if="${memorial.mainText}"></p>
+                        <a th:if="${owner}">수정</a>
                     </ul>
                 </div>
             </div>
