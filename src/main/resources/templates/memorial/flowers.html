@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -8,16 +8,16 @@
     <script src="https://kit.fontawesome.com/4df461b32c.js" crossorigin="anonymous"></script>
 
     <!--aos.js-->
-    <link href="css/aos.css" rel="stylesheet">
-    <script src="js/aos.js"></script>
+    <link th:href="@{/css/aos.css}" rel="stylesheet">
+    <script th:src="@{/js/aos.js}"></script>
 
     <!-- 부트스트랩 -->
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <script src="js/bootstrap.js"></script>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <script th:src="@{/js/bootstrap.js}"></script>
 
-    <link rel="stylesheet" href="css/fullpage.css">
-    <script type="text/javascript" src="js/fullpage.js"></script>
-    <script type="text/javascript" src="js/scrolloverflow.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/fullpage.css}">
+    <script type="text/javascript" th:src="@{/js/fullpage.js}"></script>
+    <script type="text/javascript" th:src="@{/js/scrolloverflow.min.js}"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,60 +28,22 @@
 <!-- 네비게이션-->
 
 <div id="fullpage">
-    <div class="section text-center">
+    <div class="section text-center" th:each="wreath,i: ${wreaths}">
         <div class="d-flex align-items-center flex-column justify-content-center border border-1 container rounded mb-5">
-            <img src="img/flower.png" class="w-50">
+            <img th:src="@{/img/flower.png}" class="w-50">
             <div class="w-50">
-                <span class="fw-bold fw-bolder" style="font-family: 'Nanum Myeongjo',serif;font-size: 20px;">이신수</span>
-                <span style="font-family: 'Noto Sans',serif; font-size: 15px">친구</span>
-                <span style="font-family: 'Nanum Brush Script',serif; font-size: 19px; color:gray">2021.03.21</span>
+                <span class="fw-bold fw-bolder" style="font-family: 'Nanum Myeongjo',serif;font-size: 20px;" th:text="${wreath.name}">이신수</span>
+                <span style="font-family: 'Noto Sans',serif; font-size: 15px" th:text="${wreath.relation}">친구</span>
+                <span style="font-family: 'Nanum Brush Script',serif; font-size: 19px; color:gray" th:text="${#dates.format(wreath.date, 'yyyy-MM-dd')}">2021.03.21</span>
                 <br>
-                <span style="font-family: 'Hi Melody',serif;font-size: 20px">
+                <span style="font-family: 'Hi Melody',serif;font-size: 20px" th:utext="${wreath.text}">
                      xxxxx xxxx xxxxxx바랍니다.<br>
                 </span>
             </div>
         </div>
         <span class="text-secondary" style="font-size: 13px;">
-            1/3<br>
-            스와이프<br>
-            <i class="fa-solid fa-arrow-down"></i>
-        </span>
-    </div>
-    <div class="section text-center">
-        <div class="d-flex align-items-center flex-column justify-content-center border border-1 container rounded mb-5">
-            <img src="img/flower.png" class="w-50">
-            <div class="w-50">
-                <span class="fw-bold fw-bolder" style="font-family: 'Nanum Myeongjo',serif;font-size: 20px;">이신수</span>
-                <span style="font-family: 'Noto Sans',serif; font-size: 15px">친구</span>
-                <span style="font-family: 'Nanum Brush Script',serif; font-size: 19px; color:gray">2021.03.21</span>
-                <br>
-                <span style="font-family: 'Hi Melody',serif;font-size: 20px">
-                     xxxxx xxxx xxxxxx바랍니다.<br>
-                </span>
-            </div>
-        </div>
-        <span class="text-secondary" style="font-size: 13px;">
-            2/3<br>
-            스와이프<br>
-            <i class="fa-solid fa-arrow-down"></i>
-        </span>
-    </div>
-    <div class="section text-center">
-        <div class="d-flex align-items-center flex-column justify-content-center border border-1 container rounded mb-5">
-            <img src="img/flower.png" class="w-50">
-            <div class="w-50">
-                <span class="fw-bold fw-bolder" style="font-family: 'Nanum Myeongjo',serif;font-size: 20px;">이신수</span>
-                <span style="font-family: 'Noto Sans',serif; font-size: 15px">친구</span>
-                <span style="font-family: 'Nanum Brush Script',serif; font-size: 19px; color:gray">2021.03.21</span>
-                <br>
-                <span style="font-family: 'Hi Melody',serif;font-size: 20px">
-                    xxxxx xxxx xxxxxx바랍니다.<br>
-                </span>
-            </div>
-        </div>
-        <span class="text-secondary" style="font-size: 13px;">
-                 3/3<br>
-            스와이프<br>
+            <span th:text="${i.index+1}+'/'+${i.size}"></span><br>
+            <span th:unless="${i.index+1}==${i.size}">스와이프</span><br>
             <i class="fa-solid fa-arrow-down"></i>
         </span>
     </div>
