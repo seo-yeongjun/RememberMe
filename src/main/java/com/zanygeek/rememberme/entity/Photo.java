@@ -21,9 +21,8 @@ public class Photo {
     @ManyToOne
     @JoinColumn(name="memorialId")
     private Memorial memorial;
-
     private String password;
-    private Date fromName;
+    private String fromName;
     private int obituaryId;
     private String url;
     private Boolean main;

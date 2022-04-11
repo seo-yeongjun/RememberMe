@@ -30,7 +30,7 @@
             <ul class="nav mb-2 justify-content-center mb-md-0" id="menu">
                 <li data-menuanchor="home"><a href="#home" class="nav-link px-2 text-white">홈</a></li>
                 <li data-menuanchor="wreath"><a href="#wreath" class="nav-link px-2 text-white">헌화</a></li>
-                <li data-menuanchor="remember"><a href="#remember" class="nav-link px-2 text-white">기억 공유</a></li>
+                <li data-menuanchor="obituary"><a href="#obituary" class="nav-link px-2 text-white">기억 공유</a></li>
                 <li data-menuanchor="photo"><a href="#photo" class="nav-link px-2 text-white">갤러리</a></li>
                 <li data-menuanchor="location"><a href="#location" class="nav-link px-2 text-white">위치</a></li>
                 <li data-menuanchor="event"><a href="#event" class="nav-link px-2 text-white">일정</a></li>
@@ -94,77 +94,40 @@
     <!--기억 공유 세션-->
     <div class="section bg-bada">
         <div class="container d-flex flex-column border  border-1 border-light py-4 rounded bg-white bg-opacity-50 memorize">
-            <div class="w-75">
-                <input type="text" placeholder="이름" class="form-text rounded"
-                       style="background-color: rgba(255,255,255,0.6) !important;">
-                <select class="form-select-sm">
-                    <option>가족</option>
-                    <option>친구</option>
-                    <option>지인</option>
-                    <option>기타</option>
-                </select>
-            </div>
-            <form action="" class="d-flex flex-column align-items-center">
-                <div class="input-photo w-100"></div>
-            </form>
-            <div class="d-flex flex-column align-items-center">
+            <form th:action="@{/memorial/{memorialId}/obituary(memorialId=${memorial.id})}" th:object="${obituary}"
+                  enctype="multipart/form-data"
+                  accept-charset="UTF-8" method="post">
+                <div class="w-75">
+                    <input type="text" placeholder="이름" class="form-text rounded"
+                           style="background-color: rgba(255,255,255,0.6) !important;" th:field="*{name}">
+                    <select th:field="*{relation}">
+                        <option value="가족">가족</option>
+                        <option value="친구">친구</option>
+                        <option value="지인">지인</option>
+                        <option value="애인">애인</option>
+                        <option value="기타">기타</option>
+                    </select>
+                    <input type="password" th:field="*{password}" class="form-text rounded" placeholder="비밀번호">
+                </div>
+                    <div class="input-photo w-100"></div>
+                <div class="d-flex flex-column align-items-center">
             <textarea placeholder="김희솔님과의 추억이나 기억,&#13;&#10; 나누고 싶은 이야기를 공유해 주세요." class="w-100 form-text rounded"
-                      rows="7" style="background-color: rgba(255,255,255,0.6) !important;"></textarea>
-                <button class="btn btn-outline-secondary mt-3 w-50">공유 하기</button>
-            </div>
+                      rows="7" style="background-color: rgba(255,255,255,0.6) !important;" th:field="*{text}"></textarea>
+                    <button class="btn btn-outline-secondary mt-3 w-50" type="submit">공유 하기</button>
+                </div>
+            </form>
         </div>
         <div class=" w-75 container d-flex flex-column border align-items-center border-1 border-light py-4 rounded bg-white bg-opacity-50 my-5">
-            <div class="bg-gray w-100 rounded p-4 bg-opacity-25 mb-4">
-                <span class="fw-bold fw-bolder" style="font-family: 'Nanum Myeongjo',serif;font-size: 20px;">이신수</span>
-                <span style="font-family: 'Noto Sans',serif; font-size: 15px">친구</span>
-                <span style="font-family: 'Nanum Brush Script',serif; font-size: 19px; color:gray">2021.03.21</span>
+            <div class="bg-gray w-100 rounded p-4 bg-opacity-25 mb-4" th:each="obituary: ${obituaries}">
+                <span class="fw-bold fw-bolder" style="font-family: 'Nanum Myeongjo',serif;font-size: 20px;" th:text="${obituary.name}">이신수</span>
+                <span style="font-family: 'Noto Sans',serif; font-size: 15px" th:text="${obituary.relation}">친구</span>
+                <span style="font-family: 'Nanum Brush Script',serif; font-size: 19px; color:gray" th:text="${#temporals.format(obituary.date, 'yyyy-MM-dd HH:mm')}">2021.03.21</span>
                 <br>
-                <span style="font-family: 'Hi Melody',serif;font-size: 20px">
-                     xxxxx xxxx xxxxxx바랍니다.<br>
-                             xxxxx xxxx xxxxxx바랍니다.<br>
-                             xxxxx xxxx xxxxxx바랍니다.<br>
-                             xxxxx xxxx xxxxxx바랍니다.<br>
-                             xxxxx xxxx xxxxxx바랍니다.<br>
+                <div class="d-flex flex-column">
+                <span style="font-family: 'Hi Melody',serif;font-size: 20px" th:utext="${obituary.text}">
                 </span>
-            </div>
-            <div class="bg-gray w-100 rounded p-4 bg-opacity-25 mb-4">
-                <span class="fw-bold fw-bolder" style="font-family: 'Nanum Myeongjo',serif;font-size: 20px;">이신수</span>
-                <span style="font-family: 'Noto Sans',serif; font-size: 15px">친구</span>
-                <span style="font-family: 'Nanum Brush Script',serif; font-size: 19px; color:gray">2021.03.21</span>
-                <br>
-                <span style="font-family: 'Hi Melody',serif;font-size: 20px">
-                     xxxxx xxxx xxxxxx바랍니다.<br>
-                             xxxxx xxxx xxxxxx바랍니다.<br>
-                             xxxxx xxxx xxxxxx바랍니다.<br>
-                             xxxxx xxxx xxxxxx바랍니다.<br>
-                             xxxxx xxxx xxxxxx바랍니다.<br>
-                </span>
-            </div>
-            <div class="bg-gray w-100 rounded p-4 bg-opacity-25 mb-4">
-                <span class="fw-bold fw-bolder" style="font-family: 'Nanum Myeongjo',serif;font-size: 20px;">이신수</span>
-                <span style="font-family: 'Noto Sans',serif; font-size: 15px">친구</span>
-                <span style="font-family: 'Nanum Brush Script',serif; font-size: 19px; color:gray">2021.03.21</span>
-                <br>
-                <span style="font-family: 'Hi Melody',serif;font-size: 20px">
-                     xxxxx xxxx xxxxxx바랍니다.<br>
-                             xxxxx xxxx xxxxxx바랍니다.<br>
-                             xxxxx xxxx xxxxxx바랍니다.<br>
-                             xxxxx xxxx xxxxxx바랍니다.<br>
-                             xxxxx xxxx xxxxxx바랍니다.<br>
-                </span>
-            </div>
-            <div class="bg-gray w-100 rounded p-4 bg-opacity-25 mb-4">
-                <span class="fw-bold fw-bolder" style="font-family: 'Nanum Myeongjo',serif;font-size: 20px;">이신수</span>
-                <span style="font-family: 'Noto Sans',serif; font-size: 15px">친구</span>
-                <span style="font-family: 'Nanum Brush Script',serif; font-size: 19px; color:gray">2021.03.21</span>
-                <br>
-                <span style="font-family: 'Hi Melody',serif;font-size: 20px">
-                     xxxxx xxxx xxxxxx바랍니다.<br>
-                             xxxxx xxxx xxxxxx바랍니다.<br>
-                             xxxxx xxxx xxxxxx바랍니다.<br>
-                             xxxxx xxxx xxxxxx바랍니다.<br>
-                             xxxxx xxxx xxxxxx바랍니다.<br>
-                </span>
+                <img th:src="${obituary.photo.url}" th:if="${obituary.photo}" style="  max-height:500px; max-width:500px; height:auto; width:auto;">
+                </div>
             </div>
         </div>
     </div>
@@ -305,7 +268,8 @@
             <div class="modal-header border-0">
                 <img th:src="@{/img/flower-btn.png}" style="width: 40px;">
                 <span class="text-black-50" th:text="'to.'+${memorial.name}"></span>
-                <button class="btn-close" id="flowerClose" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button class="btn-close" id="flowerClose" type="button" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
             </div>
             <div class="modal-body text-center pb-5">
                 <div class="container d-flex flex-column align-items-start">
@@ -375,7 +339,7 @@
 <script>
     new fullpage('#fullpage', {
         sectionsColor: ['#98a4a4', '#ecc2c2', '#C0C0C0', '#ADD8E6', '#ecf1cb', '#cccccc'],
-        anchors: ['home', 'wreath', 'remember', 'photo', 'location', 'event'],
+        anchors: ['home', 'wreath', 'obituary', 'photo', 'location', 'event'],
         navigation: true,
         showActiveTooltip: true,
         menu: '#menu',
@@ -417,10 +381,10 @@
         document.forms['wreathForm'].addEventListener('submit', function (e) {
             $('#flowerClose').click();
             const flower = $('#animateFlower');
-            flower.css('display','block');
+            flower.css('display', 'block');
             flower.animate({
-                top:'50vh'
-            },2000);
+                top: '50vh'
+            }, 2000);
             e.preventDefault();
             form = this;
             setTimeout(function () {
