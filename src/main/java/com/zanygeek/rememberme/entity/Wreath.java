@@ -5,10 +5,8 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -20,12 +18,10 @@ public class Wreath {
     private int id;
 
     private int memorialId;
-    @Size(max = 50)
     private String text;
     private String name;
     private String relation;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date date;
-    @NotBlank
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime date;
     private String password;
 }

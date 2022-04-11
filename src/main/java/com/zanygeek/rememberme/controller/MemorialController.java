@@ -67,7 +67,7 @@ public class MemorialController {
     //헌화하기 get
     @GetMapping("{memorialId}/wreath")
     public String wreath(Model model,@PathVariable int memorialId){
-        List<Wreath> wreaths = wreathRepository.findAllByMemorialIdOrderByDateDesc(memorialId);
+        List<Wreath> wreaths = wreathRepository.findAllByMemorialIdOrderByIdDesc(memorialId);
         model.addAttribute("wreaths", wreaths);
         return "memorial/flowers";
     }

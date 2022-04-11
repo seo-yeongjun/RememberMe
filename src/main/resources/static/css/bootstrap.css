@@ -4888,30 +4888,32 @@ textarea.form-control-lg {
 .navbar-dark .navbar-text a:focus {
     color: #fff;
 }
+
 .carousel-fade .carousel-item {
     opacity: 0;
     transition-duration: .3s;
     transition-property: opacity;
 }
 
-.carousel-fade  .carousel-item.active,
-.carousel-fade  .carousel-item-next.carousel-item-left,
-.carousel-fade  .carousel-item-prev.carousel-item-right {
+.carousel-fade .carousel-item.active,
+.carousel-fade .carousel-item-next.carousel-item-left,
+.carousel-fade .carousel-item-prev.carousel-item-right {
     opacity: 1;
 }
 
 .carousel-fade .active.carousel-item-left,
-.carousel-fade  .active.carousel-item-right {
+.carousel-fade .active.carousel-item-right {
     opacity: 0;
 }
 
-.carousel-fade  .carousel-item-next,
+.carousel-fade .carousel-item-next,
 .carousel-fade .carousel-item-prev,
 .carousel-fade .carousel-item.active,
 .carousel-fade .active.carousel-item-left,
-.carousel-fade  .active.carousel-item-prev {
+.carousel-fade .active.carousel-item-prev {
     transform: translateX(0);
 }
+
 .carousel {
     position: relative;
 }
@@ -4935,30 +4937,37 @@ textarea.form-control-lg {
     -webkit-perspective: 1000px;
     perspective: 1000px;
 }
-.carousel-item> .item > img {
+
+.carousel-item > .item > img {
     width: 100%;
 }
-.carousel-item> .item > video {
+
+.carousel-item > .item > video {
     width: 100%;
 }
+
 .carousel-item > .item {
     width: 30%;
 }
-@media(max-width: 480px){
+
+@media (max-width: 480px) {
     .carousel-item > .item {
         width: 100%;
     }
 }
-@media(max-width: 768px){
+
+@media (max-width: 768px) {
     .carousel-item > .item {
         width: 80%;
     }
 }
-@media(max-width: 1000px){
+
+@media (max-width: 1000px) {
     .carousel-item > .item {
         width: 60%;
     }
 }
+
 .card {
     position: relative;
     display: flex;
@@ -8315,9 +8324,20 @@ textarea.form-control-lg {
     --bs-bg-opacity: 1;
     background-color: rgba(var(--bs-gray-rgb), var(--bs-bg-opacity)) !important;
 }
-.photo-index a{
+
+.animateFlower {
+    z-index: 5;
+    width: 50%;
+    top: 70vh;
+    left: 25%;
+    position: absolute;
+    display: none;
+}
+
+.photo-index a {
     margin-left: 5px;
 }
+
 .home-div {
     display: flex !important;
     justify-content: space-between;
@@ -8365,6 +8385,11 @@ textarea.form-control-lg {
 @media (max-width: 992px) {
     .w-yr {
         width: 100%;
+    }
+
+    .animateFlower {
+        width: 80%;
+        left: 15%;
     }
 
     .home-div {

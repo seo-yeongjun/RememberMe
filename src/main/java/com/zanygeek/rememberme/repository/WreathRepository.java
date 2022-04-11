@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface WreathRepository extends JpaRepository<Wreath, Integer> {
-    List<Wreath> findAllByMemorialIdOrderByDateDesc(int memorialId);
+    List<Wreath> findAllByMemorialIdOrderByIdDesc(int memorialId);
 }
