@@ -4,6 +4,7 @@ import com.zanygeek.rememberme.entity.Member;
 import com.zanygeek.rememberme.entity.Memorial;
 import com.zanygeek.rememberme.entity.Obituary;
 import com.zanygeek.rememberme.entity.Wreath;
+import com.zanygeek.rememberme.form.UploadPhotosForm;
 import com.zanygeek.rememberme.repository.MemorialRepository;
 import com.zanygeek.rememberme.repository.WreathRepository;
 import com.zanygeek.rememberme.service.MemorialService;
@@ -29,8 +30,6 @@ public class MemorialController {
     MemorialService memorialService;
     @Autowired
     PhotoService photoService;
-    @Autowired
-    MemorialRepository memorialRepository;
     @Autowired
     WreathService wreathService;
     @Autowired
@@ -59,13 +58,15 @@ public class MemorialController {
 
     //추모공간 get
     @GetMapping("{memorialId}")
-    public String momirlal(Model model, @PathVariable int memorialId, @SessionAttribute(name = "member", required = false) Member member, @ModelAttribute Wreath wreath, @ModelAttribute Obituary obituary) {
-        Memorial memorial = memorialRepository.findById(memorialId).orElse(null);
+    public String momirlal(Model model, @PathVariable int memorialId, @SessionAttribute(name = "member", required = false) Member member,
+                           @ModelAttribute Wreath wreath, @ModelAttribute Obituary obituary, @ModelAttribute UploadPhotosForm uploadPhotosForm) {
+        Memorial memorial = memorialService.getMemorialById(memorialId);
         if (memorial == null)
             return "error";
         model.addAttribute("memorial", memorial);
         model.addAttribute("mainImg", photoService.getMainPhoto(memorial));
         model.addAttribute("obituaries", obituaryService.getObituaryForms(memorialId));
+        model.addAttribute("photos", photoService.getPhotosByMemorialId(memorialId));
         return "memorial/memorial";
     }
 
@@ -88,11 +89,23 @@ public class MemorialController {
     public String wreath(@PathVariable int memorialId, Obituary obituary, List<MultipartFile> photos) {
         Obituary savedObituary = obituaryService.saveObituary(obituary, memorialId);
         try {
-            if (!photos.isEmpty())
+            if (!photos.get(0).isEmpty())
                 photoService.savePhotos(photos, memorialId, savedObituary, obituary.getName());
         } catch (Exception e) {
             log.error("에러 발생: " + e);
         }
         return "redirect:/memorial/" + memorialId + "#obituary";
+    }
+
+    //사진 업로드 post
+    @PostMapping("{memorialId}/photos")
+    public String uploadPhotos(@PathVariable int memorialId, List<MultipartFile> photos, UploadPhotosForm uploadPhotosForm){
+        try {
+            if (!photos.get(0).isEmpty())
+                photoService.savePhotos(photos, memorialId, uploadPhotosForm);
+        } catch (Exception e) {
+            log.error("에러 발생: " + e);
+        }
+        return "redirect:/memorial/"+memorialId+"#photo";
     }
 }

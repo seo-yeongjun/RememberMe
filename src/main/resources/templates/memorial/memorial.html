@@ -60,7 +60,7 @@
         <div class="container bg-black bg-opacity-25 rounded p-5">
             <div class="home-div">
                 <div class="home-photo">
-                    <img th:data-src="${mainImg.url}" class="vw-face">
+                    <img th:src="${mainImg.url}" class="vw-face">
                     <span class="text-white fs-name mt-2" style="font-family: 'Stylish',serif"
                           th:text="${memorial.name}">김희솔</span>
                 </div>
@@ -98,7 +98,7 @@
                   enctype="multipart/form-data"
                   accept-charset="UTF-8" method="post">
                 <div class="w-75">
-                    <input type="text" placeholder="이름" class="form-text rounded"
+                    <input type="text" placeholder="이름" class="form-text rounded" required
                            style="background-color: rgba(255,255,255,0.6) !important;" th:field="*{name}">
                     <select th:field="*{relation}">
                         <option value="가족">가족</option>
@@ -107,68 +107,63 @@
                         <option value="애인">애인</option>
                         <option value="기타">기타</option>
                     </select>
-                    <input type="password" th:field="*{password}" class="form-text rounded" placeholder="비밀번호">
+                    <input type="password" th:field="*{password}" class="form-text rounded"
+                           style="background-color: rgba(255,255,255,0.6) !important;" required placeholder="비밀번호">
                 </div>
-                    <div class="input-photo w-100"></div>
+                <div class="input-photo w-100"></div>
                 <div class="d-flex flex-column align-items-center">
             <textarea placeholder="김희솔님과의 추억이나 기억,&#13;&#10; 나누고 싶은 이야기를 공유해 주세요." class="w-100 form-text rounded"
-                      rows="7" style="background-color: rgba(255,255,255,0.6) !important;" th:field="*{text}"></textarea>
+                      rows="7" style="background-color: rgba(255,255,255,0.6) !important;"
+                      th:field="*{text}"></textarea>
                     <button class="btn btn-outline-secondary mt-3 w-50" type="submit">공유 하기</button>
                 </div>
             </form>
         </div>
         <div class=" w-75 container d-flex flex-column border align-items-center border-1 border-light py-4 rounded bg-white bg-opacity-50 my-5">
             <div class="bg-gray w-100 rounded p-4 bg-opacity-25 mb-4" th:each="obituary: ${obituaries}">
-                <span class="fw-bold fw-bolder" style="font-family: 'Nanum Myeongjo',serif;font-size: 20px;" th:text="${obituary.name}">이신수</span>
+                <span class="fw-bold fw-bolder" style="font-family: 'Nanum Myeongjo',serif;font-size: 20px;"
+                      th:text="${obituary.name}">이신수</span>
                 <span style="font-family: 'Noto Sans',serif; font-size: 15px" th:text="${obituary.relation}">친구</span>
-                <span style="font-family: 'Nanum Brush Script',serif; font-size: 19px; color:gray" th:text="${#temporals.format(obituary.date, 'yyyy-MM-dd HH:mm')}">2021.03.21</span>
+                <span style="font-family: 'Nanum Brush Script',serif; font-size: 19px; color:gray"
+                      th:text="${#temporals.format(obituary.date, 'yyyy-MM-dd HH:mm')}">2021.03.21</span>
                 <br>
                 <div class="d-flex flex-column">
                 <span style="font-family: 'Hi Melody',serif;font-size: 20px" th:utext="${obituary.text}">
                 </span>
-                <img th:src="${obituary.photo.url}" th:if="${obituary.photo}" style="  max-height:500px; max-width:500px; height:auto; width:auto;">
+                    <img th:data-src="${obituary.photo.url}" th:if="${obituary.photo}"
+                         style="  max-height:500px; max-width:500px; height:auto; width:auto;">
                 </div>
             </div>
         </div>
     </div>
     <!-- 사진 세션-->
     <div class="section pho">
-
+        <!--로딩 이미지-->
+        <div style="z-index: 10; display: none" class="w-100 position-absolute text-center bg-light bg-opacity-75" id="loading">
+            <img th:src="@{/img/loading.svg}" class="w-50">
+            <span class="d-block fs-3" style="font-family: '나눔 손글씨 펜',serif">업로드 중...</span>
+            <span class="d-block fs-5" style="font-family: '나눔 손글씨 펜',serif">이미지 양에 따라 몇 초~ 몇 분</span>
+            <span class="d-block fs-5 mb-3" style="font-family: '나눔 손글씨 펜',serif">정도 소요 됩니다.</span>
+        </div>
         <div class="carousel slide carousel-fade" id="carouselExampleControls">
             <div class="carousel-inner" align="center">
                 <!--아이템-->
                 <div class="carousel-item active">
                     <div class="item p-1 bg-white bg-opacity-75 rounded text-center">
-                        <img data-src="img/faceImp.jpeg" alt="Card image cap">
-                        <div class="mt-3">
-                            <p class="">from. xxx</p>
+                        <img th:data-src="@{/img/movBack.png}">
+                        <div>
+                            <p class="fs-4" th:utext="${memorial.name}+' 님 <br>추모 갤러리'"
+                               style="margin-top: -50px; font-family: '나눔 손글씨 붓',serif;"></p>
                         </div>
                     </div>
                 </div>
                 <!--아이템-->
-                <div class="carousel-item ">
+                <div class="carousel-item" th:each="photo,i : ${photos}">
                     <div class="item p-1 bg-white bg-opacity-75 rounded text-center">
-                        <video data-src="img/v.mov" controls></video>
+                        <img th:data-src="${photo.url}" alt="Card image cap">
                         <div class="mt-3">
-                            <p class="">from. xxx</p>
-                        </div>
-                    </div>
-                </div>
-                <!--아이템-->
-                <div class="carousel-item">
-                    <div class="item p-1 bg-white bg-opacity-75 rounded text-center">
-                        <img data-src="img/sky.jpg" alt="Card image cap">
-                        <div class="mt-3">
-                            <p class="">from. xxx</p>
-                        </div>
-                    </div>
-                </div>
-                <!--아이템-->
-                <div class="carousel-item ">
-                    <div class="item p-1 bg-white bg-opacity-75 rounded text-center">
-                        <video data-src="img/v.mov" controls vid></video>
-                        <div class="mt-3">
-                            <p class="">from. xxx</p>
+                            <p class="" th:text="'from.'+${photo.fromName}" th:if="${photo.fromName}">from. xxx</p>
+                            <p class="" th:text="${i.index+1}+'/'+${i.size}">1/3</p>
                         </div>
                     </div>
                 </div>
@@ -176,22 +171,30 @@
         </div>
         <!--컨트롤러-->
         <div class="carousel-controls photo-index d-flex flex-row justify-content-between bg-black bg-opacity-25 pt-2 px-3">
-            <div class="d-flex align-items-center"><a href="index.html"><img style="height: 60px"
-                                                                             src="img/logo-white.svg"></a></div>
             <div class="d-flex align-items-center">
-                <a class="prev text-black" role="button"><i class="fa fa-arrow-left fa-2x"></i></a>
-                <a class="play text-black" href="#" role="button"><i class="fa fa-play fa-2x"></i></a>
-                <a class="pause text-black" style="display:none" href="#" role="button"><i
-                        class="fa fa-pause fa-2x"></i></a>
-                <a class="next text-black" role="button"><i class="fa fa-arrow-right fa-2x"></i></a>
+                <a href="index.html">
+                    <img style="height: 60px" th:src="@{/img/logo-white.svg}">
+                </a>
+            </div>
+            <div class="d-flex flex-column align-items-center justify-content-center">
+                <div class="d-flex align-items-center justify-content-center">
+                    <a class="prev text-black" role="button"><i class="fa fa-arrow-left fa-2x"></i></a>
+                    <a class="play text-black" href="#" role="button"><i class="fa fa-play fa-2x"></i></a>
+                    <a class="pause text-black" style="display:none" href="#" role="button"><i
+                            class="fa fa-pause fa-2x"></i></a>
+                    <a class="next text-black" role="button"><i class="fa fa-arrow-right fa-2x"></i></a>
+                </div>
+                <div class="volume text-center">
+                    <i class="fa-solid fa-volume-high volumeOn"></i>
+                    <i class="fa-solid fa-volume-xmark volumeOff" style="display: none"></i>
+                    <input type="range" min="0" max="1" step="0.1"/>
+                </div>
             </div>
             <div class="d-flex flex-column mb-2">
-                <button class="btn btn-light"
-                        data-bs-toggle="modal" data-bs-target="#photoList">리스트 보기
+                <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#photoList"
+                        style="font-size: 0.9rem !important;">리스트 보기
                 </button>
-                <button class="btn btn-secondary mt-2"
-                        data-bs-toggle="modal" data-bs-target="#photoAdd">사진 추가
-                </button>
+                <button class="btn btn-secondary mt-2" data-bs-toggle="modal" data-bs-target="#photoAdd">사진 추가</button>
             </div>
         </div>
     </div>
@@ -276,7 +279,7 @@
                     <form th:action="@{/memorial/{memorialId}/wreath(memorialId=${memorial.id})}" th:object="${wreath}"
                           name="wreathForm" accept-charset="UTF-8" method="post">
                         <div class="float-start">
-                            <input type="text" placeholder="이름" th:field="*{name}">
+                            <input type="text" placeholder="이름" required th:field="*{name}">
                             <input type="password" th:field="*{password}" required placeholder="비밀번호">
                             <select th:field="*{relation}">
                                 <option value="가족">가족</option>
@@ -306,11 +309,8 @@
             </div>
             <div class="row justify-content-center m-2 rounded pb-1">
                 <div class="col-md-10 col-lg-12 m-2 mb-2 pt-3 pb-3 ">
-                    <div class="mx-auto d-flex flex-column align-items-center mb-3">
-                        <img src="img/faceImp.jpeg" class="w-75">
-                    </div>
-                    <div class="mx-auto d-flex flex-column align-items-center mb-3">
-                        <img src="img/faceImp.jpeg" class="w-75">
+                    <div class="mx-auto d-flex flex-column align-items-center mb-3" th:each="photo:${photos}">
+                        <img th:data-src="${photo.url}" class="w-75">
                     </div>
                 </div>
             </div>
@@ -327,9 +327,19 @@
                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="row justify-content-center m-2 rounded pb-1">
-                <form action="" enctype="multipart/form-data" class="d-flex flex-column align-items-center">
+                <form th:action="@{/memorial/{memorialId}/photos(memorialId=${memorial.id})}"
+                      th:object="${uploadPhotosForm}"
+                      enctype="multipart/form-data"
+                      accept-charset="UTF-8" method="post" name="uploadPhotosForm">
+                    <div>
+                        <input type="text" placeholder="이름" required class="form-text rounded"
+                               style="background-color: rgba(255,255,255,0.6) !important;" th:field="*{fromName}">
+                        <input type="password" class="form-text rounded"
+                               style="background-color: rgba(255,255,255,0.6) !important;" required placeholder="비밀번호"
+                               th:field="*{password}">
+                    </div>
                     <div class="input-photos w-100"></div>
-                    <button class="btn btn-outline-secondary w-50 mt-3" type="submit">추가</button>
+                    <button class="btn btn-outline-secondary w-50 my-3" type="submit" id="btnUploadPhoto">이미지 업로드 하기</button>
                 </form>
             </div>
         </div>
@@ -349,16 +359,41 @@
     });
 
     $(document).ready(function () {
-        var a = $('.input-photos').imageUploader();
-        var b = $('.input-photo').imageUploader();
+        const a = $('.input-photos').imageUploader();
+        const b = $('.input-photo').imageUploader();
         b.settings.maxFiles = 1;
 
 
         var car = $('.carousel').carousel({
-            interval: 3000,
+            interval: 5000,
             pause: "false"
         })
-
+        const audio = new Audio("https://remembermedisk.s3.ap-northeast-2.amazonaws.com/audio/bgm1.mp3");
+        audio.loop = true;
+        const volumeOn = $('.volumeOn');
+        const volumeOff = $('.volumeOff');
+        volumeOn.click(function () {
+            $(".volume input[type='range']").val(0);
+            audio.volume = 0;
+            volumeOn.hide();
+            volumeOff.show();
+        });
+        volumeOff.click(function () {
+            $(".volume input[type='range']").val(0.5);
+            audio.volume = 0.5;
+            volumeOn.show();
+            volumeOff.hide();
+        });
+        $(".volume input[type='range']").on("input", function () {
+            audio.volume = this.value;
+            if (audio.volume === 0) {
+                volumeOn.hide();
+                volumeOff.show();
+            } else {
+                volumeOn.show();
+                volumeOff.hide();
+            }
+        });
         $('.carousel-controls .next').click(function () {
             car.carousel('next');
         });
@@ -369,11 +404,13 @@
             car.carousel('cycle');
             $('.carousel-controls .play').hide();
             $('.carousel-controls .pause').show();
+            audio.play();
         });
         $('.carousel-controls .pause').click(function () {
             car.carousel('pause');
             $('.carousel-controls .play').show();
             $('.carousel-controls .pause').hide();
+            audio.pause();
         });
 
     });
@@ -381,7 +418,7 @@
         document.forms['wreathForm'].addEventListener('submit', function (e) {
             $('#flowerClose').click();
             const flower = $('#animateFlower');
-            flower.css('display', 'block');
+            flower.show();
             flower.animate({
                 top: '50vh'
             }, 2000);
@@ -390,7 +427,11 @@
             setTimeout(function () {
                 form.submit();
             }, 2300);
-        })
+        });
+        document.forms['uploadPhotosForm'].addEventListener('submit',function (e){
+            $("#loading").show();
+            $('#photoAdd').modal('hide');
+        });
     });
 </script>
 </html>

@@ -44,7 +44,7 @@
         <span class="text-secondary" style="font-size: 13px;">
             <span th:text="${i.index+1}+'/'+${i.size}"></span><br>
             <span th:unless="${i.index+1}==${i.size}">스와이프</span><br>
-            <i class="fa-solid fa-arrow-down"></i>
+            <i class="fa-solid fa-arrow-down" th:unless="${i.index+1}==${i.size}"></i>
         </span>
     </div>
 </div>

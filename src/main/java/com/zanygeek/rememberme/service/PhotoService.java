@@ -3,6 +3,7 @@ package com.zanygeek.rememberme.service;
 import com.zanygeek.rememberme.entity.Memorial;
 import com.zanygeek.rememberme.entity.Obituary;
 import com.zanygeek.rememberme.entity.Photo;
+import com.zanygeek.rememberme.form.UploadPhotosForm;
 import com.zanygeek.rememberme.repository.MemorialRepository;
 import com.zanygeek.rememberme.repository.PhotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,10 @@ public class PhotoService {
 
         return upload(file,photo);
     }
+    public List<Photo> getPhotosByMemorialId(int memorialId){
+        return photoRepository.findAllByMemorialId(memorialId);
+    }
+
     //여러 사진 저장 메서드
     public List<Photo> savePhotos(List<MultipartFile> files, int memorialId, Obituary obituary, String fromName) throws IOException {
         List<Photo> photos = new ArrayList<>();
@@ -46,13 +51,28 @@ public class PhotoService {
             photo.setStoredName(createStoredName());
             photo.setUploadName(file.getOriginalFilename());
             photo.setObituaryId(obituary.getId());
+            photo.setPassword(obituary.getPassword());
             photo.setMemorial(memorial);
             photo.setFromName(fromName);
             photos.add(upload(file,photo));
         }
         return photos;
     }
-
+    //여러 사진 저장 메서드
+    public List<Photo> savePhotos(List<MultipartFile> files, int memorialId, UploadPhotosForm uploadPhotosForm) throws IOException {
+        List<Photo> photos = new ArrayList<>();
+        Memorial memorial = memorialRepository.findById(memorialId).get();
+        for(MultipartFile file: files) {
+            Photo photo = new Photo();
+            photo.setStoredName(createStoredName());
+            photo.setUploadName(file.getOriginalFilename());
+            photo.setFromName(uploadPhotosForm.getFromName());
+            photo.setMemorial(memorial);
+            photo.setPassword(uploadPhotosForm.getPassword());
+            photos.add(upload(file,photo));
+        }
+        return photos;
+    }
     //메인사진 저장 메서드
     public void saveMainPhoto(MultipartFile file, Memorial memorial) throws IOException {
         Photo photo = this.savePhoto(file, memorial);

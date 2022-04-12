@@ -24,4 +24,8 @@ public class MemorialService {
         }
         return memorialRepository.save(memorial);
     }
+
+    public Memorial getMemorialById(int memorialId){
+        return memorialRepository.findById(memorialId).orElse(null);
+    }
 }
