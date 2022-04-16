@@ -16,6 +16,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
+
 //사진 업로드를 위한 서비스
 @Service
 @Log4j2
@@ -36,7 +37,7 @@ public class UploadService {
 
     // S3로 파일 업로드하기
     private String upload(File uploadFile, Photo photo) {
-        String fileName = photo.getMemorial().getMemberId() + "/"+photo.getMemorial().getName()+"/"+photo.getStoredName();   // S3에 저장된 파일 이름
+        String fileName = photo.getMemorial().getMemberId() + "/" + photo.getMemorial().getId() + "/" + photo.getStoredName();   // S3에 저장된 파일 이름
         String uploadImageUrl = putS3(uploadFile, fileName); // s3로 업로드
         removeNewFile(uploadFile);
         return uploadImageUrl;
@@ -68,5 +69,15 @@ public class UploadService {
         }
 
         return Optional.empty();
+    }
+
+    //파일 삭제
+    public boolean deleteFile(String url) {
+        try {
+            amazonS3Client.deleteObject(bucket, url.substring(url.indexOf(".com/") + 5));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

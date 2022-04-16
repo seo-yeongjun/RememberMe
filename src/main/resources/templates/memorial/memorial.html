@@ -21,6 +21,8 @@
     <!--부트스트랩-->
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
     <script th:src="@{/js/bootstrap.js}"></script>
+    <!--네이버 map-->
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=lhozmkgpcf"></script>
 </head>
 <body id="page-top">
 <!-- 네비게이션-->
@@ -71,8 +73,8 @@
                             th:text="${#dates.format(memorial.deathDate, 'yyyy-MM-dd')}"></span></span>
                     <hr class="text-white border border-2">
                     <ul class="text-white">
-                        <p th:text="${memorial.mainText}" th:if="${memorial.mainText}"></p>
-                        <a th:if="${owner}">부고글 적기</a>
+                        <p th:utext="${memorial.mainText}" th:if="${memorial.mainText}"></p>
+                        <a th:if="${owner}">부고글 적기/수정</a>
                     </ul>
                 </div>
             </div>
@@ -201,7 +203,8 @@
     <!-- 위치 세션-->
     <div class="section">
         <div class="container d-flex flex-column align-items-center">
-            <span>예시) 네이버 api 추가 예정</span><img class="w-75" src="img/location-imp.png">
+            <span>예시) 네이버 api 추가 예정</span>
+            <div id="map" style="width:100%;height:400px;"></div>
             <button class="w-50 btn btn-outline-dark bg-white mt-5">주소 복사하기</button>
         </div>
     </div>
@@ -225,7 +228,7 @@
         <div class="position-absolute bottom-0 w-100 bg-gray">
             <div class="container p-1">
                 <div class="col-lg-4 d-flex">
-                    <a href="index.html"><img src="img/logo.svg" style="height:80px"/></a>
+                    <a href="index.html"><img th:src="@{/img/logo.svg}" style="height:80px"/></a>
                     <p class="mb-0 fs-5 text-white-50 pt-4" style="font-family:'Nanum Myeongjo'">
                         새로운 추모 문화를 만들다.
                     </p>
@@ -357,7 +360,17 @@
         scrollOverflow: true,
         slideSelector: '.slideNone'
     });
-
+    <!--네이버 시작-->
+    var mapOptions = {
+        center: new naver.maps.LatLng(37.3595704, 127.105399),
+        zoom: 10
+    };
+    var map = new naver.maps.Map('map', mapOptions);
+    var marker = new naver.maps.Marker({
+        position: new naver.maps.LatLng(37.3595704, 127.105399),
+        map: map
+    });
+    <!--네이버 끝-->
     $(document).ready(function () {
         const a = $('.input-photos').imageUploader();
         const b = $('.input-photo').imageUploader();

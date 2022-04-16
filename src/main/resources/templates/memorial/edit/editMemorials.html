@@ -1,52 +1,27 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <title>Remember Me::내가 준비 하는 온라인 추모관</title>
+    <title>Remember Me::새로운 추모 문화</title>
     <!--폰트어썸-->
     <script src="https://kit.fontawesome.com/4df461b32c.js" crossorigin="anonymous"></script>
-    <script src="js/scripts.js"></script>
+    <script th:src="@{/js/scripts.js}"></script>
     <!--구글 폰트-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Hi+Melody&family=Nanum+Brush+Script&family=Nanum+Myeongjo:wght@400;800&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@100;500&display=swap"
           rel="stylesheet">
 
-
-    <link href="css/styles.css" rel="stylesheet"/>
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet"/>
+    <link th:href="@{/css/styles.css}" rel="stylesheet"/>
 </head>
 <body id="page-top">
-<!-- 네비게이션-->
-<nav class="navbar navbar-expand-lg text-uppercase fixed-top" id="mainNav">
-    <div class="container">
-        <a class="navbar-brand" href="index.html"><img class="logo" src="img/logo-white.svg"></a>
-        <!--모바일 네비게이션-->
-        <button class="navbar-toggler text-uppercase font-weight-bold text-white rounded" type="button"
-                data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive"
-                aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fas fa-bars"></i>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="memorial.html">샘플 추모관</a>
-                </li>
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="addMemorial.html">추모 공간 만들기</a>
-                </li>
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="editMemorials.html">추모 공간
-                    관리</a></li>
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="join.html"><i
-                        class="fa-solid fa-user-pen"></i> 회원 가입</a></li>
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3"
-                                                     href="../RememberMe-v2/login.html"><i
-                        class="fa-solid fa-user"></i> 로그인</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<!--탑바-->
+<th:block th:replace="@{/member/fragment/topBar.html} :: topBar"></th:block>
 <!-- 메인 이미지 -->
 <header class="masthead-memorial bg-home text-white text-center">
-    <img class="logo" style="height:30%" src="img/logo.svg">
+    <img class="logo" style="height:30%" th:src="@{/img/logo.svg}">
     <div class="container d-flex align-items-center flex-column">
         <!-- 헤드 카피-->
         <h2 class="mt-lg-4">새로운 추모 문화를 만듭니다.</h2>
@@ -58,18 +33,17 @@
     <div class=" d-flex align-items-center flex-column border border-1 py-lg-5 bg-white">
         <h3 c>추모 공간 리스트</h3>
         <hr class="w-75 border">
-        <div class="col-6 d-flex align-items-center justify-content-between">
-            <span>1</span>
-            <img src="img/faceImp.jpeg" class="col-2"/>
-            <div class="d-flex flex-column">
-                <a href="memorial.html" class="fs-5 text-black" style="font-family: 'Nanum Myeongjo'">OOO님 추모 공간</a>
-                <span>공개 범위: 전체</span>
+        <div class="d-flex align-items-center justify-content-between w-yr" th:each="memorial,i:${memorials}">
+            <span th:text="${i.index+1}" class="ms-2"></span>
+            <img th:src="${memorial.mainPhoto.url}" class="col-2"/>
+            <div class="d-flex flex-column mx-2">
+                <a th:href="@{{memorialId}(memorialId=${memorial.id})}" class="fs-5 text-black"
+                   style="font-family: 'Nanum Myeongjo'" th:text="${memorial.name}+'님 추모 공간'">OOO님 추모 공간</a>
+                <span th:if="${memorial.locked}">공개 범위: 비밀번호</span>
+                <span th:unless="${memorial.locked}">공개 범위: 전체</span>
             </div>
-            <div>
-                <button class="btn btn-outline-secondary btn-lg">
-                    <i class="fa-solid fa-right-to-bracket"></i><span id="" class="p-4">관리 하기</span>
-                </button>
-            </div>
+            <a th:href="@{edit/{memorialId}(memorialId=${memorial.id})}" class="btn btn-outline-secondary btn-lg me-2"><i
+                    class="fa-solid fa-right-to-bracket"></i>관리 하기</a>
         </div>
         <hr class="w-75 border">
     </div>
@@ -80,7 +54,7 @@
         <div class="row">
             <!-- Footer Logo-->
             <div class="col-lg-4 mb-lg-0">
-                <img class="logo h-50" src="img/logo-white.svg">
+                <img class="logo h-50" th:src="@{/img/logo-white.svg}">
                 <div class="text-center mt-2 lead">리멤버 미, 새로운 추모 문화</div>
             </div>
             <!-- Footer Social-->

@@ -89,7 +89,24 @@ body {
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
-
+.w-edit{
+    width: 50% !important;
+    margin: 1.5rem !important;
+}
+.edit{
+    display: flex !important;
+    padding: 3rem !important;
+}
+@media (max-width: 992px)  {
+    .edit{
+        display: block !important;
+        padding: 0 !important;
+    }
+    .w-edit{
+        width: 100% !important;
+        margin: 1.5rem 0 !important;
+    }
+}
 hr {
     margin: 1rem 0;
     color: inherit;

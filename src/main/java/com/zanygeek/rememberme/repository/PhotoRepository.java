@@ -13,4 +13,5 @@ public interface PhotoRepository extends JpaRepository<Photo, Integer> {
     List<Photo> findAllByMemorialId(int memorialId);
     Photo findByMemorialIdAndMainIsTrue(int memorial_id);
     Photo findAllByObituaryId(int obituaryId);
+    Photo findByUrl(String Url);
 }

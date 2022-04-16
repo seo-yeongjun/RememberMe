@@ -2,12 +2,14 @@ package com.zanygeek.rememberme.service;
 
 import com.zanygeek.rememberme.entity.Member;
 import com.zanygeek.rememberme.entity.Memorial;
-import com.zanygeek.rememberme.entity.Photo;
-import com.zanygeek.rememberme.repository.MemberRepository;
+import com.zanygeek.rememberme.form.EditMemorialsForm;
 import com.zanygeek.rememberme.repository.MemorialRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class MemorialService {
@@ -15,17 +17,33 @@ public class MemorialService {
     MemorialRepository memorialRepository;
     @Autowired
     PasswordEncoder passwordEncoder;
+    @Autowired
+    PhotoService photoService;
 
     //기념관 저장, 암호가 있으면 해쉬 암호화
-    public Memorial save(Memorial memorial, Member member){
+    public Memorial save(Memorial memorial, Member member) {
         memorial.setMemberId(member.getId());
-        if(memorial.getLocked()){
+        if (memorial.getLocked()) {
             memorial.setPassword(passwordEncoder.encode(memorial.getPassword()));
         }
         return memorialRepository.save(memorial);
     }
-
-    public Memorial getMemorialById(int memorialId){
+    //기념관 저장, 암호가 있으면 해쉬 암호화
+    public Memorial update(Memorial memorial) {
+        return memorialRepository.save(memorial);
+    }
+    public Memorial getMemorialById(int memorialId) {
         return memorialRepository.findById(memorialId).orElse(null);
+    }
+
+    public List<EditMemorialsForm> getMemorialsFormByMemberId(int memberId) {
+        List<EditMemorialsForm> forms = new ArrayList<EditMemorialsForm>();
+        List<Memorial> memorials = memorialRepository.findAllByMemberId(memberId);
+        for (Memorial memorial : memorials) {
+            EditMemorialsForm form = new EditMemorialsForm(memorial);
+            form.setMainPhoto(photoService.getMainPhoto(memorial));
+            forms.add(form);
+        }
+        return forms;
     }
 }

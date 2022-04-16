@@ -1,69 +1,61 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <title>Remember Me::내가 준비 하는 온라인 추모관</title>
+    <title>Remember Me::새로운 추모 문화</title>
     <!--폰트어썸-->
     <script src="https://kit.fontawesome.com/4df461b32c.js" crossorigin="anonymous"></script>
-    <script src="js/scripts.js"></script>
-    <!-- 구글 폰트-->
-    <link href="css/styles.css" rel="stylesheet"/>
+    <script th:src="@{/js/scripts.js}"></script>
+    <!--구글 폰트-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Hi+Melody&family=Nanum+Brush+Script&family=Nanum+Myeongjo:wght@400;800&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@100;500&display=swap"
+          rel="stylesheet">
+
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet"/>
+    <link th:href="@{/css/styles.css}" rel="stylesheet"/>
 </head>
 <body id="page-top">
-<!-- 네비게이션-->
-<nav class="navbar bg-home navbar-expand-lg text-uppercase fixed-top" id="mainNav">
-    <div class="container">
-        <a class="navbar-brand" href="index.html"><img class="logo" src="img/logo-white.svg"></a>
-        <!--모바일 네비게이션-->
-        <button class="navbar-toggler text-uppercase font-weight-bold text-white rounded" type="button"
-                data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive"
-                aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fas fa-bars"></i>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="memorial.html">샘플 추모관</a>
-                </li>
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="addMemorial.html">추모 공간 만들기</a>
-                </li>
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="editMemorials.html">추모 공간
-                    관리</a></li>
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="join.html"><i
-                        class="fa-solid fa-user-pen"></i> 회원 가입</a></li>
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3"
-                                                     href="../RememberMe-v2/login.html"><i
-                        class="fa-solid fa-user"></i> 로그인</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<!--탑바-->
+<th:block th:replace="@{/member/fragment/topBar.html} :: topBar"></th:block>
+<header class="masthead-memorial bg-bada text-white text-center">
+</header>
 <!-- 리스트 세션-->
 <section class="mt-lg-5">
     <!--메인 홈-->
     <div class="container p-5 bg-light">
         <h3>메인 홈 관리</h3>
-        <div class="d-flex p-5">
-            <div class="w-50 align-items-center border border-1 p-3 rounded border-dark mx-5">
+        <div class="edit">
+            <div class="w-edit border border-1 p-3 rounded border-dark">
                 <h3>메인 인물 사진</h3>
-                <img id="img_prev" style="height: 25vh; margin: 10px auto"
-                     src="img/faceImp.jpeg">
-                <div class="w-100">
-                    <label>
-                        사진 변경
-                        <input class="form-control" type="file" id="memorial_main_image">
-                    </label>
-                </div>
-                <div class="text-center">
-                    <button class="btn btn-outline-dark">저장</button>
-                </div>
+                <!--메인 이미지 변경-->
+                <form enctype="multipart/form-data"
+                      th:action="@{{memorialId}/mainPhoto(memorialId=${memorial.id})}" accept-charset="UTF-8"
+                      method="post">
+                    <img id="img_prev" style="height: 25vh; margin: 10px auto"
+                         th:src="${mainImg.url}">
+
+                    <div class="w-100">
+                        <label>
+                            사진 변경
+                            <input class="form-control" type="file" name="photo" id="memorial_main_image">
+                        </label>
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-outline-dark">저장</button>
+                    </div>
+                </form>
             </div>
-            <div class="w-50 align-items-center border border-1 p-3 rounded border-dark mx-5">
+            <div class="w-edit border border-1 p-3 rounded border-dark">
                 <span>메인 홈, 문구</span>
-                <textarea rows="10" class="w-100" placeholder="약력이나 부고의 메시지를 적어주세요."></textarea>
-                <div class="text-center">
-                    <button class="btn btn-outline-dark">저장</button>
-                </div>
+                <form accept-charset="UTF-8"  method="post" th:action="@{{memorialId}/mainText(memorialId=${memorial.id})}" >
+                    <textarea rows="10" class="w-100" id="mainText" name="mainText"
+                              placeholder="약력이나 부고의 메시지를 적어주세요." th:text="${#strings.isEmpty(memorial.mainText)}?'':${memorial.mainText}"></textarea>
+                    <div class="text-center">
+                        <button class="btn btn-outline-dark">저장</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -74,25 +66,12 @@
             <div class="w-100 border border-1 p-3 rounded border-dark">
                 <span>사진 리스트</span>
                 <div class="row justify-content-center">
-                    <div class="col-4">
-                        <img src="img/bada.jpg" class="w-100">
+                    <div th:if="${Memorialphoto.main==null || not Memorialphoto.main}" class="col-4" th:each="Memorialphoto:${memorial.photo}">
+                        <form method="post" th:object="${photo}" th:action="@{{memorialId}/deletePhoto(memorialId=${memorial.id})}" >
+                        <img th:src="${Memorialphoto.url}" class="w-100">
+                            <input type="hidden" id="url" name="url" th:value="${Memorialphoto.url}">
                         <button class="btn float-end"><i class="fa fa-delete-left text-black me-2"></i>삭제</button>
-                    </div>
-                    <div class="col-4">
-                        <img src="img/bada.jpg" class="w-100">
-                        <button class="btn float-end"><i class="fa fa-delete-left text-black me-2"></i>삭제</button>
-                    </div>
-                    <div class="col-4">
-                        <img src="img/bada.jpg" class="w-100">
-                        <button class="btn float-end"><i class="fa fa-delete-left text-black me-2"></i>삭제</button>
-                    </div>
-                    <div class="col-4">
-                        <img src="img/bada.jpg" class="w-100">
-                        <button class="btn float-end"><i class="fa fa-delete-left text-black me-2"></i>삭제</button>
-                    </div>
-                    <div class="col-4">
-                        <img src="img/bada.jpg" class="w-100">
-                        <button class="btn float-end"><i class="fa fa-delete-left text-black me-2"></i>삭제</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -102,8 +81,8 @@
     <div class="container p-5 bg-light">
         <h3>공개 범위 관리</h3>
         <h4>및 삭제</h4>
-        <div class="d-flex">
-            <div class="w-50 border border-1 p-3 rounded border-dark mx-5">
+        <div class="edit">
+            <div class="w-edit border border-1 p-3 rounded border-dark">
                 <div class="form-group">
                     <label>공개 여부
                         <select class="form-select">
@@ -119,7 +98,7 @@
                 </div>
                 <button class="btn btn-secondary mt-3">저장</button>
             </div>
-            <div class="w-50  border border-1 p-3 rounded border-dark mx-5 d-flex flex-column">
+            <div class="w-edit  border border-1 p-3 rounded border-dark d-flex flex-column">
                 <span>추모 공간 삭제</span>
                 <span>삭제하면, 모든 내용을 되돌릴 수 없습니다.</span>
                 <div class="text-center">
