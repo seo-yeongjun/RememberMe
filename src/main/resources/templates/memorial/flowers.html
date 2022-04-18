@@ -28,6 +28,14 @@
 <!-- 네비게이션-->
 
 <div id="fullpage">
+    <div class="section text-center" th:if="${#lists.isEmpty(wreaths)}">
+        <div class="d-flex align-items-center flex-column justify-content-center border border-1 container rounded mb-5">
+            <img th:src="@{/img/flower.png}" class="w-50">
+            <span style="font-family: 'Hi Melody',serif;font-size: 20px">
+                    헌화를 통해 조의를 표해 주세요.
+                </span>
+        </div>
+    </div>
     <div class="section text-center" th:each="wreath,i: ${wreaths}">
         <div class="d-flex align-items-center flex-column justify-content-center border border-1 container rounded mb-5">
             <img th:src="@{/img/flower.png}" class="w-50">

@@ -52,7 +52,7 @@
             <button type="button" class="btn text-white btn-secondary nav-item mx-0 mx-lg-1" data-bs-toggle="modal"
                     data-bs-target="#alarm"><i
                     class="fa fa-bell"></i></button>
-            <a class="text-white btn" href="#" th:if="${owner}">추모공간 관리</a>
+            <a class="text-white btn" th:href="@{/memorial/edit}" th:if="${owner}">추모공간 관리</a>
         </div>
     </div>
 </nav>
@@ -74,7 +74,7 @@
                     <hr class="text-white border border-2">
                     <ul class="text-white">
                         <p th:utext="${memorial.mainText}" th:if="${memorial.mainText}"></p>
-                        <a th:if="${owner}">부고글 적기/수정</a>
+                        <a th:href="@{/memorial/edit/{memorialId}(memorialId=${memorial.id})}" th:if="${owner}" class="btn btn-outline-light">부고글 적기/수정</a>
                     </ul>
                 </div>
             </div>
@@ -228,7 +228,7 @@
         <div class="position-absolute bottom-0 w-100 bg-gray">
             <div class="container p-1">
                 <div class="col-lg-4 d-flex">
-                    <a href="index.html"><img th:src="@{/img/logo.svg}" style="height:80px"/></a>
+                    <a th:href="@{/}"><img th:src="@{/img/logo.svg}" style="height:80px"/></a>
                     <p class="mb-0 fs-5 text-white-50 pt-4" style="font-family:'Nanum Myeongjo'">
                         새로운 추모 문화를 만들다.
                     </p>

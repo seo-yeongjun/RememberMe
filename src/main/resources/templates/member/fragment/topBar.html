@@ -12,9 +12,9 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="#about">소개</a>
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="#about" th:if="${#httpServletRequest.requestURI=='/'}">소개</a>
                     </li>
-                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="#contact">문의하기</a></li>
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="#contact" th:if="${#httpServletRequest.requestURI=='/'}">문의하기</a></li>
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="memorial.html">샘플 추모관</a></li>
                     <li class="nav-item mx-0 mx-lg-1" th:unless="${member}">
                         <a class="nav-link py-3 px-0 px-lg-3"  th:href="@{/join}"><i class="fa-solid fa-user-pen"></i> 회원 가입</a></li>
@@ -22,6 +22,8 @@
                         <a class="nav-link py-3 px-0 px-lg-3" th:href="@{/login}"><i class="fa-solid fa-user"></i> 로그인</a></li>
                     <li class="nav-item mx-0 mx-lg-1"  th:if="${member}">
                         <a class="nav-link py-3 px-0 px-lg-3" th:href="@{/logout}"><i class="fa-solid fa-user"></i> 로그아웃</a></li>
+                    <li class="nav-item mx-0 mx-lg-1"  th:if="${member}">
+                        <a class="nav-link py-3 px-0 px-lg-3" th:href="@{/memorial/edit}" th:if="${member}"><i class="fa-solid fa-user"></i>추모공관 관리</a></li>
                 </ul>
             </div>
         </div>

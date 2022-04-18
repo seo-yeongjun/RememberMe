@@ -37,17 +37,20 @@
                             <div class="form-group">
                                 <label>이름
                                     <input autofocus="autofocus" th:field="*{name}" placeholder="이름" class="form-control" type="text"
-                                           id="memorial_name">
+                                           id="memorial_name" required>
+                                    <span class="ui-state-error-text text-warning" th:errors="*{name}"></span>
                                 </label>
                             </div>
                             <div class="form-group">
                                 <label>생년월일
-                                    <input type="date" th:field="*{birthDate}" class="form-control" id="memorial_birth_date">
+                                    <input type="date" th:field="*{birthDate}" class="form-control" id="memorial_birth_date" max="9999-12-31" required>
+                                    <span class="ui-state-error-text text-warning" th:errors="*{birthDate}"></span>
                                 </label>
                             </div>
                             <div class="form-group">
                                 <label>기일
-                                    <input type="date" th:field="*{deathDate}" class="form-control" id="memorial_death_date">
+                                    <input type="date" th:field="*{deathDate}" class="form-control" id="memorial_death_date" max="9999-12-31" required>
+                                    <span class="ui-state-error-text text-warning" th:errors="*{deathDate}"></span>
                                 </label>
                             </div>
                             <div class="form-group d-flex flex-column">
@@ -75,7 +78,7 @@
                                 </div>
                                 <img id="img_prev" style="height: 200px; margin: 10px auto"
                                      th:src="@{/img/noImg.png}">
-                                <input class="form-control" type="file" name="uploadPhoto" accept="image/*"
+                                <input class="form-control" type="file" name="uploadPhoto" accept="image/*" required
                                        id="memorial_main_image">
                             </div>
                         </div>

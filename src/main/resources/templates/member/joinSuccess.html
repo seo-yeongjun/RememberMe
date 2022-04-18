@@ -6,37 +6,18 @@
     <title>Remember Me::내가 준비 하는 온라인 추모관</title>
     <!--폰트어썸-->
     <script src="https://kit.fontawesome.com/4df461b32c.js" crossorigin="anonymous"></script>
-    <script src="js/scripts.js"></script>
+    <script th:src="@{/js/scripts.js}"></script>
     <!-- 구글 폰트-->
 
 
-    <link href="css/styles.css" rel="stylesheet"/>
+    <link th:href="@{/css/styles.css}" rel="stylesheet"/>
 </head>
 <body id="page-top">
-<!-- 네비게이션-->
-<nav class="navbar navbar-expand-lg text-uppercase fixed-top" id="mainNav">
-    <div class="container">
-        <a class="navbar-brand" href="index.html"><img class="logo" src="img/logo-white.svg"></a>
-        <!--모바일 네비게이션-->
-        <button class="navbar-toggler text-uppercase font-weight-bold text-white rounded" type="button"
-                data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive"
-                aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fas fa-bars"></i>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="#">샘플 추모관</a></li>
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="join.html"><i
-                        class="fa-solid fa-user-pen"></i> 회원 가입</a></li>
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="../RememberMe-v2/login.html"><i
-                        class="fa-solid fa-user"></i> 로그인</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<!-- 탑바-->
+<th:block th:replace="@{/member/fragment/topBar.html} :: topBar"></th:block>
 <!-- 메인 이미지 -->
 <header class="masthead-memorial bg-home text-white text-center">
-    <img class="logo" style="width:40%" src="img/logo.svg">
+    <img class="logo" style="width:40%" th:src="@{/img/logo.svg}">
     <div class="container d-flex align-items-center flex-column">
         <!-- 헤드 카피-->
         <h2 class="mt-lg-4">내 손으로 만드는 온라인 추모관</h2>
@@ -47,70 +28,7 @@
 <section class="page-section bg-light" id="join">
     <div class="container d-flex align-items-center flex-column border border-1 py-lg-5 bg-white">
         <h2>회원 가입</h2>
-        <form th:action="@{/join}" th:object="${form}" method="post">
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                <p class="m-1">이름</p>
-                <input id="name" th:field="*{name}" type="text"
-                       class="form-control"
-                       placeholder="이름">
-                <span class="ui-state-error-text text-warning" th:errors="*{name}"></span>
-            </div>
-            <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10"><p class="m-1">아이디</p>
-                <input value="" id="id" th:field="*{userId}" name="id" type="text"
-                       class="form-control"
-                       placeholder="아이디"
-                       >
-                <span class="ui-state-error-text text-warning" th:errors="*{userId}"></span>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                    <p class="m-1">비밀번호</p>
-                    <input id="password" th:field="*{password}" name="password" type="password"
-                           class="form-control"
-                           placeholder="비밀번호"
-                           pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_-+=[]{}~?:;`|/]).{6,50}$">
-                    <span class="ui-state-error-text text-warning" th:errors="*{password}"></span>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                    <p class="m-1">비밀번호 확인</p>
-                    <input id="cpassword" th:field="*{password2}" name="cpassword" type="password"
-                           class="form-control"
-                           placeholder="비밀번호 재 확인"
-                           pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_-+=[]{}~?:;`|/]).{6,50}$">
-                    <span class="ui-state-error-text text-warning" th:errors="*{password2}"></span>
-                </div>
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    <p class="m-1">이메일</p>
-                    <input id="email" th:field="*{email}" type="email"
-                           class="form-control"
-                           placeholder="aaa@abcd.eee">
-                    <span class="ui-state-error-text text-warning" th:errors="*{email}"></span>
-                </div>
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    <p class="m-1">핸드폰 번호</p>
-                    <input id="phoneNumber" th:field="*{phoneNumber}" type="number"
-                           class="form-control"
-                           placeholder="01022223333">
-                    <span class="ui-state-error-text text-warning" th:errors="*{phoneNumber}"></span>
-                </div>
-                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                    <p class="m-1">생년월일</p>
-                    <input type="date"  th:field="*{date}" class="form-control" id="birthDate"
-                           name="birthDate">
-                    <span class="ui-state-error-text text-warning" th:errors="*{date}"></span>
-                </div>
-            </div>
-            <div class="d-flex align-items-center flex-column">
-            <label id="agree-term-container" class="checkbox py-4">
-                <input id="agree-term" th:field="*{checkAgree}" type="checkbox" value="true">
-                리멤버 미 이용약관, 개인정보 수집 및 이용에 동의합니다. <a target="_blank" href="https://www.mykeeper.com/terms/">전문 보기</a>
-            </label>
-                <span class="ui-state-error-text text-warning" th:errors="*{checkAgree}"></span>
-            <button id="btn-signup" class="btn btn-outline-secondary btn-lg">
-                <i class="fa-solid fa-right-to-bracket"></i><span id="btn-signup-text" class="p-4">가입 하기</span>
-            </button>
-            </div>
-        </form>
+        <span th:text="${mail}+'로 인증 메일이 발송 되었습니다. 메일 인증은 10분 동안만 유효합니다.'"></span>
     </div>
 </section>
 <!-- footer-->
@@ -119,7 +37,7 @@
         <div class="row">
             <!-- Footer Logo-->
             <div class="col-lg-4 mb-5 mb-lg-0">
-                <img class="logo" src="img/logo-white.svg">
+                <img class="logo" th:src="@{/img/logo-white.svg}">
                 <div class="text-center mt-2 lead">리멤버 미, 새로운 추모 문화</div>
             </div>
             <!-- Footer Social-->

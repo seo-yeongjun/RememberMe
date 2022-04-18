@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -24,7 +25,7 @@ public class LoginController {
     LoginService loginService;
 
     @GetMapping("login")
-    public String login(@ModelAttribute("form") LoginForm form) {
+    public String login(Model model, @ModelAttribute("form") LoginForm form) {
         return "member/login";
     }
 
@@ -47,8 +48,9 @@ public class LoginController {
     @GetMapping("logout")
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if(session!=null) {
-            session.removeAttribute(SessionConst.member);}
+        if (session != null) {
+            session.removeAttribute(SessionConst.member);
+        }
         return "redirect:/";
     }
 }

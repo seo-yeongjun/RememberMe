@@ -38,7 +38,7 @@
             </div>
             <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10"><p class="m-1">아이디</p>
                 <input value="" id="id" th:field="*{userId}" name="id" type="text"
-                       class="form-control"
+                       class="form-control" required
                        placeholder="아이디"
                        >
                 <span class="ui-state-error-text text-warning" th:errors="*{userId}"></span>
@@ -48,7 +48,7 @@
                     <p class="m-1">비밀번호</p>
                     <input id="password" th:field="*{password}" name="password" type="password"
                            class="form-control"
-                           placeholder="비밀번호"
+                           placeholder="비밀번호" required
                            pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_-+=[]{}~?:;`|/]).{6,50}$">
                     <span class="ui-state-error-text text-warning" th:errors="*{password}"></span>
                 </div>
@@ -56,28 +56,29 @@
                     <p class="m-1">비밀번호 확인</p>
                     <input id="cpassword" th:field="*{password2}" name="cpassword" type="password"
                            class="form-control"
-                           placeholder="비밀번호 재 확인"
+                           placeholder="비밀번호 재 확인" required
                            pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_-+=[]{}~?:;`|/]).{6,50}$">
                     <span class="ui-state-error-text text-warning" th:errors="*{password2}"></span>
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                     <p class="m-1">이메일</p>
-                    <input id="email" th:field="*{email}" type="email"
+                    <input id="email" th:field="*{email}" type="email" required
                            class="form-control"
                            placeholder="aaa@abcd.eee">
+                    <span>인증메일이 발송됨으로 정확히 입력해 주세요.</span>
                     <span class="ui-state-error-text text-warning" th:errors="*{email}"></span>
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                     <p class="m-1">핸드폰 번호</p>
                     <input id="phoneNumber" th:field="*{phoneNumber}" type="number"
-                           class="form-control"
+                           class="form-control" required
                            placeholder="01022223333">
                     <span class="ui-state-error-text text-warning" th:errors="*{phoneNumber}"></span>
                 </div>
                 <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                     <p class="m-1">생년월일</p>
-                    <input type="date"  th:field="*{date}" class="form-control" id="birthDate"
-                           name="birthDate">
+                    <input type="date"  th:field="*{date}" class="form-control" id="birthDate" required
+                           name="birthDate" max="9999-12-31">
                     <span class="ui-state-error-text text-warning" th:errors="*{date}"></span>
                 </div>
             </div>

@@ -5,7 +5,8 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Past;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class Memorial {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotBlank(message = "이름을 입력해 주세요.")
     private String name;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthDate;

@@ -24,6 +24,7 @@
         <h4>로그인</h4>
     </div>
 </header>
+<div class="w-100 py-3 fs-5 text-center" th:if="${loginMessage}" style="background-color: #eeddaa;">추모공간을 만들기 위해선 로그인이 필요합니다.</div>
 <!-- 로그인 세션-->
 <section class="page-section bg-light" id="login">
     <div class="container">
@@ -44,7 +45,7 @@
                         </button>
                         <div class="m-4">
                             <a class="p-0" style="font-size:12px;" href="#">비밀번호 찾기</a>
-                            <a class="p-2" style="font-size:12px;" href="#">회원 가입</a>
+                            <a class="p-2" style="font-size:12px;" th:href="@{/login}">회원 가입</a>
                         </div>
                         <div id="result-text" class="result-error"></div>
                     </form>
