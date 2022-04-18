@@ -30,12 +30,12 @@
     <div class="container">
         <div class="d-flex">
             <ul class="nav mb-2 justify-content-center mb-md-0" id="menu">
-                <li data-menuanchor="home"><a href="#home" class="nav-link px-2 text-white">홈</a></li>
-                <li data-menuanchor="wreath"><a href="#wreath" class="nav-link px-2 text-white">헌화</a></li>
-                <li data-menuanchor="obituary"><a href="#obituary" class="nav-link px-2 text-white">기억 공유</a></li>
-                <li data-menuanchor="photo"><a href="#photo" class="nav-link px-2 text-white">갤러리</a></li>
-                <li data-menuanchor="location"><a href="#location" class="nav-link px-2 text-white">위치</a></li>
-                <li data-menuanchor="event"><a href="#event" class="nav-link px-2 text-white">일정</a></li>
+                <li data-menuanchor="home"><a href="#home" class="nav-link px-1 text-white">홈</a></li>
+                <li data-menuanchor="wreath"><a href="#wreath" class="nav-link px-1 text-white">헌화</a></li>
+                <li data-menuanchor="obituary"><a href="#obituary" class="nav-link px-1 text-white">기억공유</a></li>
+                <li data-menuanchor="photo"><a href="#photo" class="nav-link px-1 text-white">갤러리</a></li>
+                <li data-menuanchor="location"><a href="#location" class="nav-link px-1 text-white">위치</a></li>
+                <li data-menuanchor="event"><a href="#event" class="nav-link px-1 text-white">일정</a></li>
             </ul>
             <!--모바일 네비게이션-->
             <button class="navbar-toggler text-uppercase font-weight-bold text-white rounded mx-2 p-0" type="button"
@@ -52,7 +52,10 @@
             <button type="button" class="btn text-white btn-secondary nav-item mx-0 mx-lg-1" data-bs-toggle="modal"
                     data-bs-target="#alarm"><i
                     class="fa fa-bell"></i></button>
-            <a class="text-white btn" th:href="@{/memorial/edit}" th:if="${owner}">추모공간 관리</a>
+            <a class="text-white btn" th:href="@{/memorial/edit}" th:if="${owner}">관리</a>
+            <a class="text-white btn" th:href="@{/login(redirectURL=${#httpServletRequest.requestURI})}" th:unless="${member}">로그인</a>
+            <a class="text-white btn" th:href="@{/logout}" th:if="${member}">로그아웃</a>
+            <a th:href="@{/}"><img th:src="@{/img/logo-white.svg}" style="width:70px"></a>
         </div>
     </div>
 </nav>

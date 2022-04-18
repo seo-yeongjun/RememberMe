@@ -25,12 +25,14 @@ public class LoginController {
     LoginService loginService;
 
     @GetMapping("login")
-    public String login(Model model, @ModelAttribute("form") LoginForm form) {
+    public String login(Model model, @ModelAttribute("form") LoginForm form,@RequestParam(required = false, defaultValue = "") String redirectURL) {
+            if(!redirectURL.equals(""))
+            model.addAttribute("redirectURL", redirectURL);
         return "member/login";
     }
 
     @PostMapping("login")
-    public String login(Model model, @Validated @ModelAttribute("form") LoginForm form, BindingResult bindingResult, HttpSession session) {
+    public String login(Model model, @Validated @ModelAttribute("form") LoginForm form, BindingResult bindingResult, HttpSession session, @ModelAttribute("redirectURL") String redirectURL) {
         if (loginService.error(form, bindingResult)) {
             model.addAttribute(form);
             return "member/login";
@@ -42,7 +44,11 @@ public class LoginController {
                 session.setAttribute(SessionConst.member, member);
             }
         }
-        return "redirect:/";
+        if(redirectURL.isEmpty())
+            return "redirect:/";
+      else
+          return "redirect:"+redirectURL;
+
     }
 
     @GetMapping("logout")

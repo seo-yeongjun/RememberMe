@@ -42,6 +42,7 @@ public class MemorialController {
                               @ModelAttribute MultipartFile photo, RedirectAttributes redirectAttributes) {
         if(member==null){
             redirectAttributes.addFlashAttribute("loginMessage", true);
+            redirectAttributes.addFlashAttribute("redirectURL", "/memorial/new");
             return "redirect:/login";
         }
         model.addAttribute("member", member);
@@ -72,6 +73,7 @@ public class MemorialController {
         Memorial memorial = memorialService.getMemorialById(memorialId);
         if (memorial == null)
             return "error";
+        model.addAttribute("member", member);
         model.addAttribute("memorial", memorial);
         model.addAttribute("mainImg", photoService.getMainPhoto(memorial));
         model.addAttribute("obituaries", obituaryService.getObituaryForms(memorialId));
