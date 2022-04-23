@@ -5,8 +5,6 @@ import com.zanygeek.rememberme.entity.Memorial;
 import com.zanygeek.rememberme.entity.Obituary;
 import com.zanygeek.rememberme.entity.Wreath;
 import com.zanygeek.rememberme.form.UploadPhotosForm;
-import com.zanygeek.rememberme.repository.MemorialRepository;
-import com.zanygeek.rememberme.repository.WreathRepository;
 import com.zanygeek.rememberme.service.MemorialService;
 import com.zanygeek.rememberme.service.ObituaryService;
 import com.zanygeek.rememberme.service.PhotoService;
@@ -52,7 +50,7 @@ public class MemorialController {
 
     //추모관 생성 post
     @PostMapping("new")
-    public String newMemorial(Model model, @SessionAttribute(name = "member", required = true) Member member, @Validated @ModelAttribute Memorial memorial, @ModelAttribute MultipartFile uploadPhoto, BindingResult bindingResult) {
+    public String newMemorial(Model model, @SessionAttribute(name = "member") Member member, @Validated @ModelAttribute Memorial memorial, @ModelAttribute MultipartFile uploadPhoto, BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
             model.addAttribute(memorial);
             return "memorial/edit/addMemorial";

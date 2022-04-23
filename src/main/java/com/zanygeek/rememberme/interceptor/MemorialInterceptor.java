@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 public class MemorialInterceptor implements HandlerInterceptor {
 
     @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
         HttpSession session = request.getSession(false);
         Member member = null;
         Memorial memorial = null;

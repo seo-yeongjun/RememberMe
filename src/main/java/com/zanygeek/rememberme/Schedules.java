@@ -4,7 +4,6 @@ import com.zanygeek.rememberme.entity.Member;
 import com.zanygeek.rememberme.entity.MemberToken;
 import com.zanygeek.rememberme.repository.MemberRepository;
 import com.zanygeek.rememberme.repository.MemberTokenRepository;
-import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -12,7 +11,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;

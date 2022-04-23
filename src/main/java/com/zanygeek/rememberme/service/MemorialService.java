@@ -2,6 +2,8 @@ package com.zanygeek.rememberme.service;
 
 import com.zanygeek.rememberme.entity.Member;
 import com.zanygeek.rememberme.entity.Memorial;
+import com.zanygeek.rememberme.entity.Photo;
+import com.zanygeek.rememberme.form.DisclosureForm;
 import com.zanygeek.rememberme.form.EditMemorialsForm;
 import com.zanygeek.rememberme.repository.MemorialRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +30,17 @@ public class MemorialService {
         }
         return memorialRepository.save(memorial);
     }
-    //기념관 저장, 암호가 있으면 해쉬 암호화
+
     public Memorial update(Memorial memorial) {
         return memorialRepository.save(memorial);
     }
+
+    public Memorial update(Memorial memorial, DisclosureForm disclosureForm) {
+        memorial.setLocked(disclosureForm.getLocked());
+        memorial.setPassword(passwordEncoder.encode(disclosureForm.getPassword()));
+        return memorialRepository.save(memorial);
+    }
+
     public Memorial getMemorialById(int memorialId) {
         return memorialRepository.findById(memorialId).orElse(null);
     }
@@ -45,5 +54,12 @@ public class MemorialService {
             forms.add(form);
         }
         return forms;
+    }
+    public void delete(Memorial memorial){
+        List<Photo> photos = memorial.getPhoto();
+        for(Photo photo : photos){
+            photoService.deletePhotoByUrl(photo.getUrl());
+        }
+        memorialRepository.delete(memorial);
     }
 }

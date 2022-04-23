@@ -1,6 +1,5 @@
 package com.zanygeek.rememberme.entity;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

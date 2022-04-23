@@ -5,7 +5,6 @@ import com.zanygeek.rememberme.entity.MemberToken;
 import com.zanygeek.rememberme.form.JoinForm;
 import com.zanygeek.rememberme.repository.MemberRepository;
 import com.zanygeek.rememberme.repository.MemberTokenRepository;
-import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

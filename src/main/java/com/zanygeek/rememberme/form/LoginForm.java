@@ -1,6 +1,5 @@
 package com.zanygeek.rememberme.form;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,7 +1,6 @@
 package com.zanygeek.rememberme.service;
 
 import com.zanygeek.rememberme.entity.Member;
-import com.zanygeek.rememberme.form.JoinForm;
 import com.zanygeek.rememberme.form.LoginForm;
 import com.zanygeek.rememberme.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
