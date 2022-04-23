@@ -87,25 +87,22 @@ public class PhotoService {
     }
 
     //사진 삭제 메서드
-    public boolean deletePhoto(Photo photo) {
+    public void deletePhoto(Photo photo) {
         try {
             photoRepository.deleteById(photo.getId());
             uploadService.deleteFile(photo.getUrl());
-            return true;
         } catch (Exception e) {
             log.error("에러 발생: "+e);
-            return false;
         }
     }
-    public boolean deletePhotoByUrl(String photoUrl) {
+
+    public void deletePhotoByUrl(String photoUrl) {
         try {
             Photo photo = photoRepository.findByUrl(photoUrl);
             photoRepository.deleteById(photo.getId());
             uploadService.deleteFile(photo.getUrl());
-            return true;
         } catch (Exception e) {
             log.error("에러 발생: "+e);
-            return false;
         }
     }
 

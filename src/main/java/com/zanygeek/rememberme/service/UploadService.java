@@ -3,7 +3,6 @@ package com.zanygeek.rememberme.service;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.zanygeek.rememberme.entity.Memorial;
 import com.zanygeek.rememberme.entity.Photo;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Optional;
-import java.util.UUID;
 
 //사진 업로드를 위한 서비스
 @Service
@@ -72,12 +70,7 @@ public class UploadService {
     }
 
     //파일 삭제
-    public boolean deleteFile(String url) {
-        try {
+    public void deleteFile(String url) {
             amazonS3Client.deleteObject(bucket, url.substring(url.indexOf(".com/") + 5));
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
     }
 }

@@ -49,9 +49,11 @@
             </div>
             <div class="w-edit border border-1 p-3 rounded border-dark">
                 <span>메인 홈, 문구</span>
-                <form accept-charset="UTF-8"  method="post" th:action="@{{memorialId}/mainText(memorialId=${memorial.id})}" >
+                <form accept-charset="UTF-8" method="post"
+                      th:action="@{{memorialId}/mainText(memorialId=${memorial.id})}">
                     <textarea rows="10" class="w-100" id="mainText" name="mainText"
-                              placeholder="약력이나 부고의 메시지를 적어주세요." th:text="${#strings.isEmpty(memorial.mainText)}?'':${memorial.mainText}"></textarea>
+                              placeholder="약력이나 부고의 메시지를 적어주세요."
+                              th:text="${#strings.isEmpty(memorial.mainText)}?'':${memorial.mainText}"></textarea>
                     <div class="text-center">
                         <button class="btn btn-outline-dark">저장</button>
                     </div>
@@ -66,11 +68,13 @@
             <div class="w-100 border border-1 p-3 rounded border-dark">
                 <span>사진 리스트</span>
                 <div class="row justify-content-center">
-                    <div th:if="${Memorialphoto.main==null || not Memorialphoto.main}" class="col-4" th:each="Memorialphoto:${memorial.photo}">
-                        <form method="post" th:object="${photo}" th:action="@{{memorialId}/deletePhoto(memorialId=${memorial.id})}" >
-                        <img th:src="${Memorialphoto.url}" class="w-100">
+                    <div th:if="${Memorialphoto.main==null || not Memorialphoto.main}" class="col-4"
+                         th:each="Memorialphoto:${memorial.photo}">
+                        <form method="post" th:object="${photo}"
+                              th:action="@{{memorialId}/deletePhoto(memorialId=${memorial.id})}">
+                            <img th:src="${Memorialphoto.url}" class="w-100">
                             <input type="hidden" id="url" name="url" th:value="${Memorialphoto.url}">
-                        <button class="btn float-end"><i class="fa fa-delete-left text-black me-2"></i>삭제</button>
+                            <button class="btn float-end"><i class="fa fa-delete-left text-black me-2"></i>삭제</button>
                         </form>
                     </div>
                 </div>
@@ -83,26 +87,31 @@
         <h4>및 삭제</h4>
         <div class="edit">
             <div class="w-edit border border-1 p-3 rounded border-dark">
-                <div class="form-group">
-                    <label>공개 여부
-                        <select class="form-select">
-                            <option>모두에게 공개</option>
-                            <option>비밀번호 입력 시 공개</option>
-                        </select>
-                    </label>
-                </div>
-                <div class="form-group">
-                    <label>
-                        <input type="password" class="form-control mt-3" placeholder="비밀번호">
-                    </label>
-                </div>
-                <button class="btn btn-secondary mt-3">저장</button>
+                <form method="post" th:object="${disclosureForm}"
+                      th:action="@{{memorialId}/disclosure(memorialId=${memorial.id})}">
+                    <div class="form-group">
+                        <label>공개 여부
+                            <select class="form-select" id="locked" name="locked">
+                                <option value="false">모두에게 공개</option>
+                                <option value="true" th:selected="${memorial.locked}">비밀번호 입력 시 공개</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="password" th:field="*{password}"
+                                   th:style="${memorial.locked}?'':'display: none'" class="form-control mt-3"
+                                   placeholder="비밀번호">
+                        </label>
+                    </div>
+                    <button class="btn btn-secondary mt-3">저장</button>
+                </form>
             </div>
             <div class="w-edit  border border-1 p-3 rounded border-dark d-flex flex-column">
                 <span>추모 공간 삭제</span>
                 <span>삭제하면, 모든 내용을 되돌릴 수 없습니다.</span>
-                <div class="text-center">
-                    <button class="btn btn-danger float-end">삭제</button>
+                <div class="text-center my-4">
+                    <a class="btn btn-danger" id="memorialDelete" th:href="@{{memorialId}/deleteMemorial(memorialId=${memorial.id})}">삭제</a>
                 </div>
             </div>
         </div>
@@ -125,6 +134,18 @@
         }
     }
 
+    const locked = document.getElementById("locked");
+    const password = document.getElementById("password");
+    locked.addEventListener("change", function (){
+       if(this.value==="false")
+            password.style.display="none";
+       else
+           password.style.display="block";
+    })
+    const memorialDelete = document.getElementById("memorialDelete");
+    memorialDelete.addEventListener('click', function (){
+        return confirm('추모 공간을 삭제하면, 모든 기록을 되돌릴 수 없습니다.\n정말 삭제 하시겠습니까?');
+    })
     // input file에 change 이벤트 부여
     const inputImage = document.getElementById("memorial_main_image")
     inputImage.addEventListener("change", e => {

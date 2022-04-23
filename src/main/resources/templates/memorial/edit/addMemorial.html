@@ -64,7 +64,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>
-                                        <input type="password" th:field="*{password}" class="form-control mt-3" placeholder="비밀번호">
+                                        <input type="password" th:field="*{password}" class="form-control mt-3" style="display: none" placeholder="비밀번호">
                                     </label>
                                 </div>
                             </div>
@@ -133,6 +133,14 @@
         }
     }
 
+    const locked = document.getElementById("locked");
+    const password = document.getElementById("password");
+    locked.addEventListener("change", function (){
+        if(this.value==="false")
+            password.style.display="none";
+        else
+            password.style.display="block";
+    })
     // input file에 change 이벤트 부여
     const inputImage = document.getElementById("memorial_main_image")
     inputImage.addEventListener("change", e => {
