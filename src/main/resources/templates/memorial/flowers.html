@@ -36,13 +36,18 @@
                 </span>
         </div>
     </div>
-    <div class="section text-center" th:each="wreath,i: ${wreaths}">
+    <div class="section text-center position-relative" th:each="wreath,i: ${wreaths}">
+        <div class="position-absolute top-0 end-0 m-2">
+            <a class="btn" th:attr="onclick=|openParent('${wreath.id}')|" ><i class="fa-solid fa-delete-left"></i></a>
+        </div>
         <div class="d-flex align-items-center flex-column justify-content-center border border-1 container rounded mb-5">
             <img th:src="@{/img/flower.png}" class="w-50">
             <div class="w-50">
-                <span class="fw-bold fw-bolder" style="font-family: 'Nanum Myeongjo',serif;font-size: 20px;" th:text="${wreath.name}">이신수</span>
+                <span class="fw-bold fw-bolder" style="font-family: 'Nanum Myeongjo',serif;font-size: 20px;"
+                      th:text="${wreath.name}">이신수</span>
                 <span style="font-family: 'Noto Sans',serif; font-size: 15px" th:text="${wreath.relation}">친구</span>
-                <span style="font-family: 'Nanum Brush Script',serif; font-size: 19px; color:gray" th:text="${#temporals.format(wreath.date, 'yyyy-MM-dd HH:mm')}">2021.03.21</span>
+                <span style="font-family: 'Nanum Brush Script',serif; font-size: 19px; color:gray"
+                      th:text="${#temporals.format(wreath.date, 'yyyy-MM-dd HH:mm')}">2021.03.21</span>
                 <br>
                 <span style="font-family: 'Hi Melody',serif;font-size: 20px" th:utext="${wreath.text}">
                      xxxxx xxxx xxxxxx바랍니다.<br>
@@ -62,5 +67,8 @@
     new fullpage('#fullpage', {
         scrollOverflow: true
     });
+    function openParent(id){
+        window.parent.openModal(id);
+    }
 </script>
 </html>

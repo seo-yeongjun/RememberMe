@@ -93,6 +93,13 @@ public class MemorialController {
         return "redirect:/memorial/" + memorialId + "#wreath";
     }
 
+    //헌화삭제 post
+    @PostMapping("{memorialId}/deleteWreath")
+    public String deleteWreath(Wreath wreath, @PathVariable int memorialId,String wreathPassword,int wreathId) {
+        wreathService.deleteWreath(wreathPassword,wreathId);
+        return "redirect:/memorial/" + memorialId + "#wreath";
+    }
+
     //기억공유 post
     @PostMapping("{memorialId}/obituary")
     public String wreath(@PathVariable int memorialId, Obituary obituary, List<MultipartFile> photos) {
