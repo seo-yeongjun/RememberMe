@@ -22,7 +22,8 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
     <script th:src="@{/js/bootstrap.js}"></script>
     <!--네이버 map-->
-    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=lhozmkgpcf"></script>
+    <script type="text/javascript"
+            src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=lhozmkgpcf"></script>
 </head>
 <body id="page-top">
 <!-- 네비게이션-->
@@ -34,7 +35,7 @@
                 <li data-menuanchor="wreath"><a href="#wreath" class="nav-link px-1 text-white">헌화</a></li>
                 <li data-menuanchor="obituary"><a href="#obituary" class="nav-link px-1 text-white">기억공유</a></li>
                 <li data-menuanchor="photo"><a href="#photo" class="nav-link px-1 text-white">갤러리</a></li>
-                <li data-menuanchor="location"><a href="#location" class="nav-link px-1 text-white">위치</a></li>
+                <li data-menuanchor="location" th:if="${map}or${owner}"><a href="#location" class="nav-link px-1 text-white">위치</a></li>
                 <li data-menuanchor="event"><a href="#event" class="nav-link px-1 text-white">일정</a></li>
             </ul>
             <!--모바일 네비게이션-->
@@ -53,7 +54,8 @@
                     data-bs-target="#alarm"><i
                     class="fa fa-bell"></i></button>
             <a class="text-white btn" th:href="@{/memorial/edit}" th:if="${owner}">관리</a>
-            <a class="text-white btn" th:href="@{/login(redirectURL=${#httpServletRequest.requestURI})}" th:unless="${member}">로그인</a>
+            <a class="text-white btn" th:href="@{/login(redirectURL=${#httpServletRequest.requestURI})}"
+               th:unless="${member}">로그인</a>
             <a class="text-white btn" th:href="@{/logout}" th:if="${member}">로그아웃</a>
             <a th:href="@{/}"><img th:src="@{/img/logo-white.svg}" style="width:70px"></a>
         </div>
@@ -77,7 +79,8 @@
                     <hr class="text-white border border-2">
                     <ul class="text-white">
                         <p th:utext="${memorial.mainText}" th:if="${memorial.mainText}"></p>
-                        <a th:href="@{/memorial/edit/{memorialId}(memorialId=${memorial.id})}" th:if="${owner}" class="btn btn-outline-light">부고글 적기/수정</a>
+                        <a th:href="@{/memorial/edit/{memorialId}(memorialId=${memorial.id})}" th:if="${owner}"
+                           class="btn btn-outline-light">부고글 적기/수정</a>
                     </ul>
                 </div>
             </div>
@@ -144,7 +147,8 @@
     <!-- 사진 세션-->
     <div class="section pho">
         <!--로딩 이미지-->
-        <div style="z-index: 10; display: none" class="w-100 position-absolute text-center bg-light bg-opacity-75" id="loading">
+        <div style="z-index: 10; display: none" class="w-100 position-absolute text-center bg-light bg-opacity-75"
+             id="loading">
             <img th:src="@{/img/loading.svg}" class="w-50">
             <span class="d-block fs-3" style="font-family: '나눔 손글씨 펜',serif">업로드 중...</span>
             <span class="d-block fs-5" style="font-family: '나눔 손글씨 펜',serif">이미지 양에 따라 몇 초~ 몇 분</span>
@@ -204,11 +208,19 @@
         </div>
     </div>
     <!-- 위치 세션-->
-    <div class="section">
+    <div class="section" th:if="${map}">
         <div class="container d-flex flex-column align-items-center">
-            <span>예시) 네이버 api 추가 예정</span>
+            <span th:text="${map.name}"></span>
             <div id="map" style="width:100%;height:400px;"></div>
+            <span th:text="${map.description}"></span>
             <button class="w-50 btn btn-outline-dark bg-white mt-5">주소 복사하기</button>
+        </div>
+    </div>
+    <!-- 위치 독려 세션-->
+    <div class="section" th:if="!${map} and ${owner}">
+        <div class="container d-flex flex-column align-items-center">
+            <a th:href="@{/memorial/edit/{memorialId}(memorialId=${memorial.id})}" th:if="${owner}"
+               class="btn btn-outline-light">위치 정보 추가하러 가기</a>
         </div>
     </div>
     <div class="section">
@@ -345,17 +357,28 @@
                                th:field="*{password}">
                     </div>
                     <div class="input-photos w-100"></div>
-                    <button class="btn btn-outline-secondary w-50 my-3" type="submit" id="btnUploadPhoto">이미지 업로드 하기</button>
+                    <button class="btn btn-outline-secondary w-50 my-3" type="submit" id="btnUploadPhoto">이미지 업로드 하기
+                    </button>
                 </form>
             </div>
         </div>
     </div>
 </div>
 </body>
-<script>
+<script th:inline="javascript">
     new fullpage('#fullpage', {
-        sectionsColor: ['#98a4a4', '#ecc2c2', '#C0C0C0', '#ADD8E6', '#ecf1cb', '#cccccc'],
-        anchors: ['home', 'wreath', 'obituary', 'photo', 'location', 'event'],
+        [# th:if="${map}or${owner}"]
+    sectionsColor: ['#98a4a4', '#ecc2c2', '#C0C0C0', '#ADD8E6', '#ecf1cb', '#cccccc'],
+        [/]
+            [# th:unless="${map}or${owner}"]
+    sectionsColor: ['#98a4a4', '#ecc2c2', '#C0C0C0', '#ADD8E6', '#cccccc'],
+        [/]
+        [# th:if="${map}or${owner}"]
+         anchors: ['home', 'wreath', 'obituary', 'photo', 'location', 'event'],
+         [/]
+             [# th:unless="${map}or${owner}"]
+        anchors: ['home', 'wreath', 'obituary', 'photo', 'event'],
+        [/]
         navigation: true,
         showActiveTooltip: true,
         menu: '#menu',
@@ -363,17 +386,41 @@
         scrollOverflow: true,
         slideSelector: '.slideNone'
     });
-    <!--네이버 시작-->
-    var mapOptions = {
-        center: new naver.maps.LatLng(37.3595704, 127.105399),
-        zoom: 10
-    };
-    var map = new naver.maps.Map('map', mapOptions);
-    var marker = new naver.maps.Marker({
-        position: new naver.maps.LatLng(37.3595704, 127.105399),
-        map: map
+
+    <!--지도 시작-->
+    [# th:if="${map}"]
+        var mapOptions = {
+            center: new naver.maps.LatLng([[${map.y}]], [[${map.x}]]),
+            zoom: 13
+        };
+        var map = new naver.maps.Map('map', mapOptions);
+        var marker = new naver.maps.Marker({
+            position: new naver.maps.LatLng([[${map.y}]], [[${map.x}]]),
+            map: map
+        });
+    var contentString = [
+        '<div class="iw_inner">',
+        '   <h3>[[${map.title}]]</h3>',
+        '   <p>[[${map.address}]]<br />',
+        '   </p>',
+        '</div>'
+    ].join('');
+
+    var infowindow = new naver.maps.InfoWindow({
+        content: contentString
     });
-    <!--네이버 끝-->
+
+    naver.maps.Event.addListener(marker, "click", function(e) {
+        if (infowindow.getMap()) {
+            infowindow.close();
+        } else {
+            infowindow.open(map, marker);
+        }
+    });
+
+    infowindow.open(map, marker);
+    [/]
+    <!--지도 끝-->
     $(document).ready(function () {
         const a = $('.input-photos').imageUploader();
         const b = $('.input-photo').imageUploader();
@@ -444,7 +491,7 @@
                 form.submit();
             }, 2300);
         });
-        document.forms['uploadPhotosForm'].addEventListener('submit',function (e){
+        document.forms['uploadPhotosForm'].addEventListener('submit', function (e) {
             $("#loading").show();
             $('#photoAdd').modal('hide');
         });

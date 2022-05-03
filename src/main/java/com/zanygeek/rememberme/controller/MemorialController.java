@@ -5,10 +5,7 @@ import com.zanygeek.rememberme.entity.Memorial;
 import com.zanygeek.rememberme.entity.Obituary;
 import com.zanygeek.rememberme.entity.Wreath;
 import com.zanygeek.rememberme.form.UploadPhotosForm;
-import com.zanygeek.rememberme.service.MemorialService;
-import com.zanygeek.rememberme.service.ObituaryService;
-import com.zanygeek.rememberme.service.PhotoService;
-import com.zanygeek.rememberme.service.WreathService;
+import com.zanygeek.rememberme.service.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,6 +30,8 @@ public class MemorialController {
     WreathService wreathService;
     @Autowired
     ObituaryService obituaryService;
+    @Autowired
+    MapService mapService;
 
     //추모관 생성 get
     @GetMapping("new")
@@ -74,6 +73,7 @@ public class MemorialController {
         model.addAttribute("member", member);
         model.addAttribute("memorial", memorial);
         model.addAttribute("mainImg", photoService.getMainPhoto(memorial));
+        model.addAttribute("map", mapService.getMap(memorialId));
         model.addAttribute("obituaries", obituaryService.getObituaryForms(memorialId));
         model.addAttribute("photos", photoService.getPhotosByMemorialId(memorialId));
         return "memorial/memorial";

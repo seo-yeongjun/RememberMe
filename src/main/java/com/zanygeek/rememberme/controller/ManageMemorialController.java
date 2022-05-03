@@ -1,11 +1,12 @@
 package com.zanygeek.rememberme.controller;
 
 import com.zanygeek.rememberme.SessionConst;
-import com.zanygeek.rememberme.entity.Member;
-import com.zanygeek.rememberme.entity.Memorial;
-import com.zanygeek.rememberme.entity.Photo;
+import com.zanygeek.rememberme.entity.*;
 import com.zanygeek.rememberme.form.DisclosureForm;
+import com.zanygeek.rememberme.repository.MapRepository;
 import com.zanygeek.rememberme.repository.MemorialRepository;
+import com.zanygeek.rememberme.service.AddressApiService;
+import com.zanygeek.rememberme.service.MapService;
 import com.zanygeek.rememberme.service.MemorialService;
 import com.zanygeek.rememberme.service.PhotoService;
 import lombok.extern.log4j.Log4j2;
@@ -24,6 +25,10 @@ public class ManageMemorialController {
     MemorialService memorialService;
     @Autowired
     PhotoService photoService;
+    @Autowired
+    MapService mapService;
+    @Autowired
+    AddressApiService addressApiService;
 
     //추모 공관 리스트
     @GetMapping("edit")
@@ -35,10 +40,13 @@ public class ManageMemorialController {
 
     //추모 공간 관리 페이지 get
     @GetMapping("edit/{memorialId}")
-    public String home(Model model, @PathVariable int memorialId, @SessionAttribute(name = SessionConst.member) Member member, @ModelAttribute Photo photo, @ModelAttribute DisclosureForm disclosureForm) {
+    public String home(Model model, @PathVariable int memorialId, @SessionAttribute(name = SessionConst.member) Member member, @ModelAttribute Map map, @ModelAttribute Photo photo, @ModelAttribute DisclosureForm disclosureForm) {
         Memorial memorial = memorialService.getMemorialById(memorialId);
         if (memorial.getMemberId() == member.getId()) {
             String mainText = memorial.getMainText();
+            Map savedMap = mapService.getMap(memorialId);
+            if (savedMap != null)
+                model.addAttribute("map", savedMap);
             if (mainText != null)
                 memorial.setMainText(mainText.replaceAll("<br>", "\n"));
             model.addAttribute("memorial", memorial);
@@ -81,7 +89,7 @@ public class ManageMemorialController {
     public String editPassword(@PathVariable int memorialId, @SessionAttribute(name = SessionConst.member) Member member, DisclosureForm disclosureForm) {
         Memorial memorial = memorialService.getMemorialById(memorialId);
         if (memorial.getMemberId() == member.getId()) {
-            memorialService.update(memorial,disclosureForm);
+            memorialService.update(memorial, disclosureForm);
         }
         return "redirect:/memorial/edit/" + memorialId;
     }
@@ -95,6 +103,7 @@ public class ManageMemorialController {
         }
         return "redirect:/memorial/edit/" + memorialId;
     }
+
     //사진 삭제 post
     @GetMapping("edit/{memorialId}/deleteMemorial")
     public String deleteMemorial(@PathVariable int memorialId, @SessionAttribute(name = SessionConst.member) Member member) {
@@ -103,5 +112,12 @@ public class ManageMemorialController {
             memorialService.delete(memorial);
         }
         return "redirect:/memorial/edit";
+    }
+
+    //맵 추가/수정 post
+    @PostMapping("edit/{memorialId}/editMap")
+    public String editMap(@PathVariable int memorialId, @SessionAttribute(name = SessionConst.member) Member member, Map map) {
+        mapService.saveMap(map, memorialId);
+        return "redirect:/memorial/edit/" + memorialId;
     }
 }

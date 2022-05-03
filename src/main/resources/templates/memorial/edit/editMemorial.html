@@ -15,6 +15,7 @@
 
     <link th:href="@{/css/bootstrap.css}" rel="stylesheet"/>
     <link th:href="@{/css/styles.css}" rel="stylesheet"/>
+    <script type="text/javascript" th:src="@{/js/jquery-3.6.0.min.js}"></script>
 </head>
 <body id="page-top">
 <!--탑바-->
@@ -81,8 +82,34 @@
             </div>
         </div>
     </div>
-    <!--공개 범위-->
+    <!--지도-->
     <div class="container p-5 bg-light">
+        <h3>지도 관리</h3>
+        <div class="">
+            <div class="w-100 border border-1 p-3 rounded border-dark">
+                <div class="row justify-content-center">
+                    <form method="post" th:object="${map}"
+                          th:action="@{{memorialId}/editMap(memorialId=${memorial.id})}">
+                        <span>장소 이름 </span>
+                        <input type="text" th:field="*{id}" hidden th:value="*{id}" th:if="${map}">
+                        <input type="text" th:field="*{name}" placeholder="ex) 장례식장 오시는 길">
+                        <span> 주소 검색 </span>
+                        <button type="button" class="btn p-0 mx-2 mt-4 d-flex flex-column align-items-center"
+                                data-bs-toggle="modal" data-bs-target="#search">검색
+                        </button>
+                        <input type="text" readonly th:field="*{address}" id="address">
+                        <input type="text" hidden th:field="*{title}" id="title">
+                        <span>
+                        <textarea th:field="*{description}"></textarea>
+                    </span>
+                        <button type="submit" class="btn btn-secondary mt-3">저장</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--공개 범위-->
+    <div class="container p-5 bg-light-gray">
         <h3>공개 범위 관리</h3>
         <h4>및 삭제</h4>
         <div class="edit">
@@ -111,12 +138,36 @@
                 <span>추모 공간 삭제</span>
                 <span>삭제하면, 모든 내용을 되돌릴 수 없습니다.</span>
                 <div class="text-center my-4">
-                    <a class="btn btn-danger" id="memorialDelete" th:href="@{{memorialId}/deleteMemorial(memorialId=${memorial.id})}">삭제</a>
+                    <a class="btn btn-danger" id="memorialDelete"
+                       th:href="@{{memorialId}/deleteMemorial(memorialId=${memorial.id})}">삭제</a>
                 </div>
             </div>
         </div>
     </div>
 </section>
+<div class="modal fade" id="search" tabindex="-1" aria-labelledby="write" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <span>주소 검색</span>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center pb-5">
+                <label>
+                    <input type="text" id="searchText">
+                    <button id="searchBtn">검색</button>
+                </label>
+                <table id="addressTable">
+                    <tr>
+                        <td>장소명</td>
+                        <td>주소</td>
+                        <td>선택</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     function readImage(input) {
         // 인풋 태그에 파일이 있는 경우
@@ -134,16 +185,19 @@
         }
     }
 
+    // 추모관 암호 설정 자바스크립트
     const locked = document.getElementById("locked");
     const password = document.getElementById("password");
-    locked.addEventListener("change", function (){
-       if(this.value==="false")
-            password.style.display="none";
-       else
-           password.style.display="block";
+    locked.addEventListener("change", function () {
+        if (this.value === "false")
+            password.style.display = "none";
+        else
+            password.style.display = "block";
     })
+
+    //추모공간 삭제 자바스크립트
     const memorialDelete = document.getElementById("memorialDelete");
-    memorialDelete.addEventListener('click', function (){
+    memorialDelete.addEventListener('click', function () {
         return confirm('추모 공간을 삭제하면, 모든 기록을 되돌릴 수 없습니다.\n정말 삭제 하시겠습니까?');
     })
     // input file에 change 이벤트 부여
@@ -151,6 +205,89 @@
     inputImage.addEventListener("change", e => {
         readImage(e.target)
     })
+
+    //주소 검색 ajax
+    //상호명으로 검색, 주소로 검색
+    const searchBtn = document.getElementById("searchBtn");
+    const searchText = document.getElementById("searchText");
+
+    //상호명으로 검색
+    function get() {
+        $.ajax({
+            url: "/address/" + searchText.value,
+            method: "GET",
+            dataType: "json"
+        }).done(function (json) {
+            let i;
+            var addressTable = $("#addressTable");
+            addressTable.empty();
+            addressTable.html(" <tr><td>장소명</td><td>주소</td> <td>선택</td> </tr>")
+            if (json.display === 0) {
+                $.ajax({
+                    url: "https://www.juso.go.kr/addrlink/addrLinkApi.do"
+                    , method: "get"
+                    , dataType: "json",
+                    data: {
+                        "currentPage": "1",
+                        "countPerPage": "50",
+                        "keyword": searchText.value,
+                        "resultType": "json",
+                        "confmKey": "U01TX0FVVEgyMDIyMDUwMzAzMjkwNjExMjUyNzE="
+                    }
+                }).done(
+                    //상호명 검색 결과가 없으면 주소로 검색
+                    function (json) {
+                        if (json.results.common.totalCount === 0) {
+                            addressTable.append("<td>검색 결과가 없습니다.</td>");
+                        } else {
+                            for (i in json.results.juso) {
+                                var $title = json.results.juso[i].sggNm;
+                                var $address = json.results.juso[i].roadAddr;
+                                var $jibunAddr = json.results.juso[i].jibunAddr;
+                                var btn = $('<button/>').attr('onclick', 'selectAddress(' + 'tr' + i + ')');
+
+                                var row = $("<tr/>").attr('id', 'tr' + i).append(
+                                    $("<td/>").attr('name', 'title').html($title),
+                                    $("<td/>").attr('name', 'address').html($address),
+                                    $("<td/>").append(btn)
+                                );
+                                addressTable.append(row).append($("<tr/>").append($("<td/>").attr('colspan', '3').text($jibunAddr)));
+                            }
+                        }
+                    })
+            } else {
+                for (i = 0; i < json.display; i++) {
+
+                    var $title = json.items[i].title;
+                    var $address = json.items[i].address;
+                    var btn = $('<button/>').attr('onclick', 'selectAddress(' + 'tr' + i + ')');
+                    var row = $("<tr/>").attr('id', 'tr' + i).append(
+                        $("<td/>").attr('name', 'title').html($title),
+                        $("<td/>").attr('name', 'address').html($address),
+                        $("<td/>").append(btn)
+                    );
+                    addressTable.append(row);
+                }
+            }
+        });
+
+
+    }
+
+    searchText.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            get();
+        }
+    });
+    searchBtn.addEventListener('click', get);
+
+    function selectAddress(tr) {
+        var address = tr.children[name = "address"].innerText;
+        var title = tr.children[name = "title"].innerText;
+        $('#address').val(address);
+        $('#title').val(title);
+        $('#search').modal('hide');
+    }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
