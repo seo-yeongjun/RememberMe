@@ -96,6 +96,17 @@ public class PhotoService {
         }
     }
 
+    //기억공유 id로 사진 삭제 메서드
+    public void deletePhotoByObituaryId(int obituaryId) {
+        Photo photo = photoRepository.findByObituaryId(obituaryId);
+        try {
+            photoRepository.deleteById(photo.getId());
+            uploadService.deleteFile(photo.getUrl());
+        } catch (Exception e) {
+            log.error("에러 발생: "+e);
+        }
+    }
+
     public void deletePhotoByUrl(String photoUrl) {
         try {
             Photo photo = photoRepository.findByUrl(photoUrl);

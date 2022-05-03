@@ -134,6 +134,7 @@
                 <span style="font-family: 'Noto Sans',serif; font-size: 15px" th:text="${obituary.relation}">친구</span>
                 <span style="font-family: 'Nanum Brush Script',serif; font-size: 19px; color:gray"
                       th:text="${#temporals.format(obituary.date, 'yyyy-MM-dd HH:mm')}">2021.03.21</span>
+                <a class="btn" th:attr="onclick=|openDeleteObituary('${obituary.id}')|" ><i class="fa-solid fa-delete-left"></i></a>
                 <br>
                 <div class="d-flex flex-column">
                 <span style="font-family: 'Hi Melody',serif;font-size: 20px" th:utext="${obituary.text}">
@@ -388,6 +389,30 @@
         </div>
     </div>
 </div>
+<!--기억공유 삭제 모달-->
+<div class="modal fade" id="deleteObituary" tabindex="-1" aria-labelledby="photoList" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <span class="text-black-50 mx-2">기억 공유 삭제</span>
+                <i class="fa-solid fa-delete-left"></i>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="row justify-content-center m-2 rounded pb-1">
+                <div class="col-md-10 col-lg-12 m-2 mb-2 pt-3 pb-3 ">
+                    <form method="post" th:action="@{/memorial/{memorialId}/deleteObituary(memorialId=${memorial.id})}">
+                        <label>
+                            비밀번호:
+                            <input type="password" id="obituaryPassword" name="obituaryPassword" required>
+                        </label>
+                        <input type="text" id="obituaryId" name="obituaryId" hidden>
+                        <button class="btn btn-dark">삭제하기</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 <script th:inline="javascript">
     new fullpage('#fullpage', {
@@ -406,7 +431,7 @@
         navigation: true,
         showActiveTooltip: true,
         menu: '#menu',
-        normalScrollElements: '#photoList',
+        normalScrollElements: '#photoList, #map',
         scrollOverflow: true,
         slideSelector: '.slideNone'
     });
@@ -505,6 +530,12 @@
     window.openModal = function(id) {
         $( '#deleteWreath' ).modal('show');
         $('#wreathId').val(id);
+    }
+
+    //헌화 삭제 모달 제어
+    window.openDeleteObituary = function(id) {
+        $( '#deleteObituary' ).modal('show');
+        $('#obituaryId').val(id);
     }
 
     document.addEventListener('DOMContentLoaded', function () {

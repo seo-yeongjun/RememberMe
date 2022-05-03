@@ -108,8 +108,15 @@ public class MemorialController {
             if (!photos.get(0).isEmpty())
                 photoService.savePhotos(photos, memorialId, savedObituary, obituary.getName());
         } catch (Exception e) {
-            log.error("에러 발생: " + e);
+            log.error("에러 발생: " + e.getMessage());
         }
+        return "redirect:/memorial/" + memorialId + "#obituary";
+    }
+
+    //기억공유 삭제 post
+    @PostMapping("{memorialId}/deleteObituary")
+    public String wreath(@PathVariable int memorialId, int obituaryId, String obituaryPassword) {
+        obituaryService.deleteObituary(obituaryPassword, obituaryId);
         return "redirect:/memorial/" + memorialId + "#obituary";
     }
 
