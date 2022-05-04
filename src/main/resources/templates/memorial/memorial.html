@@ -210,18 +210,21 @@
     </div>
     <!-- 위치 세션-->
     <div class="section" th:if="${map}">
-        <div class="container d-flex flex-column align-items-center">
-            <span th:text="${map.name}"></span>
-            <div id="map" style="width:100%;height:400px;"></div>
-            <span th:text="${map.description}"></span>
-            <button class="w-50 btn btn-outline-dark bg-white mt-5">주소 복사하기</button>
+        <i class="fa-solid fa-map-location-dot w-10 text-end fa-xl" style="margin-top: 1rem;"></i>
+        <div id="map" class="rounded shadow" style="width:90%;height:50vh;margin:1.5rem auto 0;"></div>
+        <div class="container d-flex flex-column align-items-center ">
+            <i class="w-yr fa-solid fa-quote-left mt-5"></i>
+            <span class="text-center w-yr fs-2"  style="font-family:'Nanum Myeongjo'" th:text="${map.name}"></span>
+            <span class="w-yr mt-2 text-center"  style="font-family:'Nanum Myeongjo'" th:text="${map.description}"></span>
+            <i class="w-yr text-end mt-4 fa-solid fa-quote-right"></i>
+            <button class="w-yr btn btn-outline-dark mt-2" id="copy-url"  style="font-family:'Nanum Myeongjo'">주소 복사</button>
         </div>
     </div>
     <!-- 위치 독려 세션-->
     <div class="section" th:if="!${map} and ${owner}">
         <div class="container d-flex flex-column align-items-center">
             <a th:href="@{/memorial/edit/{memorialId}(memorialId=${memorial.id})}" th:if="${owner}"
-               class="btn btn-outline-light">위치 정보 추가하러 가기</a>
+               class="btn btn-outline-dark">위치 정보 추가하러 가기</a>
         </div>
     </div>
     <div class="section">
@@ -417,7 +420,7 @@
 <script th:inline="javascript">
     new fullpage('#fullpage', {
         [# th:if="${map}or${owner}"]
-    sectionsColor: ['#98a4a4', '#ecc2c2', '#C0C0C0', '#ADD8E6', '#ecf1cb', '#cccccc'],
+    sectionsColor: ['#98a4a4', '#ecc2c2', '#C0C0C0', '#ADD8E6', '#EBEBEB', '#cccccc'],
         [/]
             [# th:unless="${map}or${owner}"]
     sectionsColor: ['#98a4a4', '#ecc2c2', '#C0C0C0', '#ADD8E6', '#cccccc'],
@@ -447,34 +450,42 @@
             position: new naver.maps.LatLng([[${map.y}]], [[${map.x}]]),
             map: map
         });
+
     var contentString = [
-        '<div class="iw_inner">',
-        '   <h3>[[${map.title}]]</h3>',
-        '   <p>[[${map.address}]]<br />',
+        '<div class="iw_inner p-1">',
+        '   <h3 id="mapTitle" class="m-2" style="font-family: \'Gowun Dodum\',serif">[[${map.title}]]</h3>',
+        '   <p id="mapAddress" class="text-center" style="font-family: \'Gowun Dodum\',serif">[[${map.address}]]<br />',
         '   </p>',
         '</div>'
     ].join('');
-
     var infowindow = new naver.maps.InfoWindow({
-        content: contentString
+        content: contentString,
+        disableAnchor : true,
+        maxWidth : 250
     });
 
     naver.maps.Event.addListener(marker, "click", function(e) {
+
         if (infowindow.getMap()) {
             infowindow.close();
         } else {
             infowindow.open(map, marker);
         }
+
     });
 
     infowindow.open(map, marker);
     [/]
     <!--지도 끝-->
     $(document).ready(function () {
+        var title =[[${map.title}]];
+        var address =[[${map.address}]];
+        $("#mapTitle").text(title);
+        $("#mapAddress").text(address);
+
         const a = $('.input-photos').imageUploader();
         const b = $('.input-photo').imageUploader();
         b.settings.maxFiles = 1;
-
 
         var car = $('.carousel').carousel({
             interval: 5000,
@@ -538,6 +549,18 @@
         $('#obituaryId').val(id);
     }
 
+    $('#copy-url').click(
+        function copy() {
+            var $temp = $("<input>");
+            $("body").append($temp);
+            $temp.val($("#mapAddress").text()).select();
+            document.execCommand("copy");
+            $temp.remove();
+            alert("주소가 복사되었습니다.");
+        }
+    );
+
+    //모달 post
     document.addEventListener('DOMContentLoaded', function () {
         document.forms['wreathForm'].addEventListener('submit', function (e) {
             $('#flowerClose').click();
