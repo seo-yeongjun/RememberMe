@@ -9,6 +9,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -31,6 +32,7 @@ public class JoinService {
     PasswordEncoder passwordEncoder;
 
     //회원가입 폼을 통한 메일 전송 및 리파지토리 저장
+    @Async
     public void joinMember(JoinForm form) {
         //폼 맴버 전환
         Member member = formToMember(form);
