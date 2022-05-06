@@ -3,12 +3,10 @@ package com.zanygeek.rememberme.controller;
 import com.zanygeek.rememberme.SessionConst;
 import com.zanygeek.rememberme.entity.*;
 import com.zanygeek.rememberme.form.DisclosureForm;
+import com.zanygeek.rememberme.form.SNSForm;
 import com.zanygeek.rememberme.repository.MapRepository;
 import com.zanygeek.rememberme.repository.MemorialRepository;
-import com.zanygeek.rememberme.service.AddressApiService;
-import com.zanygeek.rememberme.service.MapService;
-import com.zanygeek.rememberme.service.MemorialService;
-import com.zanygeek.rememberme.service.PhotoService;
+import com.zanygeek.rememberme.service.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,6 +27,8 @@ public class ManageMemorialController {
     MapService mapService;
     @Autowired
     AddressApiService addressApiService;
+    @Autowired
+    SNSService snsService;
 
     //추모 공관 리스트
     @GetMapping("edit")
@@ -45,6 +45,8 @@ public class ManageMemorialController {
         if (memorial.getMemberId() == member.getId()) {
             String mainText = memorial.getMainText();
             Map savedMap = mapService.getMap(memorialId);
+            SNSForm snsForm = snsService.getSNSForm(memorialId);
+            model.addAttribute("snsForm", snsForm);
             if (savedMap != null)
                 model.addAttribute("map", savedMap);
             if (mainText != null)
@@ -101,6 +103,13 @@ public class ManageMemorialController {
         if (memorial.getMemberId() == member.getId()) {
             photoService.deletePhotoByUrl(photo.getUrl());
         }
+        return "redirect:/memorial/edit/" + memorialId;
+    }
+
+    //SNS edit post
+    @PostMapping("edit/{memorialId}/editSNS")
+    public String editSNS(@PathVariable int memorialId, @SessionAttribute(name = SessionConst.member) Member member, SNSForm snsForm) {
+        snsService.saveSNSForm(memorialId,snsForm);
         return "redirect:/memorial/edit/" + memorialId;
     }
 

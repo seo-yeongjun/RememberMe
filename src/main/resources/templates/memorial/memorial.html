@@ -46,10 +46,9 @@
             </button>
         </div>
         <div class="navbar-collapse collapse" style="flex-grow: 0" id="navbarResponsive">
-            <button type="button" class="btn text-white btn-facebook me-3 nav-item mx-0 mx-lg-1"><i
-                    class="fa fa-facebook"></i></button>
-            <button type="button" class="btn text-white btn-instagram me-3 nav-item mx-0 mx-lg-1"><i
-                    class="fa fa-instagram"></i></button>
+            <th:block th:if="${SNSList !=null}" th:each="sns : ${SNSList}">
+            <a type="button" th:class="${sns.name}+' btn text-white me-3 nav-item mx-0 mx-lg-1'" th:href="${sns.url}" target='_blank'></a>
+            </th:block>
             <button type="button" class="btn text-white btn-secondary nav-item mx-0 mx-lg-1" data-bs-toggle="modal"
                     data-bs-target="#alarm"><i
                     class="fa fa-bell"></i></button>
@@ -213,11 +212,11 @@
         <i class="fa-solid fa-map-location-dot w-10 text-end fa-xl" style="margin-top: 1rem;"></i>
         <div id="map" class="rounded shadow" style="width:90%;height:50vh;margin:1.5rem auto 0;"></div>
         <div class="container d-flex flex-column align-items-center ">
-            <i class="w-yr fa-solid fa-quote-left mt-5"></i>
+            <i class="w-yr fa-solid fa-quote-left fa-xl mt-5"></i>
             <span class="text-center w-yr fs-2"  style="font-family:'Nanum Myeongjo'" th:text="${map.name}"></span>
             <span class="w-yr mt-2 text-center"  style="font-family:'Nanum Myeongjo'" th:text="${map.description}"></span>
-            <i class="w-yr text-end mt-4 fa-solid fa-quote-right"></i>
-            <button class="w-yr btn btn-outline-dark mt-2" id="copy-url"  style="font-family:'Nanum Myeongjo'">주소 복사</button>
+            <i class="w-yr text-end mt-4 fa-solid fa-xl fa-quote-right"></i>
+            <button class="w-yr btn btn-outline-dark mt-4" id="copy-url"  style="font-family:'Nanum Myeongjo'">주소 복사</button>
         </div>
     </div>
     <!-- 위치 독려 세션-->
