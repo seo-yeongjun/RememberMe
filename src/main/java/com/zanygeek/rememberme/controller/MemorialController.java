@@ -35,6 +35,8 @@ public class MemorialController {
     MapService mapService;
     @Autowired
     SNSService snsService;
+    @Autowired
+    EventService eventService;
 
     //추모관 생성 get
     @GetMapping("new")
@@ -80,6 +82,7 @@ public class MemorialController {
         model.addAttribute("obituaries", obituaryService.getObituaryForms(memorialId));
         model.addAttribute("photos", photoService.getPhotosByMemorialId(memorialId));
         model.addAttribute("SNSList", snsService.getSNSList(memorialId));
+        model.addAttribute("events", eventService.getEvents(memorialId));
         return "memorial/memorial";
     }
 

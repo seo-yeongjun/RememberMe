@@ -28,7 +28,7 @@
         <h3>메인 홈 관리</h3>
         <div class="edit">
             <div class="w-edit border border-1 p-3 rounded border-dark">
-                <h3>메인 인물 사진</h3>
+                <h5>메인 인물 사진</h5>
                 <!--메인 이미지 변경-->
                 <form enctype="multipart/form-data"
                       th:action="@{{memorialId}/mainPhoto(memorialId=${memorial.id})}" accept-charset="UTF-8"
@@ -43,19 +43,19 @@
                         </label>
                     </div>
                     <div class="text-center">
-                        <button class="btn btn-outline-dark">저장</button>
+                        <button class="btn btn-secondary mt-3">저장</button>
                     </div>
                 </form>
             </div>
             <div class="w-edit border border-1 p-3 rounded border-dark">
-                <span>메인 홈, 문구</span>
+                <h5>메인 홈, 문구</h5>
                 <form accept-charset="UTF-8" method="post"
                       th:action="@{{memorialId}/mainText(memorialId=${memorial.id})}">
                     <textarea rows="10" class="w-100" id="mainText" name="mainText"
                               placeholder="약력이나 부고의 메시지를 적어주세요."
                               th:text="${#strings.isEmpty(memorial.mainText)}?'':${memorial.mainText}"></textarea>
                     <div class="text-center">
-                        <button class="btn btn-outline-dark">저장</button>
+                        <button class="btn btn-secondary mt-3">저장</button>
                     </div>
                 </form>
             </div>
@@ -66,7 +66,7 @@
         <h3>사진 관리</h3>
         <div class="">
             <div class="w-100 border border-1 p-3 rounded border-dark">
-                <span>사진 리스트</span>
+                <h5>사진 리스트</h5>
                 <div class="row justify-content-center">
                     <div th:if="${Memorialphoto.main==null || not Memorialphoto.main}" class="col-4"
                          th:each="Memorialphoto:${memorial.photo}">
@@ -87,7 +87,7 @@
         <div class="edit">
             <!--지도-->
             <div class="w-edit border border-1 p-3 rounded border-dark">
-                <h3>지도</h3>
+                <h5>지도</h5>
                 <div class="w-100 p-2 rounded border-dark">
                     <form class="w-100" method="post" th:object="${map}"
                           th:action="@{{memorialId}/editMap(memorialId=${memorial.id})}">
@@ -154,16 +154,47 @@
             </div>
         </div>
     </div>
+    <!-- 일정 생성 -->
+    <div class="container p-3 bg-light-gray">
+        <h3>일정 생성 및 관리</h3>
+        <div class="w-100 border border-1 p-3 rounded border-dark">
+        <form method="post" th:object="${event}"
+            th:action="@{{memorialId}/addEvent(memorialId=${memorial.id})}">
+            <h5>일정 생성</h5>
+            <div class="w-75">
+                <input type="text" th:field="*{title}" placeholder="행사 이름" class="form-text" required>
+                <input type="date" th:field="*{date}" max="9999-12-31" required>
+                <input type="text" th:field="*{time}" placeholder="행사 시간" class="form-text" required>
+            </div>
+            <div class="input-photo w-100"></div>
+            <div class="d-flex flex-column align-items-center">
+            <textarea placeholder="행사 설명" th:field="*{text}" class="w-100 form-text"
+                      rows="7" required></textarea>
+                <button class="btn btn-secondary mt-3">일정 추가</button>
+            </div>
+        </form>
+            <div class="bg-white w-100 rounded p-4 my-4" th:each="event:${events}">
+                <span class="fw-bold fw-bolder" style="font-family: 'Nanum Myeongjo',serif;font-size: 20px;" th:text="${event.title}"></span>
+                <span style="font-family: 'Noto Sans',serif; font-size: 15px" th:text="${event.date}"></span>
+                <span style="font-family: 'Nanum Brush Script',serif; font-size: 19px; color:gray" th:text="${event.time}"></span>
+                <a class="btn" th:href="@{{memorialId}/deleteEvent(memorialId=${memorial.id},eventId=${event.id})}"><i class="fa-solid fa-delete-left"></i></a>
+                <br>
+                <div class="d-flex flex-column">
+                <span style="font-family: 'Hi Melody',serif;font-size: 20px" th:utext="${event.text}">
+                </span>
+                </div>
+            </div>
+        </div>
+    </div>
     <!--공개 범위-->
-    <div class="container p-5 bg-light-gray">
-        <h3>공개 범위 관리</h3>
-        <h4>및 삭제</h4>
+    <div class="container p-5 bg-light">
+        <h3>공개 범위 관리 및 삭제</h3>
         <div class="edit">
             <div class="w-edit border border-1 p-3 rounded border-dark">
                 <form method="post" th:object="${disclosureForm}"
                       th:action="@{{memorialId}/disclosure(memorialId=${memorial.id})}">
                     <div class="form-group">
-                        <label>공개 여부
+                        <label><h5>공개 여부</h5>
                             <select class="form-select" id="locked" name="locked">
                                 <option value="false">모두에게 공개</option>
                                 <option value="true" th:selected="${memorial.locked}">비밀번호 입력 시 공개</option>
@@ -183,7 +214,7 @@
                 </form>
             </div>
             <div class="w-edit  border border-1 p-3 rounded border-dark d-flex flex-column">
-                <span>추모 공간 삭제</span>
+                <h5>추모 공간 삭제</h5>
                 <span>삭제하면, 모든 내용을 되돌릴 수 없습니다.</span>
                 <div class="text-center my-4">
                     <a class="btn btn-danger" id="memorialDelete"

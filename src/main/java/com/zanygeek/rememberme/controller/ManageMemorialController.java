@@ -29,6 +29,8 @@ public class ManageMemorialController {
     AddressApiService addressApiService;
     @Autowired
     SNSService snsService;
+    @Autowired
+    EventService eventService;
 
     //추모 공관 리스트
     @GetMapping("edit")
@@ -40,18 +42,21 @@ public class ManageMemorialController {
 
     //추모 공간 관리 페이지 get
     @GetMapping("edit/{memorialId}")
-    public String home(Model model, @PathVariable int memorialId, @SessionAttribute(name = SessionConst.member) Member member, @ModelAttribute Map map, @ModelAttribute Photo photo, @ModelAttribute DisclosureForm disclosureForm) {
+    public String home(Model model, @PathVariable int memorialId, @SessionAttribute(name = SessionConst.member) Member member, @ModelAttribute Map map, @ModelAttribute Photo photo, @ModelAttribute DisclosureForm disclosureForm, @ModelAttribute Event event) {
         Memorial memorial = memorialService.getMemorialById(memorialId);
         if (memorial.getMemberId() == member.getId()) {
             String mainText = memorial.getMainText();
             Map savedMap = mapService.getMap(memorialId);
             SNSForm snsForm = snsService.getSNSForm(memorialId);
             model.addAttribute("snsForm", snsForm);
-            if (savedMap != null)
+            if (savedMap != null) {
+                savedMap.setDescription(savedMap.getDescription().replaceAll("<br>", "\n"));
                 model.addAttribute("map", savedMap);
+            }
             if (mainText != null)
                 memorial.setMainText(mainText.replaceAll("<br>", "\n"));
             model.addAttribute("memorial", memorial);
+            model.addAttribute("events", eventService.getEvents(memorialId));
             model.addAttribute("member", member);
             model.addAttribute("mainImg", photoService.getMainPhoto(memorial));
             return "memorial/edit/editMemorial";
@@ -109,11 +114,25 @@ public class ManageMemorialController {
     //SNS edit post
     @PostMapping("edit/{memorialId}/editSNS")
     public String editSNS(@PathVariable int memorialId, @SessionAttribute(name = SessionConst.member) Member member, SNSForm snsForm) {
-        snsService.saveSNSForm(memorialId,snsForm);
+        snsService.saveSNSForm(memorialId, snsForm);
         return "redirect:/memorial/edit/" + memorialId;
     }
 
-    //사진 삭제 post
+    //일정 추가 post
+    @PostMapping("edit/{memorialId}/addEvent")
+    public String addEvent(@PathVariable int memorialId, @SessionAttribute(name = SessionConst.member) Member member, Event event) {
+        eventService.saveEvent(event,memorialId);
+        return "redirect:/memorial/edit/" + memorialId;
+    }
+
+    //일정 삭제 get
+    @GetMapping("edit/{memorialId}/deleteEvent")
+    public String addEvent(@PathVariable int memorialId, @SessionAttribute(name = SessionConst.member) Member member,@RequestParam int eventId) {
+        eventService.deleteEvent(eventId,memorialId);
+        return "redirect:/memorial/edit/" + memorialId;
+    }
+
+    //추모관 삭제 get
     @GetMapping("edit/{memorialId}/deleteMemorial")
     public String deleteMemorial(@PathVariable int memorialId, @SessionAttribute(name = SessionConst.member) Member member) {
         Memorial memorial = memorialService.getMemorialById(memorialId);
