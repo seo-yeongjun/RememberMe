@@ -18,6 +18,7 @@ public class MapService {
         XY xy = addressApiService.getXY(map.getAddress());
         map.setX(xy.getX());
         map.setY(xy.getY());
+        map.setDescription(map.getDescription().replaceAll("\r\n", "<br>"));
         mapRepository.save(map);
     }
     public Map getMap(int memorialId){
