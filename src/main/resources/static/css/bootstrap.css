@@ -7663,6 +7663,11 @@ textarea.form-control-lg {
     max-height: 100% !important;
 }
 
+.mh-50 {
+    max-height: 50% !important;
+}
+
+
 .vh-100 {
     height: 100vh !important;
 }
@@ -8368,15 +8373,21 @@ textarea.form-control-lg {
     bottom: 0;
 }
 
-.bg-sky {
-    background-image: url("../img/sky.jpg");
-    background-size: cover;
-}
-
 .bg-bada {
     background-image: url("../img/bada.jpg");
     background-size: cover;
 }
+
+.bg-pastel-gray {
+    background-image: url("../img/pastel-gray.jpg");
+    background-size: cover;
+}
+
+.bg-book {
+    background-image: url("../img/bg.jpg");
+    background-size: cover;
+}
+
 
 .vh-50 {
     height: 50vh;

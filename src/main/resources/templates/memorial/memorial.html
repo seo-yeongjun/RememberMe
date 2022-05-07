@@ -145,7 +145,7 @@
         </div>
     </div>
     <!-- 사진 세션-->
-    <div class="section pho">
+    <div class="section pho bg-pastel-gray">
         <!--로딩 이미지-->
         <div style="z-index: 10; display: none" class="w-100 position-absolute text-center bg-light bg-opacity-75"
              id="loading">
@@ -226,28 +226,32 @@
                class="btn btn-outline-dark">위치 정보 추가하러 가기</a>
         </div>
     </div>
-    <div class="section">
-        <div class="d-flex align-items-center flex-column">
-            <div class="row flex-nowrap border border-3 overflow-auto p-4 w-75 rounded"
-                 style="background-color: #99cccc">
-                <div class="col-md-5 col-lg-3 m-2 border text-center bg-opacity-75 bg-white rounded" th:each="event:${events}">
-                    <div class="mx-auto">
+    <div class="section bg-book">
+        <div class="d-flex align-items-center p-5 flex-column bg-light bg-opacity-50">
+            <h2 style="font-family:'Nanum Myeongjo'">추모 행사 목록</h2>
+            <div id="eventScroll" class="row flex-nowrap overflow-auto p-4 w-yr rounded">
+                <div class="col-md-1 col-lg-6 mx-3 border text-center bg-opacity-75 bg-white rounded" th:each="event:${events}">
                         <div class="m-1 d-flex flex-column">
                             <span class="fw-bold fs-3" th:text="${event.title}">행사의 제목</span>
                             <span class="mt-2 fs-4" th:text="${event.date}">2023.03.10</span>
                             <span class="mt-2 fs-5" th:text="${event.time}">오후 8:00~</span>
                             <p class="mt-3" th:utext="${event.text}">행사의 내용을 적는 칸행사의 내용을 적는 칸행사의 내용을 적는 칸행사의 내용을 적는 칸행사의 내용을 적는 칸</p>
                         </div>
-                    </div>
                 </div>
             </div>
-            <button class="btn btn-light mt-4"><i class="fa fa-bell mx-2"></i>알림 성정</button>
         </div>
-        <div class="position-absolute bottom-0 w-100 bg-gray">
+        <div class="text-center">
+        <button class="btn btn-light mt-4" data-bs-toggle="modal" data-bs-target="#alarm"><i class="fa fa-bell mx-2"></i>알림 성정</button>
+        </div>
+        <div class="text-center">
+        <a th:href="@{/memorial/edit/{memorialId}(memorialId=${memorial.id})}" th:if="${owner}"
+           class="btn btn-secondary mt-4">행사 추가</a>
+        </div>
+        <div class="position-absolute bottom-0 w-100 bg-secondary bg-opacity-50 rounded-top">
             <div class="container p-1">
                 <div class="col-lg-4 d-flex">
                     <a th:href="@{/}"><img th:src="@{/img/logo.svg}" style="height:80px"/></a>
-                    <p class="mb-0 fs-5 text-white-50 pt-4" style="font-family:'Nanum Myeongjo'">
+                    <p class="mb-0 fs-5 pt-4" style="font-family:'Nanum Myeongjo'">
                         새로운 추모 문화를 만들다.
                     </p>
                 </div>
@@ -266,7 +270,7 @@
                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-center pb-5">
-                <button class="btn btn-outline-dark w-75 mb-4">공유 하기</button>
+                <button id="copyMemorialURL" type="button" class="btn btn-outline-dark w-75 mb-4">url 주소 복사</button>
                 <div class="container d-flex flex-column border border-1 align-items-center rounded bg-gray p-2 bg-opacity-50 mb-4">
                     <div>
                         <label>
@@ -278,9 +282,13 @@
                             김희솔님의 기일 7일전에 메일을 받습니다.
                         </label>
                     </div>
-                    <button type="submit" class="w-50 btn btn-outline-primary mt-3">알림 요청</button>
+                    <button type="submit" th:if="${member}" class="w-50 btn btn-outline-primary mt-3">알림 요청</button>
+                    <th:block th:unless="${member}">
+                        <span>알림 요청은 로그인이 필요합니다.</span>
+                        <a th:href="@{/login(redirectURL='/memorial/'+${memorialId})}" class="w-50 btn btn-outline-primary mt-3">로그인</a>
+                    </th:block>
                 </div>
-                <span>알림 요청은 로그인이 필요합니다.</span>
+
             </div>
         </div>
     </div>
@@ -550,10 +558,24 @@
     }
 
     $('#copy-url').click(
-        function copy() {
+        function() {
             var $temp = $("<input>");
             $("body").append($temp);
             $temp.val($("#mapAddress").text()).select();
+            document.execCommand("copy");
+            $temp.remove();
+            alert("주소가 복사되었습니다.");
+        }
+    );
+
+    $('#copyMemorialURL').click(
+        function() {
+            var $url = $(location).attr('href');
+            if($url.indexOf('#')!==-1)
+            $url = $url.substring(0,$url.indexOf('#'))
+            var $temp = $("<input>");
+            $("#copyMemorialURL").append($temp);
+            $temp.val($url).select();
             document.execCommand("copy");
             $temp.remove();
             alert("주소가 복사되었습니다.");
