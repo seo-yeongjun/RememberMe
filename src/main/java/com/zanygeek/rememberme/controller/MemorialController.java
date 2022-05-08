@@ -45,7 +45,7 @@ public class MemorialController {
         if(member==null){
             redirectAttributes.addFlashAttribute("loginMessage", true);
             redirectAttributes.addFlashAttribute("redirectURL", "/memorial/new");
-            return "redirect:/login";
+            return "redirect:/login?redirectURL=/memorial/new";
         }
         model.addAttribute("member", member);
         model.addAttribute("memorial", memorial);

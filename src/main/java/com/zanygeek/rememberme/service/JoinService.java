@@ -2,6 +2,7 @@ package com.zanygeek.rememberme.service;
 
 import com.zanygeek.rememberme.entity.Member;
 import com.zanygeek.rememberme.entity.MemberToken;
+import com.zanygeek.rememberme.entity.NaverForm;
 import com.zanygeek.rememberme.form.JoinForm;
 import com.zanygeek.rememberme.repository.MemberRepository;
 import com.zanygeek.rememberme.repository.MemberTokenRepository;
@@ -14,6 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+
+import java.util.LinkedHashMap;
 
 
 @Service
@@ -39,6 +42,7 @@ public class JoinService {
         //비밀번호 해쉬암호화
         String encPassword = passwordEncoder.encode(member.getPassword());
         member.setPassword(encPassword);
+        member.setMemberFrom("rememberMe");
         //메일 인증 토큰 생성
         MemberToken token = new MemberToken(member.getUserId());
         //멤버, 토큰 저장
@@ -50,6 +54,24 @@ public class JoinService {
         }
         //인증 메시지 발송
         sendConfirmMail(member, token);
+    }
+
+    public Member joinNaverMember(NaverForm form) {
+        if (form.getMessage().equals("success")) {
+            Member member = new Member();
+            if (!memberRepository.existsByUserId(form.getId())) {
+                member.setUserId(form.getId());
+                member.setMemberFrom("naver");
+                member.setEnabled(true);
+                member.setEmail(form.getEmail());
+                member.setUserId(form.getId());
+                member.setPhoneNumber(form.getMobile());
+                member.setName(form.getName());
+                memberRepository.save(member);
+                return member;
+            }else return memberRepository.findByUserId(form.getId());
+        }
+        return null;
     }
 
     //validation 검사
@@ -74,10 +96,10 @@ public class JoinService {
         message.setSubject(member.getName() + "님, 리멤버미, 가입을 축하합니다.");
         message.setText("메일 확인을 위해 url을 클릭해 주세요: "
                 + uri + "join/confirmMail?token=" + token.getConfirmToken());
-        try{
-        mailSenderService.sendMail(message);}
-        catch (Exception e){
-            log.error("에러 발생:"+e);
+        try {
+            mailSenderService.sendMail(message);
+        } catch (Exception e) {
+            log.error("에러 발생:" + e);
         }
     }
 

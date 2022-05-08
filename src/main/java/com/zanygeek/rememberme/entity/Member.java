@@ -22,4 +22,5 @@ public class Member {
     private Date date;
     private String phoneNumber;
     private Boolean enabled;
+    private String memberFrom;
 }
