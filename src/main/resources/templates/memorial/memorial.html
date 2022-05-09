@@ -272,17 +272,21 @@
             <div class="modal-body text-center pb-5">
                 <button id="copyMemorialURL" type="button" class="btn btn-outline-dark w-75 mb-4">url 주소 복사</button>
                 <div class="container d-flex flex-column border border-1 align-items-center rounded bg-gray p-2 bg-opacity-50 mb-4">
-                    <div>
-                        <label>
-                            <input type="checkbox">
-                            새로운 일정이 발생하면 메일을 받습니다.
-                        </label>
-                        <label>
-                            <input type="checkbox">
-                            김희솔님의 기일 7일전에 메일을 받습니다.
-                        </label>
-                    </div>
-                    <button type="submit" th:if="${member}" class="w-50 btn btn-outline-primary mt-3">알림 요청</button>
+                    <form th:action="@{/memorial/{memorialId}/alarm(memorialId=${memorial.id},redirectURL='/memorial/'+${memorialId})}" th:object="${alarm}"
+                          method="post">
+                        <div>
+                            <label>
+                                <input type="checkbox" th:field="*{checkEvent}" th:checked="${alarm?.checkEvent}">
+                                새로운 일정이 발생하면 메일을 받습니다.
+                            </label>
+                            <label>
+                                <input type="checkbox" th:field="*{checkDate}" th:checked="${alarm?.checkDate}">
+                                김희솔님의 기일 7일전에 메일을 받습니다.
+                            </label>
+                            <input type="text" th:field="*{id}" hidden>
+                        </div>
+                        <button type="submit" th:if="${member}" class="w-50 btn btn-outline-primary mt-3" th:text="${alarm.getId()}?'알림 수정':'알림 요청'">알림 요청</button>
+                    </form>
                     <th:block th:unless="${member}">
                         <span>알림 요청은 로그인이 필요합니다.</span>
                         <a th:href="@{/login(redirectURL='/memorial/'+${memorialId})}" class="w-50 btn btn-outline-primary mt-3">로그인</a>

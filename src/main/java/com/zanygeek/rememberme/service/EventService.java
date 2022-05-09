@@ -15,10 +15,10 @@ public class EventService {
     @Autowired
     EventRepository eventRepository;
 
-    public void saveEvent(Event event, int memorialId) {
+    public Event saveEvent(Event event, int memorialId) {
         event.setMemorialId(memorialId);
         event.setText(event.getText().replaceAll("\r\n", "<br>"));
-        eventRepository.save(event);
+        return eventRepository.save(event);
     }
 
     public void deleteEvent(int eventId,int memorialId){

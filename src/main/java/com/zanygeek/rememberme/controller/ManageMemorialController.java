@@ -31,6 +31,8 @@ public class ManageMemorialController {
     SNSService snsService;
     @Autowired
     EventService eventService;
+    @Autowired
+    AlarmService alarmService;
 
     //추모 공관 리스트
     @GetMapping("edit")
@@ -121,7 +123,8 @@ public class ManageMemorialController {
     //일정 추가 post
     @PostMapping("edit/{memorialId}/addEvent")
     public String addEvent(@PathVariable int memorialId, @SessionAttribute(name = SessionConst.member) Member member, Event event) {
-        eventService.saveEvent(event,memorialId);
+        Event savedEvent = eventService.saveEvent(event,memorialId);
+        alarmService.sendAlarmMail(savedEvent); //메일 전송
         return "redirect:/memorial/edit/" + memorialId;
     }
 

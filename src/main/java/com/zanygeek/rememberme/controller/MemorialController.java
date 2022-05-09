@@ -1,9 +1,6 @@
 package com.zanygeek.rememberme.controller;
 
-import com.zanygeek.rememberme.entity.Member;
-import com.zanygeek.rememberme.entity.Memorial;
-import com.zanygeek.rememberme.entity.Obituary;
-import com.zanygeek.rememberme.entity.Wreath;
+import com.zanygeek.rememberme.entity.*;
 import com.zanygeek.rememberme.form.UploadPhotosForm;
 import com.zanygeek.rememberme.repository.SNSRepository;
 import com.zanygeek.rememberme.service.*;
@@ -17,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -37,12 +37,14 @@ public class MemorialController {
     SNSService snsService;
     @Autowired
     EventService eventService;
+    @Autowired
+    AlarmService alarmService;
 
     //추모관 생성 get
     @GetMapping("new")
     public String newMemorial(Model model, @SessionAttribute(name = "member", required = false) Member member, Memorial memorial,
                               @ModelAttribute MultipartFile photo, RedirectAttributes redirectAttributes) {
-        if(member==null){
+        if (member == null) {
             redirectAttributes.addFlashAttribute("loginMessage", true);
             redirectAttributes.addFlashAttribute("redirectURL", "/memorial/new");
             return "redirect:/login?redirectURL=/memorial/new";
@@ -55,7 +57,7 @@ public class MemorialController {
     //추모관 생성 post
     @PostMapping("new")
     public String newMemorial(Model model, @SessionAttribute(name = "member") Member member, @Validated @ModelAttribute Memorial memorial, @ModelAttribute MultipartFile uploadPhoto, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             model.addAttribute(memorial);
             return "memorial/edit/addMemorial";
         }
@@ -65,13 +67,13 @@ public class MemorialController {
         } catch (Exception e) {
             log.error("에러 발생:" + e);
         }
-        return "redirect:/memorial/"+savedMemorial.getId();
+        return "redirect:/memorial/" + savedMemorial.getId();
     }
 
     //추모공간 get
     @GetMapping("{memorialId}")
     public String momirlal(Model model, @PathVariable int memorialId, @SessionAttribute(name = "member", required = false) Member member,
-                           @ModelAttribute Wreath wreath, @ModelAttribute Obituary obituary, @ModelAttribute UploadPhotosForm uploadPhotosForm) {
+                           @ModelAttribute Wreath wreath, @ModelAttribute Obituary obituary, @ModelAttribute UploadPhotosForm uploadPhotosForm,@ModelAttribute Alarm alarm) {
         Memorial memorial = memorialService.getMemorialById(memorialId);
         if (memorial == null)
             return "error";
@@ -83,6 +85,8 @@ public class MemorialController {
         model.addAttribute("photos", photoService.getPhotosByMemorialId(memorialId));
         model.addAttribute("SNSList", snsService.getSNSList(memorialId));
         model.addAttribute("events", eventService.getEvents(memorialId));
+        if (member != null)
+            model.addAttribute("alarm", alarmService.getAlarm(member.getId(),memorialId));
         return "memorial/memorial";
     }
 
@@ -102,8 +106,8 @@ public class MemorialController {
 
     //헌화삭제 post
     @PostMapping("{memorialId}/deleteWreath")
-    public String deleteWreath(Wreath wreath, @PathVariable int memorialId,String wreathPassword,int wreathId) {
-        wreathService.deleteWreath(wreathPassword,wreathId);
+    public String deleteWreath(Wreath wreath, @PathVariable int memorialId, String wreathPassword, int wreathId) {
+        wreathService.deleteWreath(wreathPassword, wreathId);
         return "redirect:/memorial/" + memorialId + "#wreath";
     }
 
@@ -129,13 +133,13 @@ public class MemorialController {
 
     //사진 업로드 post
     @PostMapping("{memorialId}/photos")
-    public String uploadPhotos(@PathVariable int memorialId, List<MultipartFile> photos, UploadPhotosForm uploadPhotosForm){
+    public String uploadPhotos(@PathVariable int memorialId, List<MultipartFile> photos, UploadPhotosForm uploadPhotosForm) {
         try {
             if (!photos.get(0).isEmpty())
                 photoService.savePhotos(photos, memorialId, uploadPhotosForm);
         } catch (Exception e) {
             log.error("에러 발생: " + e);
         }
-        return "redirect:/memorial/"+memorialId+"#photo";
+        return "redirect:/memorial/" + memorialId + "#photo";
     }
 }
