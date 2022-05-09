@@ -55,6 +55,7 @@ public class JoinService {
         sendConfirmMail(member, token);
     }
 
+    //네이버 로그인 확인
     public Member joinNaverMember(NaverForm form) {
         if (form.getMessage().equals("success")) {
             Member member = new Member();

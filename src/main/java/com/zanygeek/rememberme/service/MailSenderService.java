@@ -16,7 +16,7 @@ public class MailSenderService {
     public MailSenderService(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
-    @Async
+    @Async//비동기
     public void sendMail(SimpleMailMessage mail) {
         javaMailSender.send(mail);
     }

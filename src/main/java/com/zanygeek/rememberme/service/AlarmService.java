@@ -22,7 +22,7 @@ public class AlarmService {
     MemberRepository memberRepository;
     @Autowired
     MemorialRepository memorialRepository;
-    @Value("rememberme.uri")
+    @Value("${rememberme.uri}")
     String url;
     @Autowired
     MailSenderService mailSenderService;
@@ -30,7 +30,7 @@ public class AlarmService {
     public void setAlarm(int memberId, int memorialId, Alarm alarm) {
         alarm.setMemberId(memberId);
         alarm.setMemorialId(memorialId);
-        if (alarm.isCheckDate() || alarm.isCheckEvent()) {  //하나라도 채크한경우
+        if (alarm.isCheckDate() || alarm.isCheckEvent()) {
             alarmRepository.save(alarm);
         } else {
             if (alarmRepository.existsById(alarm.getId())) {
