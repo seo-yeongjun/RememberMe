@@ -22,7 +22,7 @@ public class AlarmService {
     MemberRepository memberRepository;
     @Autowired
     MemorialRepository memorialRepository;
-    @Value("rememberme.uri")
+    @Value("${rememberme.uri}")
     String url;
     @Autowired
     MailSenderService mailSenderService;

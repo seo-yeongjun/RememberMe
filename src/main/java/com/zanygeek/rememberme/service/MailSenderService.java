@@ -3,6 +3,7 @@ package com.zanygeek.rememberme.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 //회원 가입시 메일 발송을 위해 만들었으나
@@ -15,7 +16,7 @@ public class MailSenderService {
     public MailSenderService(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
-
+    @Async
     public void sendMail(SimpleMailMessage mail) {
         javaMailSender.send(mail);
     }

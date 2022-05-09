@@ -35,7 +35,6 @@ public class JoinService {
     PasswordEncoder passwordEncoder;
 
     //회원가입 폼을 통한 메일 전송 및 리파지토리 저장
-    @Async
     public void joinMember(JoinForm form) {
         //폼 맴버 전환
         Member member = formToMember(form);
