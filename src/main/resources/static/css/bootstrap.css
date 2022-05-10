@@ -8378,6 +8378,11 @@ textarea.form-control-lg {
     background-size: cover;
 }
 
+.bg-light-texture {
+    background-image: url("../img/light-texture.jpg");
+    background-size: cover;
+}
+
 .bg-pastel-gray {
     background-image: url("../img/pastel-gray.jpg");
     background-size: cover;
@@ -8549,7 +8554,10 @@ textarea.form-control-lg {
     --bs-text-opacity: 1;
     color: rgba(0, 0, 0, 0.5) !important;
 }
-
+.text-black-75 {
+    --bs-text-opacity: 1;
+    color: rgba(0, 0, 0, 0.75) !important;
+}
 .text-white-50 {
     --bs-text-opacity: 1;
     color: rgba(255, 255, 255, 0.5) !important;

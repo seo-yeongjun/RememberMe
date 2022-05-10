@@ -61,7 +61,7 @@
     </div>
 </nav>
 <div id="fullpage">
-    <!--프로핊 세션-->
+    <!--프로핊 섹션-->
     <div class="section active bg-bada">
         <div class="container bg-black bg-opacity-25 rounded p-5">
             <div class="home-div">
@@ -85,7 +85,7 @@
             </div>
         </div>
     </div>
-    <!-- 헌화 세션-->
+    <!-- 헌화 섹션-->
     <div class="section">
         <div class="container align-items-center d-flex flex-column">
             <iframe th:data-src="@{/memorial/{memorialId}/wreath(memorialId=${memorial.id})}"
@@ -98,7 +98,7 @@
         </div>
         <img th:src="@{/img/twoHands.png}" class="animateFlower" id="animateFlower">
     </div>
-    <!--기억 공유 세션-->
+    <!--기억 공유 섹션-->
     <div class="section bg-bada">
         <div class="container d-flex flex-column border  border-1 border-light py-4 rounded bg-white bg-opacity-50 memorize">
             <form th:action="@{/memorial/{memorialId}/obituary(memorialId=${memorial.id})}" th:object="${obituary}"
@@ -144,7 +144,7 @@
             </div>
         </div>
     </div>
-    <!-- 사진 세션-->
+    <!-- 사진 섹션-->
     <div class="section pho bg-pastel-gray">
         <!--로딩 이미지-->
         <div style="z-index: 10; display: none" class="w-100 position-absolute text-center bg-light bg-opacity-75"
@@ -207,19 +207,19 @@
             </div>
         </div>
     </div>
-    <!-- 위치 세션-->
-    <div class="section" th:if="${map}">
-        <i class="fa-solid fa-map-location-dot w-10 text-end fa-xl" style="margin-top: 8rem;"></i>
-        <span class="text-center w-yr fs-2"  style="font-family:'Nanum Myeongjo'" th:text="${map.name}"></span>
-        <div id="map" class="rounded shadow" style="width:90%;height:50vh;margin:1.5rem auto 0;"></div>
-        <div class="container d-flex flex-column align-items-center ">
-            <i class="w-yr fa-solid fa-quote-left fa-xl mt-5"></i>
+    <!-- 위치 섹션-->
+    <div class="section bg-light-texture" th:if="${map}">
+        <i class="fa-solid fa-map-location-dot w-10 text-end fa-xl text-black-75" style="margin-top: 8rem;"></i>
+        <span class="text-center w-yr fs-2 text-black-75"  style="font-family:'Nanum Myeongjo'" th:text="${map.name}"></span>
+        <div id="map" class="shadow" style="max-width: 1230px; width:90%;height:50vh;margin:1.5rem auto 0;"></div>
+        <div class="container d-flex flex-column align-items-center">
+            <i class="w-yr fa-solid fa-quote-left fa-xl mt-5 text-black-75"></i>
             <span class="w-yr mt-2 text-center"  style="font-family:'Nanum Myeongjo'" th:utext="${map.description}"></span>
-            <i class="w-yr text-end mt-4 fa-solid fa-xl fa-quote-right"></i>
+            <i class="w-yr text-end mt-4 fa-solid fa-xl fa-quote-right text-black-75"></i>
             <button class="w-yr btn btn-outline-dark mt-5" id="copy-url"  style="margin-bottom:5rem; font-family:'Nanum Myeongjo'">주소 복사</button>
         </div>
     </div>
-    <!-- 위치 독려 세션-->
+    <!-- 위치 독려 섹션-->
     <div class="section" th:if="!${map} and ${owner}">
         <div class="container d-flex flex-column align-items-center">
             <a th:href="@{/memorial/edit/{memorialId}(memorialId=${memorial.id})}" th:if="${owner}"
@@ -464,7 +464,7 @@
 
     var contentString = [
         '<div class="iw_inner p-1">',
-        '   <h3 id="mapTitle" class="m-2" style="font-family: \'Gowun Dodum\',serif">[[${map.title}]]</h3>',
+        '   <h3 id="mapTitle" class="m-2" style="font-family: \'Nanum Myeongjo\',serif">[[${map.title}]]</h3>',
         '   <p id="mapAddress" class="text-center" style="font-family: \'Gowun Dodum\',serif">[[${map.address}]]<br />',
         '   </p>',
         '</div>'
@@ -472,6 +472,9 @@
     var infowindow = new naver.maps.InfoWindow({
         content: contentString,
         disableAnchor : true,
+        disableAutoPan: true,
+        backgroundColor:"rgba(223, 223, 223, 0.5)",
+        borderWidth:0.5,
         maxWidth : 250
     });
 
