@@ -31,6 +31,17 @@ public class MemorialService {
         return memorialRepository.save(memorial);
     }
 
+    public List<EditMemorialsForm> getMemorialsByName(String name){
+        List<Memorial> memorials = memorialRepository.findAllByNameContains(name);
+        List<EditMemorialsForm> forms = new ArrayList<EditMemorialsForm>();
+        for (Memorial memorial : memorials) {
+            EditMemorialsForm form = new EditMemorialsForm(memorial);
+            form.setMainPhoto(photoService.getMainPhoto(memorial));
+            forms.add(form);
+        }
+        return forms;
+    }
+
     public Memorial update(Memorial memorial) {
         return memorialRepository.save(memorial);
     }

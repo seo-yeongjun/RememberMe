@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface MemorialRepository extends JpaRepository<Memorial, Integer> {
     List<Memorial> findAllByMemberId(int memberId);
+    List<Memorial> findAllByNameContains(String name);
 }
