@@ -3072,6 +3072,13 @@ textarea.form-control-lg {
     color: #dc3545;
 }
 
+.feedback {
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.875em;
+    color: #dc3545;
+}
+
 .invalid-tooltip {
     position: absolute;
     top: 100%;
@@ -8421,6 +8428,10 @@ textarea.form-control-lg {
     --bs-bg-opacity: 1;
     background-color: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity)) !important;
 }
+.bg-bada {
+    background-image: url("../img/bada.jpg");
+    background-size: cover;
+}
 
 .bg-home {
     --bs-bg-opacity: 1;
@@ -11987,6 +11998,34 @@ html {
     padding: 1rem 1.75rem;
     font-size: 1.25rem;
 }
+
+.btn-facebook {
+    color: #fff;
+    background: #0b3370;
+    border: 2px solid #2c2b2b;
+    width: 35px;
+    height: 35px;
+}
+
+.btn-instagram {
+    width: 35px;
+    height: 35px;
+    background: #462f64; /* fallback for old browsers */
+    background: -webkit-linear-gradient(145deg, #ad806c, #865b9f, #7550a6); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(145deg, #ad806b, #915fab, #5e3e88); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    color: #fff;
+    border: 2px solid #2c2b2b;
+}
+
+.btn-blog {
+    color: #fff;
+    background: #5ed736;
+    border: 2px solid #2c2b2b;
+    width: 35px;
+    height: 35px;
+    font-weight: 600;
+}
+
 
 .btn-social {
     border-radius: 100%;
