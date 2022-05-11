@@ -31,19 +31,19 @@
 <!-- 리스트 세션-->
 <section class="page-section bg-light" id="join">
     <div class=" d-flex align-items-center flex-column border border-1 py-lg-5 bg-white">
-        <h3 c>추모 공간 리스트</h3>
+        <h3>추모 공간 리스트</h3>
         <hr class="w-75 border">
         <div class="d-flex align-items-center justify-content-between w-yr" th:each="memorial,i:${memorials}">
             <span th:text="${i.index+1}" class="ms-2"></span>
-            <img th:src="${memorial.mainPhoto.url}" class="col-2"/>
+            <img th:src="${memorial.mainPhoto.url}" class="col-3"/>
             <div class="d-flex flex-column mx-2">
-                <a th:href="@{{memorialId}(memorialId=${memorial.id})}" class="fs-5 text-black"
+                <a th:href="@{{memorialId}(memorialId=${memorial.id})}" class="text-black"
                    style="font-family: 'Nanum Myeongjo'" th:text="${memorial.name}+'님 추모 공간'">OOO님 추모 공간</a>
                 <span th:if="${memorial.locked}">공개 범위: 비밀번호</span>
                 <span th:unless="${memorial.locked}">공개 범위: 전체</span>
             </div>
-            <a th:href="@{edit/{memorialId}(memorialId=${memorial.id})}" class="btn btn-outline-secondary btn-lg me-2"><i
-                    class="fa-solid fa-right-to-bracket"></i>관리 하기</a>
+            <a th:href="@{edit/{memorialId}(memorialId=${memorial.id})}" class="btn"><i
+                    class="fa-solid fa-right-to-bracket"></i><br>관리 하기</a>
         </div>
         <hr class="w-75 border">
     </div>

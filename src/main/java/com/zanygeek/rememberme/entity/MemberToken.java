@@ -23,6 +23,8 @@ public class MemberToken {
     private Date createdDate;
 
     private String userId;
+    private String savedEmail;
+    private String changeEmail;
 
     public MemberToken(String userId) {
         this.userId = userId;

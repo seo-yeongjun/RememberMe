@@ -12,5 +12,4 @@ public interface MemberTokenRepository extends JpaRepository<MemberToken, Intege
     MemberToken findByConfirmToken(String confirmToken);
     void deleteAllByCreatedDateLessThan(Date date);
     List<MemberToken> findAllByCreatedDateLessThan(Date date);
-
 }
