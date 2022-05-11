@@ -52,8 +52,13 @@ public class HomeController {
 
     @GetMapping("/search")
     public String search(@RequestParam String searchName, RedirectAttributes attr) {
-        if(!searchName.isEmpty())
-        attr.addFlashAttribute("memorials", memorialService.getMemorialsByName(searchName));
+        if (!searchName.isEmpty()) {
+            List<EditMemorialsForm> list = memorialService.getMemorialsByName(searchName);
+            if (list.isEmpty())
+                attr.addFlashAttribute("searchNone", true);
+            else
+                attr.addFlashAttribute("memorials", list);
+        }
         attr.addFlashAttribute("anchorSearch", true);
         return "redirect:/";
     }

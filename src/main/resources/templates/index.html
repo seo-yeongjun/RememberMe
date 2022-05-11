@@ -51,17 +51,18 @@
             <button class="btn btn-outline-secondary"><i class="fa fa-search"></i>검색</button>
         </form>
         <div class="w-yr">
-            <div class="d-flex align-items-center justify-content-center my-3" th:each="memorial,i:${memorials}">
+            <div class="my-3" th:if="${searchNone}">검색 결과가 없습니다.</div>
+            <a th:href="@{/memorial/{memorialId}(memorialId=${memorial.id})}" class="text-black d-flex align-items-center justify-content-center my-3 btn" th:each="memorial,i:${memorials}" style="font-family: 'Nanum Myeongjo'">
                 <span th:text="${i.index+1}" class="mx-2"></span>
-                <img th:src="${memorial.mainPhoto.url}" class="col-1 me-3"/>
+                <img th:src="${memorial.mainPhoto.url}" class="col-sm-3 col-3 col-md-1 col-lg-1 me-3"/>
                 <div class="mx-2">
-                    <a th:href="@{/memorial/{memorialId}(memorialId=${memorial.id})}"
-                       class="mx-2 fs-5 text-black d-block"
-                       style="font-family: 'Nanum Myeongjo'" th:text="${memorial.name}+'님 추모 공간'">OOO님 추모 공간</a>
-                    <span th:if="${memorial.locked}">공개 범위: 비밀번호</span>
-                    <span th:unless="${memorial.locked}">공개 범위: 전체</span>
+                    <span class="mx-2 fs-5  d-block" th:text="${memorial.name}+'님 추모 공간'">OOO님 추모 공간</span>
+                    <span class="d-block" th:if="${memorial.locked}">공개 범위: 비밀번호</span>
+                    <span class="d-block" th:unless="${memorial.locked}">공개 범위: 전체</span>
+                    <span class="d-block" th:text="'생년월일: '+${#dates.format(memorial.birthDate, 'yyyy년 MM월 dd일')}"></span>
+                    <span class="d-block" th:text="'기일: '+${#dates.format(memorial.deathDate, 'yyyy년 MM월 dd일')}"></span>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
 </section>
@@ -130,18 +131,25 @@
         </div>
     </div>
 </footer>
-
+</body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script th:inline="javascript">
     [# th:if= "${anchorQuestion}"]
     window.location.hash = '#contact';
     [/]
-    [# th:if= "${anchorSearch}"]
+        [# th:if= "${anchorSearch}"]
     window.location.hash = '#search';
     [/]
-    [# th:if=${contactSuccess}]
+        [# th:if=${contactSuccess}]
     alert("문의해 주셔서 감사합니다.\n2일내에 입력 해 주신 메일 또는 휴대전화로\n답변 드리겠습니다.");
     [/]
+    const profileBtn = document.getElementById("profile");
+    const profileList = document.getElementById("profileList");
+    profileBtn.addEventListener('click',function (){
+        if(profileList.style.display==="none")
+            profileList.style.display="block";
+        else
+            profileList.style.display="none";
+    });
 </script>
-</body>
 </html>

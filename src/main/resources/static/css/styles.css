@@ -258,12 +258,18 @@ sup {
 }
 
 a {
-    color: #1abc9c;
-    text-decoration: underline;
+    color:#15967d;
+    text-decoration: none;
+}
+.na > a{
+    text-decoration: none;
 }
 
+a.active{
+    color:#15967d;
+}
 a:hover {
-    color: #15967d;
+    color: #095243;
 }
 
 a:not([href]):not([class]), a:not([href]):not([class]):hover {
@@ -4259,8 +4265,7 @@ textarea.form-control-lg {
 
 .nav-link {
     display: block;
-    padding: 0.5rem 1rem;
-    color: #1abc9c;
+    color: #ffffff;
     text-decoration: none;
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
 }
@@ -4376,13 +4381,11 @@ textarea.form-control-lg {
     display: flex;
     flex-wrap: inherit;
     align-items: center;
-    justify-content: space-between;
 }
 
 .navbar-brand {
     padding-top: 0.3125rem;
     padding-bottom: 0.3125rem;
-    margin-right: 1rem;
     font-size: 1.25rem;
     text-decoration: none;
     white-space: nowrap;
@@ -12074,7 +12077,7 @@ html {
 }
 
 #mainNav .logo {
-    height: 60px;
+    height: 50px;
 }
 
 header .logo, footer .logo {
@@ -12126,7 +12129,7 @@ header .logo, footer .logo {
 }
 
 .navbar-shrink {
-    background-color: #222222;
+    background-color: rgba(34, 34, 34, 0.9);
 }
 
 .form-floating input.form-control,

@@ -69,7 +69,13 @@ public class JoinService {
                 member.setName(form.getName());
                 memberRepository.save(member);
                 return member;
-            }else return memberRepository.findByUserId(form.getId());
+            }else{
+                Member savedMember = memberRepository.findByUserId(form.getId());
+                savedMember.setEmail(form.getEmail());
+                savedMember.setPhoneNumber(form.getMobile());
+                savedMember.setName(form.getName());
+                return memberRepository.save(savedMember);
+            }
         }
         return null;
     }
