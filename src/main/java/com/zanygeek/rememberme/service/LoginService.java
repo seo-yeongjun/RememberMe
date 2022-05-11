@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 
 @Service
 public class LoginService {
@@ -21,6 +22,8 @@ public class LoginService {
         Member member = memberRepository.findByUserId(form.getUserId());
         if (member == null) {
             bindingResult.addError(new FieldError("member", "userId", "존재 하지 않는 아이디 입니다.\n"));
+        }else if(!member.getEnabled()){
+            bindingResult.addError(new FieldError("member","password","아직 메일 인증이 처리되지 않았습니다."));
         }
         else if (!passwordEncoder.matches(form.getPassword(), member.getPassword())) {
             bindingResult.addError(new FieldError("member", "password", "비밀번호가 틀렸습니다.\n"));
