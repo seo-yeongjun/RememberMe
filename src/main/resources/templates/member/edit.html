@@ -22,23 +22,29 @@
     <div class="container d-flex align-items-center flex-column">
         <!-- 헤드 카피-->
         <h2 class="mt-lg-4">새로운 추모 문화를 만듭니다.</h2>
-        <h4>프로필 관리</h4>
     </div>
 </header>
-<!-- 로그인 세션-->
-<section class="page-section bg-light-gray" id="profile">
-    <div class="container p-5 bg-light">
+
+<section class="mt-lg-3">
+    <div class="container p-3 bg-light">
+        <div class="row justify-content-center m-2" th:if="${member.memberFrom}=='naver'">
+            <div class=" border border-1 p-3 rounded border-dark">
+                <h5>프로필 수정</h5>
+                <span>네이버를 통해 수정할 수 있습니다.</span>
+                <a class="btn btn-secondary" href="https://nid.naver.com/user2/help/myInfoV2?lang=ko" target="_blank">바로가기</a>
+            </div>
+        </div>
         <div class="edit" th:unless="${member.memberFrom}=='naver'">
             <div class="w-edit border border-1 p-3 rounded border-dark">
                 <h5>비밀번호 재설정</h5>
-                <!--메인 이미지 변경-->
                 <form th:action="@{/edit/password}" method="post" th:object="${editPasswordForm}">
                     <div class="d-flex flex-column align-items-center">
-                            <input class="form-text w-100" type="password" th:field="*{savedPassword}" placeholder="현재 비밀번호">
+                        <input class="form-text w-100" type="password" th:field="*{savedPassword}"
+                               placeholder="현재 비밀번호">
                         <span class="text-warning" th:errors="*{savedPassword}"></span>
-                            <input class="form-text w-100" type="password" th:field="*{password}" placeholder="새 비밀번호">
+                        <input class="form-text w-100" type="password" th:field="*{password}" placeholder="새 비밀번호">
                         <span class="text-warning" th:errors="*{password}"></span>
-                            <input class="form-text w-100" type="password" th:field="*{password2}" placeholder="새 비밀번호 재확인">
+                        <input class="form-text w-100" type="password" th:field="*{password2}" placeholder="새 비밀번호 재확인">
                         <span class="text-warning" th:errors="*{password2}"></span>
                     </div>
                     <div class="text-center">
@@ -48,7 +54,6 @@
             </div>
             <div class="w-edit border border-1 p-3 rounded border-dark">
                 <h5>이메일 재설정</h5>
-                <!--메인 이미지 변경-->
                 <form th:action="@{/edit/email}" method="post" th:object="${editEmailForm}">
                     <div class="d-flex flex-column align-items-center">
                         <span th:text="'현재 이메일: '+${nowEmail}">현재 이메일: w*****@*****.com</span>
@@ -63,20 +68,26 @@
                 </form>
             </div>
         </div>
+    </div>
+    <div class="container p-3 bg-light-gray">
         <div class="edit">
             <div class="w-edit border border-1 p-3 rounded border-dark">
                 <h5>알림 설정</h5>
-                <!--메인 이미지 변경-->
-                <form th:action="@{/edit}" method="post">
+                <div th:if="${#lists.isEmpty(alarms)}" class="mx-auto text-center">아직 요청하신 알림 설정이 없습니다.</div>
+                <form th:action="@{/edit/alarm}" method="post" th:object="${editAlarmForm}"
+                      th:if="${!#lists.isEmpty(alarms)}">
                     <div class="d-flex flex-column align-items-center">
-                        <select>
-                            <option>dd</option>
+                        <select id="alarmSelect" th:field="*{memorialId}" onchange="showCheck()">
+                            <option th:each="alarm:${alarms}" th:value="${alarm.memorialId}"
+                                    th:text="${alarm.memorialName}"></option>
                         </select>
-                        <input class="form-text w-100" type="text" placeholder="현재 이메일">
-                        <input class="form-text w-100" type="text" placeholder="변경할 이메일">
+                        <label>새로운 일정이 생기면 메일을 받습니다.<input class="form-text ms-2" type="checkbox"
+                                                           th:field="*{checkDate}"></label>
+                        <label>기일 7일전에 메일을 받습니다.<input class="form-text ms-5" type="checkbox" th:field="*{checkEvent}"></label>
+                        <input type="text" th:field="*{id}" hidden>
                     </div>
                     <div class="text-center">
-                        <button class="btn btn-secondary mt-3">인증 및 변경</button>
+                        <button class="btn btn-secondary mt-3">변경</button>
                     </div>
                 </form>
             </div>
@@ -84,7 +95,7 @@
                 <h5>회원 탈퇴</h5>
                 <span>탈퇴 시, 추모 공간도 함께 삭제됩니다..</span>
                 <div class="text-center my-4">
-                    <a class="btn btn-danger">삭제</a>
+                    <a class="btn btn-danger" id="memberDelete" th:href="@{/edit/deleteMember}">삭제</a>
                 </div>
             </div>
         </div>
@@ -125,5 +136,30 @@
         [# th:if= "${emailSuccess}"]
     alert("입력하신 이메일로 인증 메일을 보내드렸습니다.\n10분 내에 메일을 통해 인증해 주세요.\n인증에 실패할 경우 기존 메일로 유지 됩니다.");
     [/]
+        [# th:if= "${alarms}"]
+    function showCheck(){
+        var alarms = [[${alarms}]];
+        var index = document.getElementById("alarmSelect").selectedIndex;
+        var optionDate = alarms[index].checkDate;
+        var id = alarms[index].id;
+        var optionEvent = alarms[index].checkEvent;
+        var checkDateInput = document.getElementById("checkDate1");
+        var checkEventInput = document.getElementById("checkEvent1");
+        var inputId = document.getElementById("id");
+        inputId.value = id;
+        if(optionDate)
+            checkDateInput.checked=true;
+        else
+            checkDateInput.checked=false;
+        if(optionEvent)
+            checkEventInput.checked=true;
+        else
+            checkEventInput.checked=false;}
+    showCheck();
+    [/]
+    const memorialDelete = document.getElementById("memberDelete");
+    memorialDelete.addEventListener('click', function () {
+        return confirm('회원 탈퇴 시, 추모공간도 함꼐 삭제 되며\n되돌릴 수 없습니다.\n정말 삭제 하시겠습니까?');
+    })
 </script>
 </html>

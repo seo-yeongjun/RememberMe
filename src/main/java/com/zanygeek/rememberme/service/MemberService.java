@@ -2,10 +2,12 @@ package com.zanygeek.rememberme.service;
 
 import com.zanygeek.rememberme.entity.Member;
 import com.zanygeek.rememberme.entity.MemberToken;
+import com.zanygeek.rememberme.entity.Memorial;
 import com.zanygeek.rememberme.form.EditEmailForm;
 import com.zanygeek.rememberme.form.EditPasswordForm;
 import com.zanygeek.rememberme.repository.MemberRepository;
 import com.zanygeek.rememberme.repository.MemberTokenRepository;
+import com.zanygeek.rememberme.repository.MemorialRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,9 +17,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
+import java.util.List;
+
 @Service
 @Log4j2
 public class MemberService {
+    @Autowired
+    MemorialRepository memorialRepository;
+    @Autowired
+    MemorialService memorialService;
     @Autowired
     PasswordEncoder passwordEncoder;
     @Autowired
@@ -89,5 +97,13 @@ public class MemberService {
         } catch (Exception e) {
             log.error("에러 발생:" + e);
         }
+    }
+
+    public void deleteMember(Member member) {
+        List<Memorial> memorials = memorialRepository.findAllByMemberId(member.getId());
+        for(Memorial memorial :memorials){
+            memorialService.delete(memorial);
+        }
+        memberRepository.delete(member);
     }
 }

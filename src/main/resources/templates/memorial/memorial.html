@@ -53,6 +53,7 @@
                     data-bs-target="#alarm"><i
                     class="fa fa-bell"></i></button>
             <a class="text-white btn" th:href="@{/memorial/edit}" th:if="${owner}">관리</a>
+            <a class="text-white btn" th:href="@{/edit}" th:if="${member}"><i class="fa-solid fa-user"></i> 프로필</a>
             <a class="text-white btn" th:href="@{/login(redirectURL=${#httpServletRequest.requestURI})}"
                th:unless="${member}">로그인</a>
             <a class="text-white btn" th:href="@{/logout(redirectURL='/memorial/'+${memorialId})}" th:if="${member}">로그아웃</a>
@@ -278,11 +279,11 @@
                         <div>
                             <label>
                                 <input type="checkbox" th:field="*{checkEvent}" th:checked="${alarm?.checkEvent}">
-                                새로운 일정이 발생하면 메일을 받습니다.
+                                새로운 일정이 생기면 메일을 받습니다.
                             </label>
                             <label>
                                 <input type="checkbox" th:field="*{checkDate}" th:checked="${alarm?.checkDate}">
-                                김희솔님의 기일 7일전에 메일을 받습니다.
+                                기일 7일 전, 메일을 받습니다.
                             </label>
                             <input type="text" th:field="*{id}" hidden>
                         </div>

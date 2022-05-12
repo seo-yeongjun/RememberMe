@@ -116,7 +116,7 @@ public class MemorialController {
     public String wreath(@PathVariable int memorialId, Obituary obituary, List<MultipartFile> photos) {
         Obituary savedObituary = obituaryService.saveObituary(obituary, memorialId);
         try {
-            if (!photos.get(0).isEmpty())
+            if(!photos.get(0).isEmpty()&&photos.get(1).isEmpty())
                 photoService.savePhotos(photos, memorialId, savedObituary, obituary.getName());
         } catch (Exception e) {
             log.error("에러 발생: " + e.getMessage());

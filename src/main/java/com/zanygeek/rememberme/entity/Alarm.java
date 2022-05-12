@@ -1,5 +1,6 @@
 package com.zanygeek.rememberme.entity;
 
+import com.zanygeek.rememberme.form.EditAlarmForm;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,4 +19,15 @@ public class Alarm {
     private boolean checkEvent;
     private boolean checkDate;
     private int memberId;
+
+    public Alarm(){
+
+    }
+    public Alarm(EditAlarmForm editAlarmForm,int memberId){
+        this.id= editAlarmForm.getId();
+        this.memorialId = editAlarmForm.getMemorialId();
+        this.checkDate = editAlarmForm.isCheckDate();
+        this.checkEvent = editAlarmForm.isCheckEvent();
+        this.memberId = memberId;
+    }
 }
