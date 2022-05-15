@@ -26,8 +26,7 @@
                         <a class="nav-link py-3 px-0 px-lg-3" th:href="@{/login}"><i class="fa-solid fa-user"></i>
                             로그인</a></li>
                     <li class="nav-item mx-0 mx-lg-1" th:if="${member}">
-                        <a class="nav-link py-3 px-0 px-lg-3" th:href="@{/memorial/edit}" th:if="${member}"><i
-                                class="fa-solid fa-user"></i>추모공관 관리</a></li>
+                        <a class="nav-link py-3 px-0 px-lg-3" th:href="@{/memorial/edit}" th:if="${member}"><i class="fa-solid fa-monument"></i> 추모공관 관리</a></li>
                     <li class="nav-item mx-0 mx-lg-1" th:if="${member}">
                         <a class="nav-link py-3 px-0 px-lg-3" th:href="@{/edit}"><i class="fa-solid fa-user"></i> 프로필</a>
                     </li>

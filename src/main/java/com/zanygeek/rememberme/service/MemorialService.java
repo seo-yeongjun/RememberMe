@@ -2,6 +2,7 @@ package com.zanygeek.rememberme.service;
 
 import com.zanygeek.rememberme.entity.Member;
 import com.zanygeek.rememberme.entity.Memorial;
+import com.zanygeek.rememberme.entity.MemorialPassword;
 import com.zanygeek.rememberme.entity.Photo;
 import com.zanygeek.rememberme.form.DisclosureForm;
 import com.zanygeek.rememberme.form.EditMemorialsForm;
@@ -65,6 +66,13 @@ public class MemorialService {
             forms.add(form);
         }
         return forms;
+    }
+
+    public boolean checkMemorialPassword(Memorial memorial, MemorialPassword memorialPassword){
+        if(passwordEncoder.matches(memorialPassword.getPassword(), memorial.getPassword())){
+            return true;
+        }
+        else return false;
     }
     public void delete(Memorial memorial){
         List<Photo> photos = memorial.getPhoto();

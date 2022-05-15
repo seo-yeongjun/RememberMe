@@ -1,5 +1,6 @@
 package com.zanygeek.rememberme.controller;
 
+import com.zanygeek.rememberme.SessionConst;
 import com.zanygeek.rememberme.entity.*;
 import com.zanygeek.rememberme.form.UploadPhotosForm;
 import com.zanygeek.rememberme.repository.SNSRepository;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -72,11 +74,15 @@ public class MemorialController {
 
     //추모공간 get
     @GetMapping("{memorialId}")
-    public String momirlal(Model model, @PathVariable int memorialId, @SessionAttribute(name = "member", required = false) Member member,
-                           @ModelAttribute Wreath wreath, @ModelAttribute Obituary obituary, @ModelAttribute UploadPhotosForm uploadPhotosForm,@ModelAttribute Alarm alarm) {
+    public String momirlal(Model model, @PathVariable int memorialId, @SessionAttribute(name = SessionConst.member, required = false) Member member, @SessionAttribute(name = SessionConst.memorialPassword, required = false) MemorialPassword memorialPassword,
+                           @ModelAttribute Wreath wreath, @ModelAttribute Obituary obituary, @ModelAttribute UploadPhotosForm uploadPhotosForm, @ModelAttribute Alarm alarm) {
         Memorial memorial = memorialService.getMemorialById(memorialId);
         if (memorial == null)
             return "error";
+        if(memorial.getLocked()&&memorialPassword==null)
+            return "redirect:/memorial/" +memorialId+"/password";
+        if(memorial.getLocked()&&memorial.getId()!=memorialPassword.getMemorialId())
+            return "redirect:/memorial/" +memorialId+"/password";
         model.addAttribute("member", member);
         model.addAttribute("memorial", memorial);
         model.addAttribute("mainImg", photoService.getMainPhoto(memorial));
@@ -86,9 +92,33 @@ public class MemorialController {
         model.addAttribute("SNSList", snsService.getSNSList(memorialId));
         model.addAttribute("events", eventService.getEvents(memorialId));
         if (member != null)
-            model.addAttribute("alarm", alarmService.getAlarm(member.getId(),memorialId));
+            model.addAttribute("alarm", alarmService.getAlarm(member.getId(), memorialId));
         return "memorial/memorial";
     }
+
+    @GetMapping("{memorialId}/password")
+    public String memorialPassword(Model model,@PathVariable int memorialId,@SessionAttribute(name = SessionConst.member, required = false) Member member) {
+        Memorial memorial = memorialService.getMemorialById(memorialId);
+        model.addAttribute("memorial", memorial);
+        model.addAttribute("memorialPassword", new MemorialPassword(memorialId));
+        model.addAttribute("member", member);
+        return "memorial/secret";
+    }
+
+    @PostMapping("{memorialId}/password")
+    public String memorialPassword(Model model, HttpSession session, @PathVariable int memorialId, @ModelAttribute MemorialPassword memorialPassword,@SessionAttribute(name = SessionConst.member, required = false) Member member) {
+        Memorial memorial = memorialService.getMemorialById(memorialId);
+        if(memorialService.checkMemorialPassword(memorial,memorialPassword)){
+            session.setAttribute(SessionConst.memorialPassword,memorialPassword);
+            return "redirect:/memorial/" +memorialId;
+        }
+        model.addAttribute("memorial", memorial);
+        model.addAttribute("memorialPassword", memorialPassword);
+        model.addAttribute("member", member);
+        model.addAttribute("error", "비밀번호가 틀렸습니다.");
+        return "memorial/secret";
+    }
+
 
     //헌화하기 iframe을 위한 get
     @GetMapping("{memorialId}/wreath")
@@ -116,7 +146,7 @@ public class MemorialController {
     public String wreath(@PathVariable int memorialId, Obituary obituary, List<MultipartFile> photos) {
         Obituary savedObituary = obituaryService.saveObituary(obituary, memorialId);
         try {
-            if(!photos.get(0).isEmpty()&&photos.get(1).isEmpty())
+            if (!photos.get(0).isEmpty())
                 photoService.savePhotos(photos, memorialId, savedObituary, obituary.getName());
         } catch (Exception e) {
             log.error("에러 발생: " + e.getMessage());

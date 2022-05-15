@@ -52,7 +52,7 @@
             <button type="button" class="btn text-white btn-secondary nav-item mx-0 mx-lg-1" data-bs-toggle="modal"
                     data-bs-target="#alarm"><i
                     class="fa fa-bell"></i></button>
-            <a class="text-white btn" th:href="@{/memorial/edit}" th:if="${owner}">관리</a>
+            <a class="text-white btn" th:href="@{/memorial/edit}" th:if="${owner}"><i class="fa-solid fa-monument"></i> 관리</a>
             <a class="text-white btn" th:href="@{/edit}" th:if="${member}"><i class="fa-solid fa-user"></i> 프로필</a>
             <a class="text-white btn" th:href="@{/login(redirectURL=${#httpServletRequest.requestURI})}"
                th:unless="${member}">로그인</a>
@@ -221,7 +221,7 @@
         </div>
     </div>
     <!-- 위치 독려 섹션-->
-    <div class="section" th:if="!${map} and ${owner}">
+    <div class="section bg-light-texture" th:if="!${map} and ${owner}">
         <div class="container d-flex flex-column align-items-center">
             <a th:href="@{/memorial/edit/{memorialId}(memorialId=${memorial.id})}" th:if="${owner}"
                class="btn btn-outline-dark">위치 정보 추가하러 가기</a>

@@ -8514,7 +8514,9 @@ textarea.form-control-lg {
 .bg-opacity-75 {
     --bs-bg-opacity: 0.75;
 }
-
+.bg-opacity-90 {
+    --bs-bg-opacity: 0.75;
+}
 .bg-opacity-100 {
     --bs-bg-opacity: 1;
 }
