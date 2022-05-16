@@ -32,44 +32,62 @@ public class EditController {
     MemberRepository memberRepository;
     @Autowired
     AlarmService alarmService;
+
     @GetMapping
-    public String editProfile(Model model, @SessionAttribute(name = SessionConst.member) Member member, @ModelAttribute EditPasswordForm editPasswordForm, @ModelAttribute EditEmailForm editEmailForm, @ModelAttribute EditAlarmForm editAlarmForm){
+    public String editProfile(Model model, @SessionAttribute(name = SessionConst.member) Member member, @ModelAttribute EditPasswordForm editPasswordForm, @ModelAttribute EditEmailForm editEmailForm, @ModelAttribute EditAlarmForm editAlarmForm) {
         model.addAttribute("member", member);
         model.addAttribute("nowEmail", memberService.getStarsEmail(member.getEmail()));
         model.addAttribute("alarms", alarmService.getAlarms(member.getId()));
         return "member/edit";
     }
+
     @PostMapping("password")
-    public String editPassword(Model model, @SessionAttribute(name = SessionConst.member)Member member, @Validated EditPasswordForm editPasswordForm, BindingResult bindingResultPassword, @ModelAttribute EditEmailForm editEmailForm, RedirectAttributes attr){
-        if(memberService.hasPasswordError(bindingResultPassword,editPasswordForm,member)){
+    public String editPassword(Model model, @SessionAttribute(name = SessionConst.member) Member member, @Validated EditPasswordForm editPasswordForm, BindingResult bindingResultPassword, @ModelAttribute EditEmailForm editEmailForm, RedirectAttributes attr) {
+        if (memberService.hasPasswordError(bindingResultPassword, editPasswordForm, member)) {
             model.addAttribute("editPasswordForm", editPasswordForm);
             model.addAttribute("nowEmail", memberService.getStarsEmail(member.getEmail()));
-            return"member/edit";
+            return "member/edit";
         }
-        memberService.editPassword(member,editPasswordForm);
+        memberService.editPassword(member, editPasswordForm);
         attr.addFlashAttribute("passwordSuccess", true);
         return "redirect:/edit";
     }
+
     @PostMapping("email")
-    public String editEmail(Model model, @SessionAttribute(name = SessionConst.member)Member member, @Validated EditEmailForm editEmailForm, BindingResult bindingResultEmail, @ModelAttribute EditPasswordForm editPasswordForm, RedirectAttributes attr){
-        if(memberService.hasEmailError(bindingResultEmail,editEmailForm,member)){
+    public String editEmail(Model model, @SessionAttribute(name = SessionConst.member) Member member, @Validated EditEmailForm editEmailForm, BindingResult bindingResultEmail, @ModelAttribute EditPasswordForm editPasswordForm, RedirectAttributes attr) {
+        if (memberService.hasEmailError(bindingResultEmail, editEmailForm, member)) {
             model.addAttribute("editEmailForm", editEmailForm);
             model.addAttribute("nowEmail", memberService.getStarsEmail(member.getEmail()));
-            return"member/edit";
+            return "member/edit";
         }
-        memberService.editEmail(member,editEmailForm);
+        memberService.editEmail(member, editEmailForm);
         attr.addFlashAttribute("emailSuccess", true);
         return "redirect:/edit";
     }
 
+    @GetMapping("email/unsubscribe")
+    public String unsubscribe(Model model, @RequestParam String token) {
+            if (alarmService.existsAlarmByToken(token))
+                model.addAttribute("token", token);
+            else
+                model.addAttribute("noAlarm", true);
+        return "mail/unsubscribe";
+    }
+
+    @GetMapping("email/unsubscribe/success")
+    public String unsubscribeSuccess(Model model, @RequestParam String token) {
+        alarmService.rejectMail(token);
+        return "redirect:/edit/email/unsubscribe?token="+token;
+    }
+
     @PostMapping("alarm")
-    public String editAlarm(@SessionAttribute(name = SessionConst.member)Member member, @ModelAttribute EditAlarmForm editAlarmForm){
-        alarmService.editAlarm(editAlarmForm,member.getId());
+    public String editAlarm(@SessionAttribute(name = SessionConst.member) Member member, @ModelAttribute EditAlarmForm editAlarmForm) {
+        alarmService.editAlarm(editAlarmForm, member.getId());
         return "redirect:/edit";
     }
 
     @GetMapping("deleteMember")
-    public String deleteMember(HttpServletRequest request,@SessionAttribute(name = SessionConst.member)Member member){
+    public String deleteMember(HttpServletRequest request, @SessionAttribute(name = SessionConst.member) Member member) {
         memberService.deleteMember(member);
         HttpSession session = request.getSession(false);
         if (session != null) {
@@ -85,7 +103,7 @@ public class EditController {
         if (token != null) {
             Member member = memberRepository.findByUserId(checkToken.getUserId());
             member.setEmail(checkToken.getChangeEmail());
-                memberRepository.save(member);
+            memberRepository.save(member);
             request.getSession().setAttribute(SessionConst.member, member);
             return "redirect:/";
         } else {

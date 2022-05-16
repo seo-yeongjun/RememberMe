@@ -5,12 +5,19 @@ import com.zanygeek.rememberme.form.EditAlarmForm;
 import com.zanygeek.rememberme.repository.AlarmRepository;
 import com.zanygeek.rememberme.repository.MemberRepository;
 import com.zanygeek.rememberme.repository.MemorialRepository;
+import com.zanygeek.rememberme.repository.UnsubscribeRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +35,10 @@ public class AlarmService {
     String url;
     @Autowired
     MailSenderService mailSenderService;
+    @Autowired
+    TemplateEngine templateEngine;
+    @Autowired
+    UnsubscribeRepository unsubscribeRepository;
 
     public void setAlarm(int memberId, int memorialId, Alarm alarm) {
         alarm.setMemberId(memberId);
@@ -68,18 +79,25 @@ public class AlarmService {
             alarmRepository.save(alarm);
     }
 
-    public void sendAlarmMail(Event event) {
+    @Transactional
+    public void sendAlarmMail(Event event) throws MessagingException {
         Memorial memorial = memorialRepository.getById(event.getMemorialId());
         List<Alarm> alarmList = alarmRepository.findAllByMemorialIdAndCheckEventIsTrue(memorial.getId());
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("zanygeek8371@xn--oy2b6m82b8p.com");
+        MimeMessage message = mailSenderService.mimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setFrom("zanygeek8371@xn--oy2b6m82b8p.com");
         for (Alarm alarm : alarmList) {
             Member member = memberRepository.getById(alarm.getMemberId());
-            message.setTo(member.getEmail());
+            Unsubscribe unsubscribe = unsubscribeRepository.findByMemberId(member.getId());
+            helper.setTo(member.getEmail());
             message.setSubject("[리멤버미] " + memorial.getName() + "님의 새로운 추모 행사가 등록되었습니다.");
-            message.setText("안녕하세요. " + member.getName() +
-                    "님, " + memorial.getName() + "님의 추모행사가 등록되었습니다."
-                    + "\n\n행사 제목: " + event.getTitle() + "\n행사 날짜: " + event.getDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")) + "\n자세한 일정은 " + url + "memorial/" + memorial.getId() + " 에서 확인 할 수 있습니다.");
+            Context context = new Context();
+            context.setVariable("name", member.getName());
+            context.setVariable("memorialName", memorial.getName());
+            context.setVariable("rejectSend", url+"edit/email/unsubscribe?token="+unsubscribe.getToken());
+            context.setVariable("url", url);
+            context.setVariable("memorialUrl", url+"memorial/"+memorial.getId());
+
             try {
                 mailSenderService.sendMail(message);
             } catch (Exception e) {
@@ -88,23 +106,43 @@ public class AlarmService {
         }
     }
 
-    public void sendMemorialDate(Memorial memorial, String deathDate) {
+    public void sendMemorialDate(Memorial memorial) throws MessagingException {
         List<Alarm> alarmList = alarmRepository.findAllByMemorialIdAndCheckDateIsTrue(memorial.getId());
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("zanygeek8371@xn--oy2b6m82b8p.com");
+
+        MimeMessage message = mailSenderService.mimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setFrom("zanygeek8371@xn--oy2b6m82b8p.com");
+
         for (Alarm alarm : alarmList) {
             Member member = memberRepository.getById(alarm.getMemberId());
-            message.setTo(member.getEmail());
-            message.setSubject("[리멤버미] " + memorial.getName() + "님의 기일 7일 전입니다.");
-            message.setText("안녕하세요. " + member.getName() +
-                    "님, " + memorial.getName() + "님의 설정하신 알람에 따라, " + memorial.getName() + "님의"
-                    + "기일인 " + deathDate + "의 7일전임을 알리는 메일을 발송드립니다.\n"
-                    + memorial.getName() + "님의 리멤버미 추모공간: " + url + "memorial/" + memorial.getId());
+            Unsubscribe unsubscribe = unsubscribeRepository.findByMemberId(member.getId());
+            helper.setTo(member.getEmail());
+            helper.setSubject("[리멤버미] " + memorial.getName() + "님의 기일 7일 전입니다.");
+            Context context = new Context();
+            context.setVariable("name", member.getName());
+            context.setVariable("memorialName", memorial.getName());
+            context.setVariable("rejectSend", url+"edit/email/unsubscribe?token="+unsubscribe.getToken());
+            context.setVariable("url", url);
+            context.setVariable("memorialUrl", url+"memorial/"+memorial.getId());
+            String html = templateEngine.process("mail/alarm", context);
+            helper.setText(html,true);
             try {
                 mailSenderService.sendMail(message);
             } catch (Exception e) {
                 log.error("에러 발생:" + e);
             }
         }
+    }
+
+    @Transactional
+    public void rejectMail(String token){
+       Unsubscribe unsubscribe = unsubscribeRepository.findByToken(token);
+       alarmRepository.deleteAllByMemberId(unsubscribe.getMemberId());
+    }
+
+    @Transactional
+    public boolean existsAlarmByToken(String token){
+        Unsubscribe unsubscribe = unsubscribeRepository.findByToken(token);
+        return alarmRepository.existsByMemberId(unsubscribe.getMemberId());
     }
 }

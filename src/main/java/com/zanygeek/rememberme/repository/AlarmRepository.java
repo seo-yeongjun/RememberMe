@@ -13,4 +13,6 @@ public interface AlarmRepository extends JpaRepository<Alarm, Integer> {
     List<Alarm> findAllByMemorialIdAndCheckEventIsTrue(int memorialId);
     List<Alarm> findAllByMemorialIdAndCheckDateIsTrue(int memorialId);
     List<Alarm> findAllByMemberId(int memberId);
+    void deleteAllByMemberId(int memberId);
+    boolean existsByMemberId(int memberId);
 }

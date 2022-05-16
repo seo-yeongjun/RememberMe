@@ -136,7 +136,7 @@
         [# th:if= "${emailSuccess}"]
     alert("입력하신 이메일로 인증 메일을 보내드렸습니다.\n10분 내에 메일을 통해 인증해 주세요.\n인증에 실패할 경우 기존 메일로 유지 됩니다.");
     [/]
-        [# th:if= "${alarms}"]
+        [# th:if= "${not #lists.isEmpty(alarms)}"]
     function showCheck(){
         var alarms = [[${alarms}]];
         var index = document.getElementById("alarmSelect").selectedIndex;
@@ -158,8 +158,9 @@
     showCheck();
     [/]
     const memorialDelete = document.getElementById("memberDelete");
-    memorialDelete.addEventListener('click', function () {
-        return confirm('회원 탈퇴 시, 추모공간도 함꼐 삭제 되며\n되돌릴 수 없습니다.\n정말 삭제 하시겠습니까?');
-    })
+    const confirmIt = function (e) {
+        if (!confirm('회원 탈퇴 시, 추모공간도 함꼐 삭제 되며\n되돌릴 수 없습니다.\n정말 삭제 하시겠습니까?')) e.preventDefault();
+    };
+    memorialDelete.addEventListener('click',confirmIt,false);
 </script>
 </html>

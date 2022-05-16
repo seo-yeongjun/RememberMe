@@ -3,19 +3,26 @@ package com.zanygeek.rememberme.service;
 import com.zanygeek.rememberme.entity.Member;
 import com.zanygeek.rememberme.entity.MemberToken;
 import com.zanygeek.rememberme.entity.NaverForm;
+import com.zanygeek.rememberme.entity.Unsubscribe;
 import com.zanygeek.rememberme.form.JoinForm;
 import com.zanygeek.rememberme.repository.MemberRepository;
 import com.zanygeek.rememberme.repository.MemberTokenRepository;
+import com.zanygeek.rememberme.repository.UnsubscribeRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring5.SpringTemplateEngine;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import java.util.LinkedHashMap;
 
 
@@ -33,9 +40,13 @@ public class JoinService {
     MailSenderService mailSenderService;
     @Autowired
     PasswordEncoder passwordEncoder;
+    @Autowired
+    SpringTemplateEngine templateEngine;
+    @Autowired
+    UnsubscribeRepository unsubscribeRepository;
 
     //회원가입 폼을 통한 메일 전송 및 리파지토리 저장
-    public void joinMember(JoinForm form) {
+    public void joinMember(JoinForm form) throws MessagingException {
         //폼 맴버 전환
         Member member = formToMember(form);
         //비밀번호 해쉬암호화
@@ -44,9 +55,12 @@ public class JoinService {
         member.setMemberFrom("rememberMe");
         //메일 인증 토큰 생성
         MemberToken token = new MemberToken(member.getUserId());
+
         //멤버, 토큰 저장
         try {
-            memberRepository.save(member);
+            Member savedMember = memberRepository.save(member);
+            Unsubscribe unsubscribe = new Unsubscribe(savedMember.getId());
+            unsubscribeRepository.save(unsubscribe);
             memberTokenRepository.save(token);
         } catch (Exception e) {
             log.error(e);
@@ -95,13 +109,18 @@ public class JoinService {
     }
 
     //이메일 확인 메시지 발송 메서드
-    void sendConfirmMail(Member member, MemberToken token) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("zanygeek8371@xn--oy2b6m82b8p.com");
-        message.setTo(member.getEmail());
-        message.setSubject(member.getName() + "님, 리멤버미, 가입을 축하합니다.");
-        message.setText("메일 확인을 위해 url을 클릭해 주세요: "
-                + uri + "join/confirmMail?token=" + token.getConfirmToken());
+    void sendConfirmMail(Member member, MemberToken token) throws MessagingException {
+        MimeMessage message = mailSenderService.mimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setFrom("zanygeek8371@xn--oy2b6m82b8p.com");
+        helper.setTo(member.getEmail());
+        helper.setSubject("[리멤버미] 리멤버미 가입을 위한 인증 메일입니다.");
+        Context context = new Context();
+        context.setVariable("name", member.getName());
+        context.setVariable("join", uri+"join/confirmMail?token="+token.getConfirmToken());
+        context.setVariable("url", uri);
+        String html = templateEngine.process("mail/join", context);
+        helper.setText(html,true);
         try {
             mailSenderService.sendMail(message);
         } catch (Exception e) {

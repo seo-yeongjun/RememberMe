@@ -20,15 +20,27 @@
     <img class="logo" style="width:40%" th:src="@{/img/logo.svg}">
     <div class="container d-flex align-items-center flex-column">
         <!-- 헤드 카피-->
-        <h2 class="mt-lg-4">내 손으로 만드는 온라인 추모관</h2>
-        <h4>회원 가입</h4>
+        <h2 class="mt-lg-4">새로운 추모 문화를 만듭니다.</h2>
+        <h4>로그인</h4>
     </div>
 </header>
-<!-- 회원가입 세션-->
-<section class="page-section bg-light" id="join">
-    <div class="container d-flex align-items-center flex-column border border-1 py-lg-5 bg-white">
-        <h2>회원 가입</h2>
-        <span th:text="${mail}+'로 인증 메일이 10초~1분 내에 발송됩니다. 메일 인증은 10분 동안만 유효합니다.'"></span>
+<div class="w-100 py-3 fs-5 text-center" th:if="${loginMessage}" style="background-color: #eeddaa;">추모공간을 만들기 위해선 로그인이 필요합니다.</div>
+<!-- 로그인 세션-->
+<section class="page-section bg-light" id="login">
+    <div class="container">
+        <div class="w-yr text-center border border-1 p-5 bg-white">
+            <div class="panel-body">
+                    <h3 class="hidden-xs">리멤버 미, 이메일 수신거부</h3><br>
+                <p  th:unless="${noAlarm}">리멤버미에서 전송되는 모든 이메일에 대해, 수신거부 하시겠습니까?</p>
+                <div th:unless="${noAlarm}">
+                    <a th:href="'/edit/email/unsubscribe/success?token='+${token}" class="text-center btn btn-outline-dark me-3">수신 거부</a>
+                    <a th:href="'/'" class="text-center btn btn-secondary">취소</a>
+                </div>
+                <div th:if="${noAlarm}">
+                    <span>수신 거부가 완료 되었습니다.</span>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 <!-- footer-->

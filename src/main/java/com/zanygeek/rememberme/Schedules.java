@@ -14,6 +14,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.MessagingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -54,7 +55,8 @@ public class Schedules {
     }
 
     @Scheduled(cron = "0 15 9 * * ?")
-    public void sendMemorialDateMail() throws ParseException {
+    @Transactional
+    public void sendMemorialDateMail() throws ParseException, MessagingException {
         List<Memorial> memorials = memorialRepository.findAll();
         for(Memorial memorial : memorials){
             SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd");
@@ -66,7 +68,7 @@ public class Schedules {
             String goalDate = dateFormat.format(day.getTime());
             String today = dateFormat.format(new Date());
             if(goalDate.equals(today)){
-                alarmService.sendMemorialDate(memorial, deathDate);
+                alarmService.sendMemorialDate(memorial);
             }
         }
     }

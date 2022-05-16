@@ -16,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
@@ -37,7 +38,7 @@ public class JoinController {
 
     //join post
     @PostMapping
-    public String join(Model model, @ModelAttribute("form") @Validated JoinForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String join(Model model, @ModelAttribute("form") @Validated JoinForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) throws MessagingException {
         //validation 검사
         if (joinService.error(form, bindingResult)) {
             model.addAttribute(form);

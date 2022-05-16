@@ -275,9 +275,10 @@
 
     //추모공간 삭제 자바스크립트
     const memorialDelete = document.getElementById("memorialDelete");
-    memorialDelete.addEventListener('click', function () {
-        return confirm('추모 공간을 삭제하면, 모든 기록을 되돌릴 수 없습니다.\n정말 삭제 하시겠습니까?');
-    })
+    const confirmIt = function (e) {
+        if (!confirm('추모 공간을 삭제하면, 모든 기록을 되돌릴 수 없습니다.\n정말 삭제 하시겠습니까?')) e.preventDefault();
+    };
+    memorialDelete.addEventListener('click',confirmIt,false);
     // input file에 change 이벤트 부여
     const inputImage = document.getElementById("memorial_main_image")
     inputImage.addEventListener("change", e => {
@@ -307,7 +308,7 @@
                     , dataType: "json",
                     data: {
                         "currentPage": "1",
-                        "countPerPage": "50",
+                        "countPerPage": "15",
                         "keyword": searchText.value,
                         "resultType": "json",
                         "confmKey": "U01TX0FVVEgyMDIyMDUwMzAzMjkwNjExMjUyNzE="

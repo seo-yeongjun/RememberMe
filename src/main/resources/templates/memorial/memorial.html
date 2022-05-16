@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
     <title>Remember Me::내가 준비 하는 온라인 추모관</title>
     <!--폰트어썸-->
     <script src="https://kit.fontawesome.com/4df461b32c.js" crossorigin="anonymous"></script>
@@ -140,7 +140,7 @@
                 <span style="font-family: 'Hi Melody',serif;font-size: 20px" th:utext="${obituary.text}">
                 </span>
                     <img th:data-src="${obituary.photo.url}" th:if="${obituary.photo}"
-                         style="  max-height:500px; max-width:500px; height:auto; width:auto;">
+                         style="max-width:300px; height: auto">
                 </div>
             </div>
         </div>
@@ -313,10 +313,10 @@
                 <div class="container d-flex flex-column align-items-start">
                     <form th:action="@{/memorial/{memorialId}/wreath(memorialId=${memorial.id})}" th:object="${wreath}"
                           name="wreathForm" accept-charset="UTF-8" method="post">
-                        <div class="float-start">
-                            <input type="text" placeholder="이름" required th:field="*{name}">
-                            <input type="password" th:field="*{password}" required placeholder="비밀번호">
-                            <select th:field="*{relation}">
+                        <div class="">
+                            <input type="text" class="float-start" placeholder="이름" required th:field="*{name}">
+                            <input type="password" class="float-start" th:field="*{password}" required placeholder="비밀번호">
+                            <select th:field="*{relation}" class="float-start">
                                 <option value="가족">가족</option>
                                 <option value="친구">친구</option>
                                 <option value="지인">지인</option>
@@ -324,7 +324,7 @@
                                 <option value="기타">기타</option>
                             </select>
                             <textarea placeholder="추모 글 작성 란 &#13;&#10;추억이나 나누고 싶은 긴 이야기는 기억공유란을 이용해주세요."
-                                      th:field="*{text}" class="w-75 float-start mt-3" maxlength="50"></textarea>
+                                      th:field="*{text}" class="w-100  mt-3" maxlength="50"></textarea>
                         </div>
                         <button class="btn btn-outline-dark mt-3" type="submit" id="wreathSubmit">헌화</button>
                     </form>
@@ -449,7 +449,8 @@
         menu: '#menu',
         normalScrollElements: '#photoList, #map',
         scrollOverflow: true,
-        slideSelector: '.slideNone'
+        slideSelector: '.slideNone',
+        scrollOverflowOptions: { click: false }
     });
 
     <!--지도 시작-->
@@ -500,8 +501,8 @@
         $("#mapTitle").text(title);
         $("#mapAddress").text(address);
         [/]
-        const a = $('.input-photos').imageUploader();
         const b = $('.input-photo').imageUploader();
+        const a = $('.input-photos').imageUploader();
         b.settings.maxFiles = 1;
 
         var car = $('.carousel').carousel({

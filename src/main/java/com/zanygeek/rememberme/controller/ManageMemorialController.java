@@ -15,6 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
+
 @Controller
 @RequestMapping("memorial")
 @Log4j2
@@ -122,7 +124,7 @@ public class ManageMemorialController {
 
     //일정 추가 post
     @PostMapping("edit/{memorialId}/addEvent")
-    public String addEvent(@PathVariable int memorialId, @SessionAttribute(name = SessionConst.member) Member member, Event event) {
+    public String addEvent(@PathVariable int memorialId, @SessionAttribute(name = SessionConst.member) Member member, Event event) throws MessagingException {
         Event savedEvent = eventService.saveEvent(event,memorialId);
         alarmService.sendAlarmMail(savedEvent); //메일 전송
         return "redirect:/memorial/edit/" + memorialId;

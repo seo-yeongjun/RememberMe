@@ -69,10 +69,7 @@ public class MemorialService {
     }
 
     public boolean checkMemorialPassword(Memorial memorial, MemorialPassword memorialPassword){
-        if(passwordEncoder.matches(memorialPassword.getPassword(), memorial.getPassword())){
-            return true;
-        }
-        else return false;
+        return passwordEncoder.matches(memorialPassword.getPassword(), memorial.getPassword());
     }
     public void delete(Memorial memorial){
         List<Photo> photos = memorial.getPhoto();
