@@ -27,10 +27,10 @@
 </head>
 <body id="page-top">
 <!-- 네비게이션-->
-<nav class="p-3 bg-dark text-white fixed-top navbar navbar-expand-lg">
-    <div class="container">
-        <div class="d-flex">
-            <ul class="nav mb-2 justify-content-center mb-md-0" id="menu">
+<nav class="py-3 px-1 text-white fixed-top navbar navbar-expand-lg bg-dark">
+    <div class="container justify-content-between">
+        <div class="d-flex w-yr justify-content-between">
+            <ul class="nav mb-2  mb-md-0" id="menu">
                 <li data-menuanchor="home"><a href="#home" class="nav-link px-1 text-white">홈</a></li>
                 <li data-menuanchor="wreath"><a href="#wreath" class="nav-link px-1 text-white">헌화</a></li>
                 <li data-menuanchor="obituary"><a href="#obituary" class="nav-link px-1 text-white">기억공유</a></li>
@@ -45,19 +45,23 @@
                 <i class="fas fa-bars"></i>
             </button>
         </div>
-        <div class="navbar-collapse collapse" style="flex-grow: 0" id="navbarResponsive">
+        <div class="navbar-collapse collapse mt-4" id="navbarResponsive">
+            <div class="d-block ms-2 me-4 mb-2">
             <th:block th:if="${SNSList !=null}" th:each="sns : ${SNSList}">
             <a type="button" th:class="${sns.name}+' btn text-white me-3 nav-item mx-0 mx-lg-1'" th:href="${sns.url}" target='_blank'></a>
             </th:block>
             <button type="button" class="btn text-white btn-secondary nav-item mx-0 mx-lg-1" data-bs-toggle="modal"
                     data-bs-target="#alarm"><i
                     class="fa fa-bell"></i></button>
+            </div>
+            <div class="d-block">
             <a class="text-white btn" th:href="@{/memorial/edit}" th:if="${owner}"><i class="fa-solid fa-monument"></i> 관리</a>
             <a class="text-white btn" th:href="@{/edit}" th:if="${member}"><i class="fa-solid fa-user"></i> 프로필</a>
             <a class="text-white btn" th:href="@{/login(redirectURL=${#httpServletRequest.requestURI})}"
                th:unless="${member}">로그인</a>
             <a class="text-white btn" th:href="@{/logout(redirectURL='/memorial/'+${memorialId})}" th:if="${member}">로그아웃</a>
-            <a th:href="@{/}"><img th:src="@{/img/logo-white.svg}" style="width:70px"></a>
+                <a th:href="@{/}"><img th:src="@{/img/logo-white.svg}" style="width:70px"></a>
+            </div>
         </div>
     </div>
 </nav>
@@ -108,15 +112,15 @@
                 <div class="w-75">
                     <input type="text" placeholder="이름" class="form-text rounded" required
                            style="background-color: rgba(255,255,255,0.6) !important;" th:field="*{name}">
-                    <select th:field="*{relation}">
+                    <input type="password" th:field="*{password}" class="form-text rounded"
+                           style="background-color: rgba(255,255,255,0.6) !important;" required placeholder="비밀번호">
+                    <select th:field="*{relation}" class="form-select-sm">
                         <option value="가족">가족</option>
                         <option value="친구">친구</option>
                         <option value="지인">지인</option>
                         <option value="애인">애인</option>
                         <option value="기타">기타</option>
                     </select>
-                    <input type="password" th:field="*{password}" class="form-text rounded"
-                           style="background-color: rgba(255,255,255,0.6) !important;" required placeholder="비밀번호">
                 </div>
                 <div class="input-photo w-100"></div>
                 <div class="d-flex flex-column align-items-center">
@@ -145,16 +149,17 @@
             </div>
         </div>
     </div>
+
+    <!--로딩 이미지-->
+    <div style="z-index: 10; display: none" class="w-100 pt-5 h-100 position-absolute text-center mt-5 bg-light bg-opacity-90"
+         id="loading">
+        <img th:src="@{/img/loading.svg}" class="w-25">
+        <span class="d-block fs-3" style="font-family: '나눔 손글씨 펜',serif">업로드 중...</span>
+        <span class="d-block fs-5" style="font-family: '나눔 손글씨 펜',serif">이미지 양에 따라 몇 초~ 몇 분</span>
+        <span class="d-block fs-5 mb-3" style="font-family: '나눔 손글씨 펜',serif">정도 소요 됩니다.</span>
+    </div>
     <!-- 사진 섹션-->
     <div class="section pho bg-pastel-gray">
-        <!--로딩 이미지-->
-        <div style="z-index: 10; display: none" class="w-100 position-absolute text-center bg-light bg-opacity-75"
-             id="loading">
-            <img th:src="@{/img/loading.svg}" class="w-50">
-            <span class="d-block fs-3" style="font-family: '나눔 손글씨 펜',serif">업로드 중...</span>
-            <span class="d-block fs-5" style="font-family: '나눔 손글씨 펜',serif">이미지 양에 따라 몇 초~ 몇 분</span>
-            <span class="d-block fs-5 mb-3" style="font-family: '나눔 손글씨 펜',serif">정도 소요 됩니다.</span>
-        </div>
         <div class="carousel slide carousel-fade" id="carouselExampleControls">
             <div class="carousel-inner" align="center">
                 <!--아이템-->
@@ -162,8 +167,8 @@
                     <div class="item p-1 bg-white bg-opacity-75 rounded text-center">
                         <img th:data-src="@{/img/movBack.png}">
                         <div>
-                            <p class="fs-4" th:utext="${memorial.name}+' 님 <br>추모 갤러리'"
-                               style="margin-top: -50px; font-family: '나눔 손글씨 붓',serif;"></p>
+                            <p class="fs-4 mt-galName" th:utext="${memorial.name}+' 님 <br>추모 갤러리'"
+                               style="font-family: '나눔 손글씨 붓',serif;"></p>
                         </div>
                     </div>
                 </div>
@@ -183,7 +188,7 @@
         <div class="carousel-controls photo-index d-flex flex-row justify-content-between bg-black bg-opacity-25 pt-2 px-3">
             <div class="d-flex align-items-center">
                 <a href="index.html">
-                    <img style="height: 60px" th:src="@{/img/logo-white.svg}">
+                    <img style="height: 50px" th:src="@{/img/logo-white.svg}">
                 </a>
             </div>
             <div class="d-flex flex-column align-items-center justify-content-center">
@@ -232,6 +237,11 @@
         <div class="d-flex align-items-center p-5 flex-column bg-light bg-opacity-50">
             <h2 style="font-family:'Nanum Myeongjo'">추모 행사 목록</h2>
             <div id="eventScroll" class="row flex-nowrap overflow-auto p-4 w-yr rounded">
+                <div class="col-md-12 col-sm-12 col-lg-12 mx-3 border text-center bg-opacity-25 bg-white rounded" th:if="${#lists.isEmpty(events)}">
+                    <div class="m-1 d-flex flex-column">
+                        <p class="mt-3">아직 등록된 행사가 없습니다.</p>
+                    </div>
+                </div>
                 <div class="col-md-6 col-sm-1 col-lg-6 mx-3 border text-center bg-opacity-75 bg-white rounded" th:each="event:${events}">
                         <div class="m-1 d-flex flex-column">
                             <span class="fw-bold fs-3" th:text="${event.title}">행사의 제목</span>
@@ -253,7 +263,7 @@
             <div class="container p-1">
                 <div class="col-lg-4 d-flex">
                     <a th:href="@{/}"><img th:src="@{/img/logo.svg}" style="height:80px"/></a>
-                    <p class="mb-0 fs-5 pt-4" style="font-family:'Nanum Myeongjo'">
+                    <p class="my-auto" style="font-family:'Nanum Myeongjo'">
                         새로운 추모 문화를 만들다.
                     </p>
                 </div>
@@ -271,27 +281,27 @@
                 <span>알람 및 공유</span>
                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body text-center pb-5">
+            <div class="modal-body text-center">
                 <button id="copyMemorialURL" type="button" class="btn btn-outline-dark w-75 mb-4">url 주소 복사</button>
-                <div class="container d-flex flex-column border border-1 align-items-center rounded bg-gray p-2 bg-opacity-50 mb-4">
+                <div class="container d-flex flex-column border border-1 align-items-center rounded bg-gray p-2 bg-opacity-50 ">
                     <form th:action="@{/memorial/{memorialId}/alarm(memorialId=${memorial.id},redirectURL='/memorial/'+${memorialId})}" th:object="${alarm}"
                           method="post">
-                        <div>
-                            <label>
-                                <input type="checkbox" th:field="*{checkEvent}" th:checked="${alarm?.checkEvent}">
-                                새로운 일정이 생기면 메일을 받습니다.
-                            </label>
+                        <div class="mt-3">
                             <label>
                                 <input type="checkbox" th:field="*{checkDate}" th:checked="${alarm?.checkDate}">
                                 기일 7일 전, 메일을 받습니다.
+                            </label>
+                            <label>
+                                <input type="checkbox" th:field="*{checkEvent}" th:checked="${alarm?.checkEvent}">
+                                새로운 일정이 생기면 메일을 받습니다.
                             </label>
                             <input type="text" th:field="*{id}" hidden>
                         </div>
                         <button type="submit" th:if="${member}" class="w-50 btn btn-outline-primary mt-3" th:text="${alarm.getId()}?'알림 수정':'알림 요청'">알림 요청</button>
                     </form>
                     <th:block th:unless="${member}">
-                        <span>알림 요청은 로그인이 필요합니다.</span>
-                        <a th:href="@{/login(redirectURL='/memorial/'+${memorialId})}" class="w-50 btn btn-outline-primary mt-3">로그인</a>
+                        <span class="text-decoration-underline mt-3">알림 요청은 로그인이 필요합니다.</span>
+                        <a th:href="@{/login(redirectURL='/memorial/'+${memorialId})}" class="w-50 btn btn-outline-primary my-3">로그인</a>
                     </th:block>
                 </div>
 
@@ -314,9 +324,9 @@
                     <form th:action="@{/memorial/{memorialId}/wreath(memorialId=${memorial.id})}" th:object="${wreath}"
                           name="wreathForm" accept-charset="UTF-8" method="post">
                         <div class="">
-                            <input type="text" class="float-start" placeholder="이름" required th:field="*{name}">
-                            <input type="password" class="float-start" th:field="*{password}" required placeholder="비밀번호">
-                            <select th:field="*{relation}" class="float-start">
+                            <input type="text" class="float-start mt-2" placeholder="이름" required th:field="*{name}">
+                            <input type="password" class="float-start mx-lg-2 mx-md-2 mt-2" th:field="*{password}" required placeholder="비밀번호">
+                            <select th:field="*{relation}" class="float-start form-select-sm mt-2">
                                 <option value="가족">가족</option>
                                 <option value="친구">친구</option>
                                 <option value="지인">지인</option>

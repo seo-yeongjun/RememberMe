@@ -47,10 +47,10 @@
     <div class="container text-center">
         <h3>추모 공간 찾기</h3>
         <form class="mt-4" method="get" th:action="@{/search}">
-            <input type="text" id="searchName" name="searchName" class="input-group-sm" placeholder="이름">
-            <button class="btn btn-outline-secondary"><i class="fa fa-search"></i>검색</button>
+            <input type="text" id="searchName" name="searchName" class="form-control-sm" placeholder="이름">
+            <button class="btn btn-sm btn-outline-secondary"><i class="fa fa-search"></i>검색</button>
         </form>
-        <div class="w-yr">
+        <div class="w-yr mt-5">
             <div class="my-3" th:if="${searchNone}">검색 결과가 없습니다.</div>
             <a th:href="@{/memorial/{memorialId}(memorialId=${memorial.id})}" class="text-black d-flex align-items-center justify-content-center my-3 btn" th:each="memorial,i:${memorials}" style="font-family: 'Nanum Myeongjo'">
                 <span th:text="${i.index+1}" class="mx-2"></span>
@@ -99,8 +99,7 @@
                         <label for="text">메시지</label>
                         <div class="feedback" th:errors="*{text}"></div>
                     </div>
-
-                    <button class="btn btn-primary btn-xl" id="submitButton" type="submit">보내기</button>
+                    <button class="btn btn-primary btn-xl d-block mx-auto" id="submitButton" type="submit">보내기</button>
                 </form>
             </div>
         </div>

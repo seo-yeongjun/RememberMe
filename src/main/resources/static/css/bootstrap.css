@@ -4382,7 +4382,6 @@ textarea.form-control-lg {
 
 .navbar-collapse {
     flex-basis: 100%;
-    flex-grow: 1;
     align-items: center;
 }
 
@@ -8404,7 +8403,14 @@ textarea.form-control-lg {
 .vw-face {
     width: 20vw !important;
 }
-
+.mt-galName{
+    margin-top:-6rem !important;
+}
+@media (max-width: 500px) {
+    .mt-galName{
+        margin-top:-4rem !important;
+    }
+}
 @media (min-width: 600px) {
     .f-date {
         display: none;
@@ -8657,6 +8663,10 @@ textarea.form-control-lg {
 
 .bg-opacity-75 {
     --bs-bg-opacity: 0.75;
+}
+
+.bg-opacity-90 {
+    --bs-bg-opacity: 0.90;
 }
 
 .bg-opacity-100 {

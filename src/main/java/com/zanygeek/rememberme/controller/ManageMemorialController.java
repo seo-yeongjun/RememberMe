@@ -112,7 +112,7 @@ public class ManageMemorialController {
         if (memorial.getMemberId() == member.getId()) {
             photoService.deletePhotoByUrl(photo.getUrl());
         }
-        return "redirect:/memorial/edit/" + memorialId;
+        return "redirect:/memorial/edit/" + memorialId+"#editGallery";
     }
 
     //SNS edit post

@@ -61,19 +61,21 @@
         </div>
     </div>
     <!--갤러리 -->
-    <div class="container p-3 bg-light-gray">
+    <div class="container p-5 bg-light-gray" id="editGallery">
         <h3>사진 관리</h3>
-        <div class="">
+        <div class="edit">
             <div class="w-100 border border-1 p-3 rounded border-dark">
                 <h5>사진 리스트</h5>
-                <div class="row justify-content-center">
-                    <div th:if="${Memorialphoto.main==null || not Memorialphoto.main}" class="col-4"
+                <div class="row">
+                    <div th:if="${Memorialphoto.main==null || not Memorialphoto.main}" class="col-md-4 col-sm-12 col-lg-3 border border-1 border-dark rounded bg-light bg-opacity-75"
                          th:each="Memorialphoto:${memorial.photo}">
-                        <form method="post" th:object="${photo}"
+                        <form method="post" th:object="${photo}" class="h-100 d-flex flex-column justify-content-between"
                               th:action="@{{memorialId}/deletePhoto(memorialId=${memorial.id})}">
-                            <img th:src="${Memorialphoto.url}" class="w-100">
+                            <img th:src="${Memorialphoto.url}" class="w-100 p-3">
                             <input type="hidden" id="url" name="url" th:value="${Memorialphoto.url}">
+                            <div>
                             <button class="btn float-end"><i class="fa fa-delete-left text-black me-2"></i>삭제</button>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -81,7 +83,7 @@
         </div>
     </div>
     <!--지도 및 sns-->
-    <div class="container p-3 bg-light">
+    <div class="container p-5 bg-light">
         <h3>지도 및 SNS 관리</h3>
         <div class="edit">
             <!--지도-->
@@ -154,8 +156,9 @@
         </div>
     </div>
     <!-- 일정 생성 -->
-    <div class="container p-3 bg-light-gray">
+    <div class="container p-5 bg-light-gray">
         <h3>일정 생성 및 관리</h3>
+        <div class="edit">
         <div class="w-100 border border-1 p-3 rounded border-dark">
         <form method="post" th:object="${event}"
             th:action="@{{memorialId}/addEvent(memorialId=${memorial.id})}">
@@ -183,6 +186,7 @@
                 </span>
                 </div>
             </div>
+        </div>
         </div>
     </div>
     <!--공개 범위-->
@@ -227,21 +231,18 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header border-0">
-                <span>주소 검색</span>
+                <span><i class="fa fa-search"></i> 주소 검색</span>
                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-center pb-5">
                 <label>
-                    <input type="text" id="searchText">
-                    <button id="searchBtn">검색</button>
+                    <input type="text" id="searchText" placeholder="주소 또는 업체명">
+                    <button id="searchBtn" class="btn btn-dark btn-sm ms-2">검색</button>
                 </label>
-                <table id="addressTable">
-                    <tr>
-                        <td>장소명</td>
-                        <td>주소</td>
-                        <td>선택</td>
-                    </tr>
+                <div class="border mt-4 p-2 d-flex justify-content-center rounded">
+                <table id="addressTable" class="">
                 </table>
+                </div>
             </div>
         </div>
     </div>
@@ -300,7 +301,7 @@
             let i;
             var addressTable = $("#addressTable");
             addressTable.empty();
-            addressTable.html(" <tr><td>장소명</td><td>주소</td> <td>선택</td> </tr>")
+            addressTable.html(" <tr><td style='padding-top: 1rem; padding-bottom: 1rem;'>장소명</td><td>주소</td> <td>선택</td> </tr>")
             if (json.display === 0) {
                 $.ajax({
                     url: "https://www.juso.go.kr/addrlink/addrLinkApi.do"
@@ -323,14 +324,14 @@
                                 var $title = json.results.juso[i].sggNm;
                                 var $address = json.results.juso[i].roadAddr;
                                 var $jibunAddr = json.results.juso[i].jibunAddr;
-                                var btn = $('<button/>').attr('onclick', 'selectAddress(' + 'tr' + i + ')');
+                                var btn = $('<button class="btn btn-outline-dark btn-sm"/>').attr('onclick', 'selectAddress(' + 'tr' + i + ')').text("선택");
 
                                 var row = $("<tr/>").attr('id', 'tr' + i).append(
                                     $("<td/>").attr('name', 'title').html($title),
                                     $("<td/>").attr('name', 'address').html($address),
-                                    $("<td/>").append(btn)
+                                    $("<td rowspan='2'/>").append(btn)
                                 );
-                                addressTable.append(row).append($("<tr/>").append($("<td/>").attr('colspan', '3').text($jibunAddr)));
+                                addressTable.append(row).append($("<tr/>").append($("<td style='padding-bottom: 1rem;'/>").attr('colspan', '2').text($jibunAddr))).append($("<tr style='border: lightslategrey solid 1px'/>").attr('colspan', '3'));
                             }
                         }
                     })
@@ -339,13 +340,13 @@
 
                     var $title = json.items[i].title;
                     var $address = json.items[i].address;
-                    var btn = $('<button/>').attr('onclick', 'selectAddress(' + 'tr' + i + ')');
+                    var btn = $('<button class="btn btn-outline-dark btn-sm"/>').attr('onclick', 'selectAddress(' + 'tr' + i + ')').text("선택");
                     var row = $("<tr/>").attr('id', 'tr' + i).append(
                         $("<td/>").attr('name', 'title').html($title),
-                        $("<td/>").attr('name', 'address').html($address),
+                        $("<td style='padding-bottom: 1rem; padding-top: 1rem'/>").attr('name', 'address').html($address),
                         $("<td/>").append(btn)
                     );
-                    addressTable.append(row);
+                    addressTable.append(row).append($("<tr style='border: lightslategrey solid 1px'/>").attr('colspan', '3'));
                 }
             }
         });
