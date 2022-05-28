@@ -85,7 +85,8 @@
             <div class="d-flex align-items-center flex-column">
             <label id="agree-term-container" class="checkbox py-4">
                 <input id="agree-term" th:field="*{checkAgree}" type="checkbox" value="true">
-                리멤버 미 이용약관, 개인정보 수집 및 이용에 동의합니다. <a target="_blank" href="https://www.mykeeper.com/terms/">전문 보기</a>
+                리멤버 미 이용약관, 개인정보 수집 및 이용에 동의합니다. <br>
+                <a target="_blank"  href="/개인정보처리방침.html"class="me-5">정보처리 수집/동의 전문</a><a target="_blank"  href="/개인정보처리방침.html">이용약관 전문</a>
             </label>
                 <span class="ui-state-error-text text-warning" th:errors="*{checkAgree}"></span>
             <button id="btn-signup" class="btn btn-outline-secondary btn-lg">
