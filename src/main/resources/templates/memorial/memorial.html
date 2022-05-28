@@ -32,7 +32,7 @@
         <div class="d-flex w-yr justify-content-between">
             <ul class="nav mb-2  mb-md-0" id="menu">
                 <li data-menuanchor="home"><a href="#home" class="nav-link px-1 text-white">홈</a></li>
-                <li data-menuanchor="wreath"><a href="#wreath" class="nav-link px-1 text-white">헌화</a></li>
+                <li data-menuanchor="wreath"><a href="#wreath" class="nav-link px-1 text-white">조의</a></li>
                 <li data-menuanchor="obituary"><a href="#obituary" class="nav-link px-1 text-white">기억공유</a></li>
                 <li data-menuanchor="photo"><a href="#photo" class="nav-link px-1 text-white">갤러리</a></li>
                 <li data-menuanchor="location" th:if="${map}or${owner}"><a href="#location" class="nav-link px-1 text-white">위치</a></li>
@@ -91,17 +91,26 @@
         </div>
     </div>
     <!-- 헌화 섹션-->
-    <div class="section">
+    <div class="section wreathBack">
         <div class="container align-items-center d-flex flex-column">
             <iframe th:data-src="@{/memorial/{memorialId}/wreath(memorialId=${memorial.id})}"
                     class="w-75 vh-50 rounded"></iframe>
-            <button class="btn btn-outline-light p-0 mx-2 mt-4 d-flex flex-column align-items-center"
+            <label>조의 방식:
+            <select class=" form-select-sm mt-lg-5" id="f-select">
+                <option value="1">헌화</option>
+                <option value="2">분향</option>
+            </select>
+            </label>
+            <button class="btn border-dark p-0 mx-2 mt-4 d-flex flex-column align-items-center"
                     data-bs-toggle="modal" data-bs-target="#write">
-                <img th:src="@{/img/flower-btn.png}" style="width: 90px">
-                <span>헌화하기</span>
+                <img id="f-img" th:src="@{/img/flower-btn.png}" style="width: 90px">
+                <span id="f-span">헌화하기</span>
             </button>
         </div>
+        <img th:src="@{/img/incense.gif}" class="animateIncense" id="animateIncense">
         <img th:src="@{/img/twoHands.png}" class="animateFlower" id="animateFlower">
+        <div class="animateBack bg-opacity-50" id="animateBack">
+        </div>
     </div>
     <!--기억 공유 섹션-->
     <div class="section bg-bada">
@@ -314,7 +323,6 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header border-0">
-                <img th:src="@{/img/flower-btn.png}" style="width: 40px;">
                 <span class="text-black-50" th:text="'to.'+${memorial.name}"></span>
                 <button class="btn-close" id="flowerClose" type="button" data-bs-dismiss="modal"
                         aria-label="Close"></button>
@@ -324,6 +332,7 @@
                     <form th:action="@{/memorial/{memorialId}/wreath(memorialId=${memorial.id})}" th:object="${wreath}"
                           name="wreathForm" accept-charset="UTF-8" method="post">
                         <div class="">
+                            <input type="text" class="float-start mx-lg-2 mx-md-2 mt-2" id="type" name="type" hidden value="1">
                             <input type="text" class="float-start mt-2" placeholder="이름" required th:field="*{name}">
                             <input type="password" class="float-start mx-lg-2 mx-md-2 mt-2" th:field="*{password}" required placeholder="비밀번호">
                             <select th:field="*{relation}" class="float-start form-select-sm mt-2">
@@ -442,12 +451,6 @@
 </body>
 <script th:inline="javascript">
     new fullpage('#fullpage', {
-        [# th:if="${map}or${owner}"]
-    sectionsColor: ['#98a4a4', '#ecc2c2', '#C0C0C0', '#ADD8E6', '#EBEBEB', '#cccccc'],
-        [/]
-            [# th:unless="${map}or${owner}"]
-    sectionsColor: ['#98a4a4', '#ecc2c2', '#C0C0C0', '#ADD8E6', '#cccccc'],
-        [/]
         [# th:if="${map}or${owner}"]
          anchors: ['home', 'wreath', 'obituary', 'photo', 'location', 'event'],
          [/]
@@ -606,6 +609,8 @@
     document.addEventListener('DOMContentLoaded', function () {
         document.forms['wreathForm'].addEventListener('submit', function (e) {
             $('#flowerClose').click();
+            $('#animateBack').show();
+            if($('#f-select').val()==1){
             const flower = $('#animateFlower');
             flower.show();
             flower.animate({
@@ -615,12 +620,33 @@
             form = this;
             setTimeout(function () {
                 form.submit();
-            }, 2300);
+            }, 2300);}
+            else{
+                const incense = $('#animateIncense');
+                incense.show();
+                e.preventDefault();
+                form = this;
+                setTimeout(function () {
+                    form.submit();
+                }, 1000);
+            }
         });
         document.forms['uploadPhotosForm'].addEventListener('submit', function (e) {
             $("#loading").show();
             $('#photoAdd').modal('hide');
         });
+        $('#f-select').change(function (){
+            if($(this).val()==1){
+                $('#f-img').attr('src', '/img/flower-btn.png');
+                $('#f-span').text('헌화하기');
+                $('#type').val('1');
+            }
+            else {
+                $('#f-img').attr('src','/img/incense.png');
+                $('#f-span').text('분향하기');
+                $('#type').val('2');
+            }
+        })
     });
 </script>
 </html>

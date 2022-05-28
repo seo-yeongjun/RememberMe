@@ -23,4 +23,5 @@ public class Wreath {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime date;
     private String password;
+    private String type;
 }
