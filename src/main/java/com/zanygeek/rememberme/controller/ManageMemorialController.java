@@ -72,7 +72,7 @@ public class ManageMemorialController {
     @PostMapping("edit/{memorialId}/mainPhoto")
     public String editPhoto(MultipartFile photo, @PathVariable int memorialId, @SessionAttribute(name = SessionConst.member) Member member) {
         Memorial memorial = memorialService.getMemorialById(memorialId);
-        if (memorial.getMemberId() == member.getId()) {
+        if (memorial.getMemberId() == member.getId()&&!photo.isEmpty()) {
             Photo existingPhoto = photoService.getMainPhoto(memorial);
             photoService.deletePhoto(existingPhoto);
             try {

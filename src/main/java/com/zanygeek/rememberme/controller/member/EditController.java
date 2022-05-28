@@ -18,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -54,7 +55,7 @@ public class EditController {
     }
 
     @PostMapping("email")
-    public String editEmail(Model model, @SessionAttribute(name = SessionConst.member) Member member, @Validated EditEmailForm editEmailForm, BindingResult bindingResultEmail, @ModelAttribute EditPasswordForm editPasswordForm, RedirectAttributes attr) {
+    public String editEmail(Model model, @SessionAttribute(name = SessionConst.member) Member member, @Validated EditEmailForm editEmailForm, BindingResult bindingResultEmail, @ModelAttribute EditPasswordForm editPasswordForm, RedirectAttributes attr) throws MessagingException {
         if (memberService.hasEmailError(bindingResultEmail, editEmailForm, member)) {
             model.addAttribute("editEmailForm", editEmailForm);
             model.addAttribute("nowEmail", memberService.getStarsEmail(member.getEmail()));

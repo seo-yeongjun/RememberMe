@@ -12,11 +12,16 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import java.util.List;
 
 @Service
@@ -36,6 +41,8 @@ public class MemberService {
     MailSenderService mailSenderService;
     @Value("${rememberme.uri}")
     private String uri;
+    @Autowired
+    TemplateEngine templateEngine;
 
     public void editPassword(Member member,EditPasswordForm editPasswordForm) {
         member.setPassword(passwordEncoder.encode(editPasswordForm.getPassword()));
@@ -69,7 +76,7 @@ public class MemberService {
         return bindingResult.hasErrors();
     }
 
-    public void editEmail(Member member, EditEmailForm editEmailForm) {
+    public void editEmail(Member member, EditEmailForm editEmailForm) throws MessagingException {
         //메일 인증 토큰 생성
         MemberToken token = new MemberToken(member.getUserId());
         token.setChangeEmail(editEmailForm.getEmail());
@@ -85,13 +92,23 @@ public class MemberService {
     }
 
     //이메일 확인 메시지 발송 메서드
-    void sendEmailConfirmMail(Member member, MemberToken token) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("zanygeek8371@xn--oy2b6m82b8p.com");
-        message.setTo(token.getChangeEmail());
-        message.setSubject(member.getName() + "님의, 리멤버미 이메일 변경 안내 메일입니다.");
-        message.setText("메일 변경을 위해 url을 클릭해 주세요: "
-                + uri + "edit/confirmMail?token=" + token.getConfirmToken());
+    void sendEmailConfirmMail(Member member, MemberToken token) throws MessagingException {
+        MimeMessage message = mailSenderService.mimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setFrom("zanygeek8371@xn--oy2b6m82b8p.com");
+        helper.setTo(token.getChangeEmail());
+        helper.setSubject("[리멤버미] "+member.getName() + "님의, 이메일 변경 안내 메일입니다.");
+        Context context = new Context();
+        context.setVariable("name", member.getName());
+        context.setVariable("url",uri);
+        context.setVariable("changeURL",  uri + "edit/confirmMail?token=" + token.getConfirmToken());
+        String html = templateEngine.process("mail/changeMail", context);
+        helper.setText(html,true);
+        try {
+            mailSenderService.sendMail(message);
+        } catch (Exception e) {
+            log.error("에러 발생:" + e);
+        }
         try {
             mailSenderService.sendMail(message);
         } catch (Exception e) {
