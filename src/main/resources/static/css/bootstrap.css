@@ -8429,7 +8429,7 @@ textarea.form-control-lg {
 }
 
 .vw-face {
-    width: 20vw !important;
+    width: 50% !important;
 }
 
 .mt-galName {
@@ -8464,7 +8464,7 @@ textarea.form-control-lg {
     }
 
     .vw-face {
-        width: 60vw !important;
+        width: 100% !important;
         margin-top: 80px;
     }
 }

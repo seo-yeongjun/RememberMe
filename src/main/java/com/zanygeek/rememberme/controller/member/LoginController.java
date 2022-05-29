@@ -41,7 +41,7 @@ public class LoginController {
     public String login(Model model, @ModelAttribute("form") LoginForm form, @RequestParam(required = false, defaultValue = "") String redirectURL, HttpSession session) {
         if (!redirectURL.equals(""))
             model.addAttribute("redirectURL", redirectURL);
-        String naverAuthUrl = naverLoginBO.getAuthorizationUrl(session,redirectURL);
+        String naverAuthUrl = naverLoginBO.getAuthorizationUrl(session, redirectURL);
         model.addAttribute("naverUrl", naverAuthUrl);
         return "member/login";
     }
@@ -67,33 +67,33 @@ public class LoginController {
     }
 
     @GetMapping("find")
-    public String find(Model model, @ModelAttribute("idForm") FindForm findForm, @ModelAttribute("passwordForm") FindForm findPasswordForm, @ModelAttribute String starId){
+    public String find(Model model, @ModelAttribute("idForm") FindForm findForm, @ModelAttribute("passwordForm") FindForm findPasswordForm, @ModelAttribute String starId) {
         return "member/find";
     }
 
     @PostMapping("find/id")
     public String findId(@ModelAttribute("idForm") FindForm findForm, RedirectAttributes redirectAttributes) throws MessagingException {
-        if(memberService.memberIdExist(findForm)){
+        if (memberService.memberIdExist(findForm)) {
             memberService.sendTemporaryPassword(findForm);
-            redirectAttributes.addFlashAttribute("starId","아이디 : "+memberService.findStarUserIdByMemberIdForm(findForm));
-        }else{
-            redirectAttributes.addFlashAttribute("starId","해당하는 아이디가 없습니다.");
+            redirectAttributes.addFlashAttribute("starId", "아이디 : " + memberService.findStarUserIdByMemberIdForm(findForm));
+        } else {
+            redirectAttributes.addFlashAttribute("starId", "해당하는 아이디가 없습니다.");
         }
-        return "redirect:/find"+"#findId";
+        return "redirect:/find" + "#findId";
     }
 
     @PostMapping("find/password")
     public String findPassword(@ModelAttribute("passwordForm") FindForm findPasswordForm, RedirectAttributes redirectAttributes) throws MessagingException {
-        if(memberService.memberPasswordExist(findPasswordForm)){
+        if (memberService.memberPasswordExist(findPasswordForm)) {
             memberService.sendTemporaryPassword(findPasswordForm);
-            redirectAttributes.addFlashAttribute("passwordConfirm","이메일로 임시 비밀번호를 발신하였습니다.\n로그인 이후에 꼭 비밀번호를 변경해 주세요.");
-            }else{
-            redirectAttributes.addFlashAttribute("passwordConfirm","해당하는 정보를 찾을 수 없습니다. 다시 입력해 주세요.");
+            redirectAttributes.addFlashAttribute("passwordConfirm", "이메일로 임시 비밀번호를 발신하였습니다.\n로그인 이후에 꼭 비밀번호를 변경해 주세요.");
+        } else {
+            redirectAttributes.addFlashAttribute("passwordConfirm", "해당하는 정보를 찾을 수 없습니다. 다시 입력해 주세요.");
         }
-        return "redirect:/find"+"#findPassword";
+        return "redirect:/find" + "#findPassword";
     }
 
-    @GetMapping( "login/callback")
+    @GetMapping("login/callback")
     public String callback(Model model, @RequestParam String code, @RequestParam String state, HttpSession session, @RequestParam(required = false, defaultValue = "") String redirectURL)
             throws IOException, ParseException {
         OAuth2AccessToken oauthToken;
@@ -113,7 +113,7 @@ public class LoginController {
 
 
     @GetMapping("logout")
-    public String logout(HttpServletRequest request,@RequestParam(required = false, defaultValue = "") String redirectURL) {
+    public String logout(HttpServletRequest request, @RequestParam(required = false, defaultValue = "") String redirectURL) {
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.removeAttribute(SessionConst.member);

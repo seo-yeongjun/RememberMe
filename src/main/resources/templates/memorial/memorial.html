@@ -70,12 +70,12 @@
     <div class="section active bg-bada">
         <div class="container bg-black bg-opacity-25 rounded p-5">
             <div class="home-div">
-                <div class="home-photo">
-                    <img th:src="${mainImg.url}" class="vw-face">
+                <div class="home-photo w-yr">
+                    <img th:src="${mainImg.url}" class="w-75 mt-5">
                     <span class="text-white fs-name mt-2" style="font-family: 'Stylish',serif"
                           th:text="${memorial.name}">김희솔</span>
                 </div>
-                <div class="w-yr d-flex flex-column fw-bold" style="font-family: 'Noto Sans',serif">
+                <div class=" d-flex flex-column fw-bold w-yr" style="font-family: 'Noto Sans',serif">
                     <span class="text-white fw-bold fs-5 mt-4 text-center w-100"> <span
                             th:text="${#dates.format(memorial.birthDate, 'yyyy-MM-dd')}+' ~ '"></span><br
                             class="f-date"><span
@@ -140,7 +140,7 @@
                 </div>
             </form>
         </div>
-        <div class=" w-75 container d-flex flex-column border align-items-center border-1 border-light py-4 rounded bg-white bg-opacity-50 my-5">
+        <div class="w-100 container d-flex flex-column border align-items-center border-1 border-light py-4 rounded bg-white bg-opacity-50 my-5">
             <div class="bg-gray w-100 rounded p-4 bg-opacity-25 mb-4" th:each="obituary: ${obituaries}">
                 <span class="fw-bold fw-bolder" style="font-family: 'Nanum Myeongjo',serif;font-size: 20px;"
                       th:text="${obituary.name}">이신수</span>
@@ -343,9 +343,9 @@
                                 <option value="기타">기타</option>
                             </select>
                             <textarea placeholder="추모 글 작성 란 &#13;&#10;추억이나 나누고 싶은 긴 이야기는 기억공유란을 이용해주세요."
-                                      th:field="*{text}" class="w-100  mt-3" maxlength="50"></textarea>
+                                      th:field="*{text}" class="w-100  mt-3" maxlength="150"></textarea>
                         </div>
-                        <button class="btn btn-outline-dark mt-3" type="submit" id="wreathSubmit">헌화</button>
+                        <button class="btn btn-outline-dark mt-3" type="submit" id="wreathSubmit">글 적기</button>
                     </form>
                 </div>
             </div>
@@ -401,7 +401,7 @@
     </div>
 </div>
 <!--헌화 삭제 모달-->
-<div class="modal fade" id="deleteWreath" tabindex="-1" aria-labelledby="photoList" aria-hidden="true">
+<div class="modal fade" id="deleteWreath" tabindex="-1" aria-labelledby="deleteWreath" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header border-0">
@@ -425,7 +425,7 @@
     </div>
 </div>
 <!--기억공유 삭제 모달-->
-<div class="modal fade" id="deleteObituary" tabindex="-1" aria-labelledby="photoList" aria-hidden="true">
+<div class="modal fade" id="deleteObituary" tabindex="-1" aria-labelledby="deleteObituary" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header border-0">
@@ -460,7 +460,7 @@
         navigation: true,
         showActiveTooltip: true,
         menu: '#menu',
-        normalScrollElements: '#photoList, #map',
+        normalScrollElements: '#photoList, #map, #text',
         scrollOverflow: true,
         slideSelector: '.slideNone',
         scrollOverflowOptions: { click: false }
