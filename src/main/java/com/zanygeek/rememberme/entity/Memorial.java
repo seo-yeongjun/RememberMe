@@ -27,7 +27,7 @@ public class Memorial {
     private Boolean locked;
     private String password;
     private int memberId;
-    @OneToMany(mappedBy = "memorial")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "memorial")
     private List<Photo> photo;
     private String mainText;
 }
