@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <title>Remember Me::내가 준비 하는 온라인 추모관</title>
+    <!--폰트어썸-->
+    <script src="https://kit.fontawesome.com/4df461b32c.js" crossorigin="anonymous"></script>
+    <!--fullpage-->
+    <link rel="stylesheet" th:href="@{/css/fullpage.css}">
+    <script type="text/javascript" th:src="@{/js/fullpage.js}"></script>
+    <script type="text/javascript" th:src="@{/js/scrolloverflow.min.js}"></script>
+    <!--구글 폰트-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Hi+Melody&family=Nanum+Brush+Script&family=Nanum+Myeongjo:wght@400;800&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@100;500&display=swap"
+          rel="stylesheet">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/image-uploader.min.css}">
+    <script type="text/javascript" th:src="@{/js/jquery-3.6.0.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/image-uploader.min.js}"></script>
+    <!--부트스트랩-->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <script th:src="@{/js/bootstrap.js}"></script>
+    <!--네이버 map-->
+    <script type="text/javascript"
+            src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=lhozmkgpcf"></script>
+</head>
+<body id="page-top">
+<!-- 네비게이션-->
+<nav class="py-3 px-1 text-white fixed-top navbar navbar-expand-lg bg-dark">
+    <div class="container justify-content-between">
+        <div class="d-flex w-yr justify-content-between">
+            <ul class="nav mb-2  mb-md-0" id="menu">
+                <li data-menuanchor="home"><a href="#home" class="nav-link px-1 text-white">홈</a></li>
+                <li data-menuanchor="wreath"><a href="#wreath" class="nav-link px-1 text-white">조의</a></li>
+                <li data-menuanchor="obituary"><a href="#obituary" class="nav-link px-1 text-white">기억공유</a></li>
+                <li data-menuanchor="photo"><a href="#photo" class="nav-link px-1 text-white">갤러리</a></li>
+                <li data-menuanchor="location" th:if="${map}or${owner}"><a href="#location" class="nav-link px-1 text-white">위치</a></li>
+                <li data-menuanchor="event"><a href="#event" class="nav-link px-1 text-white">일정</a></li>
+            </ul>
+            <!--모바일 네비게이션-->
+            <button class="navbar-toggler text-uppercase font-weight-bold text-white rounded mx-2 p-0" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse mt-4" id="navbarResponsive">
+            <div class="d-block ms-2 me-4 mb-2">
+                <th:block th:if="${SNSList !=null}" th:each="sns : ${SNSList}">
+                    <a type="button" th:class="${sns.name}+' btn text-white me-3 nav-item mx-0 mx-lg-1'" th:href="${sns.url}" target='_blank'></a>
+                </th:block>
+                <button type="button" class="btn text-white btn-secondary nav-item mx-0 mx-lg-1" data-bs-toggle="modal"
+                        data-bs-target="#alarm"><i
+                        class="fa fa-bell"></i></button>
+            </div>
+            <div class="d-block">
+                <a class="text-white btn" th:href="@{/memorial/edit}" th:if="${owner}"><i class="fa-solid fa-monument"></i> 관리</a>
+                <a class="text-white btn" th:href="@{/edit}" th:if="${member}"><i class="fa-solid fa-user"></i> 프로필</a>
+                <a th:href="@{/}"><img th:src="@{/img/logo-white.svg}" style="width:70px"></a>
+            </div>
+        </div>
+    </div>
+</nav>
+<div id="fullpage">
+    <!--프로핊 섹션-->
+    <div class="section active bg-bada">
+        <div class="container bg-black bg-opacity-25 rounded p-5">
+            <div class="home-div">
+                <div class="home-photo w-yr">
+                    <img src="https://remembermedisk.s3.ap-northeast-2.amazonaws.com/52/94841/0bc68c71-f127-4816-b47a-2962d511a5c5" class="w-75 mt-5">
+                    <span class="text-white fs-name mt-2" style="font-family: 'Stylish',serif"
+                          th:text="${memorial.name}">김희솔</span>
+                </div>
+                <div class=" d-flex flex-column fw-bold w-yr" style="font-family: 'Noto Sans',serif">
+                    <span class="text-white fw-bold fs-5 mt-4 text-center w-100"> <span
+                            th:text="${#dates.format(memorial.birthDate, 'yyyy-MM-dd')}+' ~ '"></span><br
+                            class="f-date"><span
+                            th:text="${#dates.format(memorial.deathDate, 'yyyy-MM-dd')}"></span></span>
+                    <hr class="text-white border border-2">
+                    <ul class="text-white">
+                        <p th:utext="${memorial.mainText}" th:if="${memorial.mainText}"></p>
+                        <a th:href="@{/memorial/edit/{memorialId}(memorialId=${memorial.id})}" th:if="${owner}"
+                           class="btn btn-outline-light">부고글 적기/수정</a>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 헌화 섹션-->
+    <div class="section wreathBack">
+        <div class="container align-items-center d-flex flex-column">
+            <iframe th:data-src="@{/memorial/{memorialId}/wreath(memorialId=${memorial.id})}"
+                    class="w-75 vh-50 rounded"></iframe>
+            <label>조의 방식:
+                <select class=" form-select-sm mt-lg-5" id="f-select">
+                    <option value="1">헌화</option>
+                    <option value="2">분향</option>
+                </select>
+            </label>
+            <button class="btn border-dark p-0 mx-2 mt-4 d-flex flex-column align-items-center"
+                    data-bs-toggle="modal" data-bs-target="#write">
+                <img id="f-img" th:src="@{/img/flower-btn.png}" style="width: 90px">
+                <span id="f-span">헌화하기</span>
+            </button>
+        </div>
+        <img th:src="@{/img/incense.gif}" class="animateIncense" id="animateIncense">
+        <img th:src="@{/img/twoHands.png}" class="animateFlower" id="animateFlower">
+        <div class="animateBack bg-opacity-50" id="animateBack">
+        </div>
+    </div>
+    <!--기억 공유 섹션-->
+    <div class="section bg-bada">
+        <div class="container d-flex flex-column border  border-1 border-light py-4 rounded bg-white bg-opacity-50 memorize">
+            <form enctype="multipart/form-data">
+                <div class="w-75">
+                    <input type="text" placeholder="이름" class="form-text rounded" required
+                           style="background-color: rgba(255,255,255,0.6) !important;" id="name">
+                    <input type="password" id="password" class="form-text rounded"
+                           style="background-color: rgba(255,255,255,0.6) !important;" required placeholder="비밀번호">
+                    <select id="relation" class="form-select-sm">
+                        <option value="가족">가족</option>
+                        <option value="친구">친구</option>
+                        <option value="지인">지인</option>
+                        <option value="애인">애인</option>
+                        <option value="기타">기타</option>
+                    </select>
+                </div>
+                <div class="input-photo w-100"></div>
+                <div class="d-flex flex-column align-items-center">
+            <textarea placeholder="김희솔님과의 추억이나 기억,&#13;&#10; 나누고 싶은 이야기를 공유해 주세요." class="w-100 form-text rounded"
+                      rows="7" style="background-color: rgba(255,255,255,0.6) !important;"
+                      id="text"></textarea>
+                    <button class="btn btn-outline-secondary mt-3 w-50" type="submit">공유 하기</button>
+                </div>
+            </form>
+        </div>
+        <div class="w-100 container d-flex flex-column border align-items-center border-1 border-light py-4 rounded bg-white bg-opacity-50 my-5">
+            <div class="bg-gray w-100 rounded p-4 bg-opacity-25 mb-4" th:each="obituary: ${obituaries}">
+                <span class="fw-bold fw-bolder" style="font-family: 'Nanum Myeongjo',serif;font-size: 20px;"
+                      th:text="${obituary.name}">이신수</span>
+                <span style="font-family: 'Noto Sans',serif; font-size: 15px" th:text="${obituary.relation}">친구</span>
+                <span style="font-family: 'Nanum Brush Script',serif; font-size: 19px; color:gray"
+                      th:text="${#temporals.format(obituary.date, 'yyyy-MM-dd HH:mm')}">2021.03.21</span>
+                <a class="btn" th:attr="onclick=|openDeleteObituary('${obituary.id}')|" ><i class="fa-solid fa-delete-left"></i></a>
+                <br>
+                <div class="d-flex flex-column">
+                <span style="font-family: 'Hi Melody',serif;font-size: 20px" th:utext="${obituary.text}">
+                </span>
+                    <img th:data-src="${obituary.photo.url}" th:if="${obituary.photo}"
+                         style="max-width:300px; height: auto">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--로딩 이미지-->
+    <div style="z-index: 10; display: none" class="w-100 pt-5 h-100 position-absolute text-center mt-5 bg-light bg-opacity-90"
+         id="loading">
+        <img th:src="@{/img/loading.svg}" class="w-25">
+        <span class="d-block fs-3" style="font-family: '나눔 손글씨 펜',serif">업로드 중...</span>
+        <span class="d-block fs-5" style="font-family: '나눔 손글씨 펜',serif">이미지 양에 따라 몇 초~ 몇 분</span>
+        <span class="d-block fs-5 mb-3" style="font-family: '나눔 손글씨 펜',serif">정도 소요 됩니다.</span>
+    </div>
+    <!-- 사진 섹션-->
+    <div class="section pho bg-pastel-gray">
+        <div class="carousel slide carousel-fade" id="carouselExampleControls">
+            <div class="carousel-inner" align="center">
+                <!--아이템-->
+                <div class="carousel-item active">
+                    <div class="item p-1 bg-white bg-opacity-75 rounded text-center">
+                        <img th:data-src="@{/img/movBack.png}">
+                        <div>
+                            <p class="fs-4 mt-galName" th:utext="${memorial.name}+' 님 <br>추모 갤러리'"
+                               style="font-family: '나눔 손글씨 붓',serif;"></p>
+                        </div>
+                    </div>
+                </div>
+                <!--아이템-->
+                <div class="carousel-item" th:each="photo,i : ${photos}">
+                    <div class="item p-1 bg-white bg-opacity-75 rounded text-center">
+                        <img th:data-src="${photo.url}" alt="Card image cap">
+                        <div class="mt-3">
+                            <p class="" th:text="'from.'+${photo.fromName}" th:if="${photo.fromName}">from. xxx</p>
+                            <p class="" th:text="${i.index+1}+'/'+${i.size}">1/3</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--컨트롤러-->
+        <div class="carousel-controls photo-index d-flex flex-row justify-content-between bg-black bg-opacity-25 pt-2 px-3">
+            <div class="d-flex align-items-center">
+                <a href="index.html">
+                    <img style="height: 50px" th:src="@{/img/logo-white.svg}">
+                </a>
+            </div>
+            <div class="d-flex flex-column align-items-center justify-content-center">
+                <div class="d-flex align-items-center justify-content-center">
+                    <a class="prev text-black" role="button"><i class="fa fa-arrow-left fa-2x"></i></a>
+                    <a class="play text-black" href="#" role="button"><i class="fa fa-play fa-2x"></i></a>
+                    <a class="pause text-black" style="display:none" href="#" role="button"><i
+                            class="fa fa-pause fa-2x"></i></a>
+                    <a class="next text-black" role="button"><i class="fa fa-arrow-right fa-2x"></i></a>
+                </div>
+                <div class="volume text-center">
+                    <i class="fa-solid fa-volume-high volumeOn"></i>
+                    <i class="fa-solid fa-volume-xmark volumeOff" style="display: none"></i>
+                    <input type="range" min="0" max="1" step="0.1"/>
+                </div>
+            </div>
+            <div class="d-flex flex-column mb-2">
+                <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#photoList"
+                        style="font-size: 0.9rem !important;">리스트 보기
+                </button>
+                <button class="btn btn-secondary mt-2" data-bs-toggle="modal" data-bs-target="#photoAdd">사진 추가</button>
+            </div>
+        </div>
+    </div>
+    <!-- 위치 섹션-->
+    <div class="section bg-light-texture" th:if="${map}">
+        <i class="fa-solid fa-map-location-dot w-10 text-end fa-xl text-black-75" style="margin-top: 8rem;"></i>
+        <span class="text-center w-yr fs-2 text-black-75"  style="font-family:'Nanum Myeongjo'" th:text="${map.name}"></span>
+        <div id="map" class="shadow" style="max-width: 1230px; width:90%;height:50vh;margin:1.5rem auto 0;"></div>
+        <div class="container d-flex flex-column align-items-center">
+            <i class="w-yr fa-solid fa-quote-left fa-xl mt-5 text-black-75"></i>
+            <span class="w-yr mt-2 text-center"  style="font-family:'Nanum Myeongjo'" th:utext="${map.description}"></span>
+            <i class="w-yr text-end mt-4 fa-solid fa-xl fa-quote-right text-black-75"></i>
+            <button class="w-yr btn btn-outline-dark mt-5" id="copy-url"  style="margin-bottom:5rem; font-family:'Nanum Myeongjo'">주소 복사</button>
+        </div>
+    </div>
+    <!-- 위치 독려 섹션-->
+    <div class="section bg-light-texture" th:if="!${map} and ${owner}">
+        <div class="container d-flex flex-column align-items-center">
+            <a th:href="@{/memorial/edit/{memorialId}(memorialId=${memorial.id})}" th:if="${owner}"
+               class="btn btn-outline-dark">위치 정보 추가하러 가기</a>
+        </div>
+    </div>
+    <!-- 일정 섹션-->
+    <div class="section bg-book">
+        <div class="d-flex align-items-center p-5 flex-column bg-light bg-opacity-50">
+            <h2 style="font-family:'Nanum Myeongjo'">추모 행사 목록</h2>
+            <div id="eventScroll" class="row flex-nowrap overflow-auto p-4 w-yr rounded">
+                <div class="col-md-12 col-sm-12 col-lg-12 mx-3 border text-center bg-opacity-25 bg-white rounded" th:if="${#lists.isEmpty(events)}">
+                    <div class="m-1 d-flex flex-column">
+                        <p class="mt-3">아직 등록된 행사가 없습니다.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-1 col-lg-6 mx-3 border text-center bg-opacity-75 bg-white rounded" th:each="event:${events}">
+                    <div class="m-1 d-flex flex-column">
+                        <span class="fw-bold fs-3" th:text="${event.title}">행사의 제목</span>
+                        <span class="mt-2 fs-4" th:text="${event.date}">2023.03.10</span>
+                        <span class="mt-2 fs-5" th:text="${event.time}">오후 8:00~</span>
+                        <p class="mt-3" th:utext="${event.text}">행사의 내용을 적는 칸행사의 내용을 적는 칸행사의 내용을 적는 칸행사의 내용을 적는 칸행사의 내용을 적는 칸</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <button class="btn btn-light mt-4" data-bs-toggle="modal" data-bs-target="#alarm"><i class="fa fa-bell mx-2"></i>알림 성정</button>
+        </div>
+        <div class="text-center">
+            <a th:href="@{/memorial/edit/{memorialId}(memorialId=${memorial.id})}" th:if="${owner}"
+               class="btn btn-secondary mt-4">행사 추가</a>
+        </div>
+        <div class="position-absolute bottom-0 w-100 bg-secondary bg-opacity-50 rounded-top">
+            <div class="container p-1">
+                <div class="col-lg-4 d-flex">
+                    <a th:href="@{/}"><img th:src="@{/img/logo.svg}" style="height:80px"/></a>
+                    <p class="my-auto" style="font-family:'Nanum Myeongjo'">
+                        새로운 추모 문화를 만들다.
+                    </p>
+                </div>
+                <div class="col-lg-4">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--알람 모달-->
+<div class="modal fade" id="alarm" tabindex="-1" aria-labelledby="write" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <span>알람 및 공유</span>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <button id="copyMemorialURL" type="button" class="btn btn-outline-dark w-75 mb-4">url 주소 복사</button>
+                <div class="container d-flex flex-column border border-1 align-items-center rounded bg-gray p-2 bg-opacity-50 ">
+                    <form>
+                        <div class="mt-3">
+                            <label>
+                                <input type="checkbox" id="checkDate" th:checked="${alarm?.checkDate}">
+                                기일 7일 전, 메일을 받습니다.
+                            </label>
+                            <label>
+                                <input type="checkbox" id="checkEvent" th:checked="${alarm?.checkEvent}">
+                                새로운 일정이 생기면 메일을 받습니다.
+                            </label>
+                            <input type="text" id="id" hidden>
+                        </div>
+                        <button type="submit" class="w-50 btn btn-outline-primary mt-3">알림 요청</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--헌화 모달-->
+<div class="modal fade" id="write" tabindex="-1" aria-labelledby="write" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <span class="text-black-50" th:text="'to.'+${memorial.name}"></span>
+                <button class="btn-close" id="flowerClose" type="button" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center pb-5">
+                <div class="container d-flex flex-column align-items-start">
+                    <form id="wreathForm">
+                        <div class="">
+                            <input type="text" class="float-start mx-lg-2 mx-md-2 mt-2" id="type" name="type" hidden value="1">
+                            <input type="text" class="float-start mt-2" placeholder="이름" required id="name">
+                            <input type="password" class="float-start mx-lg-2 mx-md-2 mt-2" id="password" required placeholder="비밀번호">
+                            <select id="relation" class="float-start form-select-sm mt-2">
+                                <option value="가족">가족</option>
+                                <option value="친구">친구</option>
+                                <option value="지인">지인</option>
+                                <option value="애인">애인</option>
+                                <option value="기타">기타</option>
+                            </select>
+                            <textarea placeholder="추모 글 작성 란 &#13;&#10;추억이나 나누고 싶은 긴 이야기는 기억공유란을 이용해주세요."
+                                      id="text" class="w-100  mt-3" maxlength="150"></textarea>
+                        </div>
+                        <button class="btn btn-outline-dark mt-3" type="submit" id="wreathSubmit">글 적기</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--사진 리스트 모달-->
+<div class="modal fade" id="photoList" tabindex="-1" aria-labelledby="photoList" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <i class="fa fa-photo"></i>
+                <span class="text-black-50 mx-2">사진 목록</span>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="row justify-content-center m-2 rounded pb-1">
+                <div class="col-md-10 col-lg-12 m-2 mb-2 pt-3 pb-3 ">
+                    <div class="mx-auto d-flex flex-column align-items-center mb-3" th:each="photo:${photos}">
+                        <img th:src="${photo.url}" class="w-75">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--사진 추가 모달-->
+<div class="modal fade" id="photoAdd" tabindex="-1" aria-labelledby="photoAdd" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <i class="fa fa-photo"></i>
+                <span class="text-black-50 mx-2">사진 목록</span>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="row justify-content-center m-2 rounded pb-1">
+                <form enctype="multipart/form-data" name="uploadPhotosForm">
+                    <div>
+                        <input type="text" placeholder="이름" required class="form-text rounded"
+                               style="background-color: rgba(255,255,255,0.6) !important;" id="fromName">
+                        <input type="password" class="form-text rounded"
+                               style="background-color: rgba(255,255,255,0.6) !important;" required placeholder="비밀번호"
+                               id="password">
+                    </div>
+                    <div class="input-photos w-100"></div>
+                    <button class="btn btn-outline-secondary w-50 my-3" type="submit" id="btnUploadPhoto">이미지 업로드 하기
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--헌화 삭제 모달-->
+<div class="modal fade" id="deleteWreath" tabindex="-1" aria-labelledby="deleteWreath" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <span class="text-black-50 mx-2">헌화 내용 삭제</span>
+                <i class="fa-solid fa-delete-left"></i>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="row justify-content-center m-2 rounded pb-1">
+                <div class="col-md-10 col-lg-12 m-2 mb-2 pt-3 pb-3 ">
+                    <form method="post" th:action="@{/memorial/{memorialId}/deleteWreath(memorialId=${memorial.id})}">
+                        <label>
+                            비밀번호:
+                            <input type="password" id="wreathPassword" name="wreathPassword" required>
+                        </label>
+                        <input type="text" id="wreathId" name="wreathId" hidden>
+                        <button class="btn btn-dark">삭제하기</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--기억공유 삭제 모달-->
+<div class="modal fade" id="deleteObituary" tabindex="-1" aria-labelledby="deleteObituary" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <span class="text-black-50 mx-2">기억 공유 삭제</span>
+                <i class="fa-solid fa-delete-left"></i>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="row justify-content-center m-2 rounded pb-1">
+                <div class="col-md-10 col-lg-12 m-2 mb-2 pt-3 pb-3 ">
+                    <form method="post" th:action="@{/memorial/{memorialId}/deleteObituary(memorialId=${memorial.id})}">
+                        <label>
+                            비밀번호:
+                            <input type="password" id="obituaryPassword" name="obituaryPassword" required>
+                        </label>
+                        <input type="text" id="obituaryId" name="obituaryId" hidden>
+                        <button class="btn btn-dark">삭제하기</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script th:inline="javascript">
+    new fullpage('#fullpage', {
+        [# th:if="${map}or${owner}"]
+    anchors: ['home', 'wreath', 'obituary', 'photo', 'location', 'event'],
+        [/]
+            [# th:unless="${map}or${owner}"]
+    anchors: ['home', 'wreath', 'obituary', 'photo', 'event'],
+        [/]
+            navigation: true,
+        showActiveTooltip: true,
+        menu: '#menu',
+        normalScrollElements: '#photoList, #map, #text',
+        scrollOverflow: true,
+        slideSelector: '.slideNone',
+        scrollOverflowOptions: { click: false }
+    });
+
+    <!--지도 시작-->
+    [# th:if="${map}"]
+    var mapOptions = {
+        center: new naver.maps.LatLng([[${map.y}]], [[${map.x}]]),
+        zoom: 13
+    };
+    var map = new naver.maps.Map('map', mapOptions);
+    var marker = new naver.maps.Marker({
+        position: new naver.maps.LatLng([[${map.y}]], [[${map.x}]]),
+        map: map
+    });
+
+    var contentString = [
+        '<div class="iw_inner p-1">',
+        '   <h3 id="mapTitle" class="m-2" style="font-family: \'Nanum Myeongjo\',serif">[[${map.title}]]</h3>',
+        '   <p id="mapAddress" class="text-center" style="font-family: \'Gowun Dodum\',serif">[[${map.address}]]<br />',
+        '   </p>',
+        '</div>'
+    ].join('');
+    var infowindow = new naver.maps.InfoWindow({
+        content: contentString,
+        disableAnchor : true,
+        disableAutoPan: true,
+        backgroundColor:"rgba(223, 223, 223, 0.5)",
+        borderWidth:0.5,
+        maxWidth : 250
+    });
+
+    naver.maps.Event.addListener(marker, "click", function(e) {
+
+        if (infowindow.getMap()) {
+            infowindow.close();
+        } else {
+            infowindow.open(map, marker);
+        }
+
+    });
+
+    infowindow.open(map, marker);
+    [/]
+        <!--지도 끝-->
+        $(document).ready(function () {
+            [# th:if="${map}"]
+            var title =[[${map.title}]];
+            var address =[[${map.address}]];
+            $("#mapTitle").text(title);
+            $("#mapAddress").text(address);
+            [/]
+            const b = $('.input-photo').imageUploader();
+            const a = $('.input-photos').imageUploader();
+            b.settings.maxFiles = 1;
+
+            var car = $('.carousel').carousel({
+                interval: 5000,
+                pause: "false"
+            })
+            const audio = new Audio("https://remembermedisk.s3.ap-northeast-2.amazonaws.com/audio/bgm1.mp3");
+            audio.loop = true;
+            const volumeOn = $('.volumeOn');
+            const volumeOff = $('.volumeOff');
+            volumeOn.click(function () {
+                $(".volume input[type='range']").val(0);
+                audio.volume = 0;
+                volumeOn.hide();
+                volumeOff.show();
+            });
+            volumeOff.click(function () {
+                $(".volume input[type='range']").val(0.5);
+                audio.volume = 0.5;
+                volumeOn.show();
+                volumeOff.hide();
+            });
+            $(".volume input[type='range']").on("input", function () {
+                audio.volume = this.value;
+                if (audio.volume === 0) {
+                    volumeOn.hide();
+                    volumeOff.show();
+                } else {
+                    volumeOn.show();
+                    volumeOff.hide();
+                }
+            });
+            $('.carousel-controls .next').click(function () {
+                car.carousel('next');
+            });
+            $('.carousel-controls .prev').click(function () {
+                car.carousel('prev');
+            });
+            $('.carousel-controls .play').click(function () {
+                car.carousel('cycle');
+                $('.carousel-controls .play').hide();
+                $('.carousel-controls .pause').show();
+                audio.play();
+            });
+            $('.carousel-controls .pause').click(function () {
+                car.carousel('pause');
+                $('.carousel-controls .play').show();
+                $('.carousel-controls .pause').hide();
+                audio.pause();
+            });
+
+        });
+    //헌화 삭제 모달 제어
+    window.openModal = function(id) {
+        $( '#deleteWreath' ).modal('show');
+        $('#wreathId').val(id);
+    }
+
+    //헌화 삭제 모달 제어
+    window.openDeleteObituary = function(id) {
+        $( '#deleteObituary' ).modal('show');
+        $('#obituaryId').val(id);
+    }
+
+    $('#copy-url').click(
+        function() {
+            var $temp = $("<input>");
+            $("body").append($temp);
+            $temp.val($("#mapAddress").text()).select();
+            document.execCommand("copy");
+            $temp.remove();
+            alert("주소가 복사되었습니다.");
+        }
+    );
+
+    $('#copyMemorialURL').click(
+        function() {
+            var $url = $(location).attr('href');
+            if($url.indexOf('#')!==-1)
+                $url = $url.substring(0,$url.indexOf('#'))
+            var $temp = $("<input>");
+            $("#copyMemorialURL").append($temp);
+            $temp.val($url).select();
+            document.execCommand("copy");
+            $temp.remove();
+            alert("주소가 복사되었습니다.");
+        }
+    );
+
+    //모달 post
+    document.addEventListener('DOMContentLoaded', function () {
+        document.forms['wreathForm'].addEventListener('submit', function (e) {
+            $('#flowerClose').click();
+            $('#animateBack').show();
+            if($('#f-select').val()==1){
+                const flower = $('#animateFlower');
+                flower.show();
+                flower.animate({
+                    top: '50vh'
+                }, 2000);
+                e.preventDefault();
+                form = this;
+                setTimeout(function () {
+                    location.reload();
+                }, 2300);}
+            else{
+                const incense = $('#animateIncense');
+                incense.show();
+                e.preventDefault();
+                form = this;
+                setTimeout(function () {
+                    location.reload();
+                }, 2500);
+            }
+        });
+        document.forms['uploadPhotosForm'].addEventListener('submit', function (e) {
+            $("#loading").show();
+            $('#photoAdd').modal('hide');
+        });
+        $('#f-select').change(function (){
+            if($(this).val()==1){
+                $('#f-img').attr('src', '/img/flower-btn.png');
+                $('#f-span').text('헌화하기');
+                $('#type').val('1');
+            }
+            else {
+                $('#f-img').attr('src','/img/incense.png');
+                $('#f-span').text('분향하기');
+                $('#type').val('2');
+            }
+        })
+    });
+</script>
+</html>

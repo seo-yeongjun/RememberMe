@@ -95,7 +95,20 @@ public class MemorialController {
             model.addAttribute("alarm", alarmService.getAlarm(member.getId(), memorialId));
         return "memorial/memorial";
     }
-
+    @GetMapping("example")
+    public String example(Model model,@SessionAttribute(name = SessionConst.member, required = false) Member member){
+        Memorial memorial = memorialService.getMemorialById(94841);
+        model.addAttribute("member", member);
+        model.addAttribute("memorial", memorial);
+        model.addAttribute("map", mapService.getMap(94841));
+        model.addAttribute("obituaries", obituaryService.getObituaryForms(94841));
+        model.addAttribute("photos", photoService.getPhotosByMemorialId(94841));
+        model.addAttribute("SNSList", snsService.getSNSList(94841));
+        model.addAttribute("events", eventService.getEvents(94841));
+        if (member != null)
+            model.addAttribute("alarm", alarmService.getAlarm(member.getId(), 94841));
+        return "memorial/example";
+    }
     @GetMapping("{memorialId}/password")
     public String memorialPassword(Model model,@PathVariable int memorialId,@SessionAttribute(name = SessionConst.member, required = false) Member member) {
         Memorial memorial = memorialService.getMemorialById(memorialId);

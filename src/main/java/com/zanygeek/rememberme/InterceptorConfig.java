@@ -19,6 +19,6 @@ public class InterceptorConfig implements WebMvcConfigurer {
         registry.addInterceptor(memberInterceptor).order(1).addPathPatterns("/**").excludePathPatterns("/css/**",
                 "/js/**", "/", "/login","/login/**","/contact", "/logout", "/*.ico", "/error", "/error/**","/memorial/**","/join","/join/**",
                "/img/**","/search","/edit/email/unsubscribe/**","/개인정보처리방침.html","/이용약관.html","/find/**","/find");
-        registry.addInterceptor(memorialInterceptor).order(2).addPathPatterns("/memorial/**");
+        registry.addInterceptor(memorialInterceptor).order(2).addPathPatterns("/memorial/**").excludePathPatterns("/memorial/example","/memorial/example/**");
     }
 }
