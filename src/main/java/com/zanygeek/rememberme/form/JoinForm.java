@@ -11,7 +11,7 @@ import java.util.Date;
 @Data
 public class JoinForm {
 
-    @Length(max = 45)
+    @Length(min = 7, message = "아이디는 최소 7자 이상 이여야 합니다.")
     @NotBlank(message = "아이디를 입력해 주세요.")
     private String userId;
 

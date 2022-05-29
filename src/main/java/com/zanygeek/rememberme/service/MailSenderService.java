@@ -18,16 +18,13 @@ public class MailSenderService {
     public MailSenderService(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
-    @Async//비동기
-    public void sendMail(SimpleMailMessage mail) {
-        javaMailSender.send(mail);
-    }
+
     @Async//비동기
     public void sendMail(MimeMessage mail) {
         javaMailSender.send(mail);
     }
 
-    public MimeMessage mimeMessage(){
+    public MimeMessage mimeMessage() {
         return javaMailSender.createMimeMessage();
     }
 }

@@ -5,9 +5,11 @@ import com.zanygeek.rememberme.SessionConst;
 import com.zanygeek.rememberme.entity.Member;
 import com.zanygeek.rememberme.entity.NaverForm;
 import com.zanygeek.rememberme.entity.NaverLoginBO;
+import com.zanygeek.rememberme.form.FindForm;
 import com.zanygeek.rememberme.form.LoginForm;
 import com.zanygeek.rememberme.service.JoinService;
 import com.zanygeek.rememberme.service.LoginService;
+import com.zanygeek.rememberme.service.MemberService;
 import lombok.extern.log4j.Log4j2;
 import org.apache.tomcat.util.json.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -30,6 +34,8 @@ public class LoginController {
     JoinService joinService;
     @Autowired
     NaverLoginBO naverLoginBO;
+    @Autowired
+    MemberService memberService;
 
     @GetMapping("login")
     public String login(Model model, @ModelAttribute("form") LoginForm form, @RequestParam(required = false, defaultValue = "") String redirectURL, HttpSession session) {
@@ -58,6 +64,33 @@ public class LoginController {
         else
             return "redirect:" + redirectURL;
 
+    }
+
+    @GetMapping("find")
+    public String find(Model model, @ModelAttribute("idForm") FindForm findForm, @ModelAttribute("passwordForm") FindForm findPasswordForm, @ModelAttribute String starId){
+        return "member/find";
+    }
+
+    @PostMapping("find/id")
+    public String findId(@ModelAttribute("idForm") FindForm findForm, RedirectAttributes redirectAttributes) throws MessagingException {
+        if(memberService.memberIdExist(findForm)){
+            memberService.sendTemporaryPassword(findForm);
+            redirectAttributes.addFlashAttribute("starId","아이디 : "+memberService.findStarUserIdByMemberIdForm(findForm));
+        }else{
+            redirectAttributes.addFlashAttribute("starId","해당하는 아이디가 없습니다.");
+        }
+        return "redirect:/find"+"#findId";
+    }
+
+    @PostMapping("find/password")
+    public String findPassword(@ModelAttribute("passwordForm") FindForm findPasswordForm, RedirectAttributes redirectAttributes) throws MessagingException {
+        if(memberService.memberPasswordExist(findPasswordForm)){
+            memberService.sendTemporaryPassword(findPasswordForm);
+            redirectAttributes.addFlashAttribute("passwordConfirm","이메일로 임시 비밀번호를 발신하였습니다.\n로그인 이후에 꼭 비밀번호를 변경해 주세요.");
+            }else{
+            redirectAttributes.addFlashAttribute("passwordConfirm","해당하는 정보를 찾을 수 없습니다. 다시 입력해 주세요.");
+        }
+        return "redirect:/find"+"#findPassword";
     }
 
     @GetMapping( "login/callback")

@@ -21,36 +21,39 @@
     <div class="container d-flex align-items-center flex-column">
         <!-- 헤드 카피-->
         <h2 class="mt-lg-4">새로운 추모 문화를 만듭니다.</h2>
-        <h4>로그인</h4>
+        <h4>아이디/비밀번호 찾기</h4>
     </div>
 </header>
-<div class="w-100 py-3 fs-5 text-center" th:if="${loginMessage}" style="background-color: #eeddaa;">추모공간을 만들기 위해선 로그인이 필요합니다.</div>
-<!-- 로그인 세션-->
+<div class="w-100 py-3 fs-5 text-center" th:if="${loginMessage}" style="background-color: #eeddaa;">추모공간을 만들기 위해선 로그인이
+    필요합니다.
+</div>
+<!-- 아이디 비밀번호 찾기 세션-->
 <section class="page-section bg-light" id="login">
     <div class="container">
-        <div class="panel-login border border-1 p-5 bg-white">
+        <div class=" border border-1 p-5 bg-white">
             <div class="panel-body">
                 <div class="form-signin">
                     <p class="hidden-xs">리멤버 미,</p>
-                    <h2>로그인</h2>
-                    <hr>
-                    <form th:action="@{/login}" th:object="${form}" method="post">
-                        <input id="email" type="text" class="form-control" th:field="*{userId}" placeholder="아이디"
-                               autofocus="autofocus" value="">
-                        <span class="ui-state-error-text text-warning" th:errors="*{userId}">존재하지 않는 아이디 입니다.</span>
-                        <input id="password" th:field="*{password}" type="password" class="form-control" placeholder="Password">
-                        <span th:errors="*{password}" class="ui-state-error-text text-warning">비밀번호가 틀렸습니다.</span>
-                        <button id="btn-sign-in" class="btn btn-lg btn-outline-primary mt-3 w-100" type="submit"
-                                data-token="7i19jd"><span class="glyphicon glyphicon-log-in"></span>&nbsp;Login
-                        </button>
-                        <div class="m-4">
-                            <a class="p-0" style="font-size:12px;" th:href="@{/find}">아이디/비밀번호 찾기</a>
-                            <a class="p-2" style="font-size:12px;" th:href="@{/join}">회원 가입</a>
+                    <hr id="findId">
+                    <h2>아이디찾기</h2>
+                    <form th:action="@{/find/id}" th:object="${idForm}" method="post">
+                        <div class="d-block mx-auto text-center mt-4">
+                            <label>이름 <input type="text" th:field="*{name}" class="ms-4 me-lg-5 me-md-4 form-text"  placeholder="이름 입력란"></label>
+                            <label>이메일<input type="email" class="ms-3 form-text" th:field="*{email}" placeholder="이메일"></label>
                         </div>
-                        <div id="result-text" class="result-error"></div>
-                        <input id="redirectURL" name="redirectURL" type="text" th:value="${redirectURL}" hidden>
+                        <button type="submit" class="btn btn-primary mx-auto d-block mt-3">찾기</button>
+                        <span th:if="${starId}" class="text-warning d-block text-center mt-4" th:text="${starId}"></span>
                     </form>
-                    <a th:href="${naverUrl}" class="w-100 d-block text-center"><img class="w-75" th:src="@{/img/btn-naver.png}"></a>
+                    <hr id="findPassword">
+                    <h2>임시 비밀번호 받기</h2>
+                    <form th:action="@{/find/password}" th:object="${passwordForm}" method="post">
+                        <div class="d-block mx-auto text-center mt-4">
+                            <label>이름 <input type="text" th:field="*{name}" class="ms-4 me-lg-5 form-text"  placeholder="이름 입력란"></label>
+                            <label>아이디<input type="text" class="ms-3 me-lg-5 form-text" th:field="*{userId}" placeholder="아이디 입력란"></label>
+                            <label>이메일<input type="email" class="ms-3 form-text" th:field="*{email}" placeholder="이메일"></label>
+                        </div>
+                        <button type="submit" class="btn btn-primary mx-auto d-block mt-3">임시 비밀번호 발급</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -91,4 +94,9 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+<script th:inline="javascript">
+    [# th:if= "${passwordConfirm}"]
+    alert([[ ${passwordConfirm} ]]);
+    [/]
+</script>
 </html>
