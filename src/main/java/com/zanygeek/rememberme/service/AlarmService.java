@@ -97,7 +97,8 @@ public class AlarmService {
             context.setVariable("rejectSend", url+"edit/email/unsubscribe?token="+unsubscribe.getToken());
             context.setVariable("url", url);
             context.setVariable("memorialUrl", url+"memorial/"+memorial.getId());
-
+            String html = templateEngine.process("mail/alarm", context);
+            helper.setText(html,true);
             try {
                 mailSenderService.sendMail(message);
             } catch (Exception e) {

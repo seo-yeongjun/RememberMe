@@ -111,7 +111,6 @@ public class PhotoService {
     public void deletePhotoByUrl(String photoUrl) {
         try {
             Photo photo = photoRepository.findByUrl(photoUrl);
-            photoRepository.deleteById(photo.getId());
             uploadService.deleteFile(photo.getUrl());
         } catch (Exception e) {
             log.error("에러 발생: "+e);

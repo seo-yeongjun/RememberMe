@@ -81,9 +81,11 @@ public class JoinService {
                 member.setUserId(form.getId());
                 member.setPhoneNumber(form.getMobile());
                 member.setName(form.getName());
-                memberRepository.save(member);
+                Member savedMember = memberRepository.save(member);
+                Unsubscribe unsubscribe = new Unsubscribe(savedMember.getId());
+                unsubscribeRepository.save(unsubscribe);
                 return member;
-            }else{
+            } else {
                 Member savedMember = memberRepository.findByUserId(form.getId());
                 savedMember.setEmail(form.getEmail());
                 savedMember.setPhoneNumber(form.getMobile());
@@ -117,10 +119,10 @@ public class JoinService {
         helper.setSubject("[리멤버미] 리멤버미 가입을 위한 인증 메일입니다.");
         Context context = new Context();
         context.setVariable("name", member.getName());
-        context.setVariable("join", uri+"join/confirmMail?token="+token.getConfirmToken());
+        context.setVariable("join", uri + "join/confirmMail?token=" + token.getConfirmToken());
         context.setVariable("url", uri);
         String html = templateEngine.process("mail/join", context);
-        helper.setText(html,true);
+        helper.setText(html, true);
         try {
             mailSenderService.sendMail(message);
         } catch (Exception e) {
