@@ -11,11 +11,11 @@
 </head>
 <body id="page-top">
 <!--탑바-->
-<th:block th:replace="@{/member/fragment/topBar.html} :: topBar"></th:block>
+<th:block th:replace="@{member/fragment/topBar.html} :: topBar"></th:block>
 <!-- 메인 이미지 -->
 <header class="masthead bg-home text-white text-center">
 
-    <img class="logo" th:src="@{/img/logo.svg}">
+    <img class="logo" src="https://remembermedisk.s3.ap-northeast-2.amazonaws.com/main/logo.svg">
     <div class="container d-flex align-items-center flex-column">
         <!-- 헤드 카피-->
         <h1 class="mt-lg-4">새로운 추모 문화를 만듭니다.</h1>
@@ -37,7 +37,7 @@
             쉽고 빠르게, 온라인 추모관 만들 수 있는 서비스입니다.<br>
         </div>
         <div class="d-flex flex-column align-items-center">
-            <img src="img/ex.png" class="w-75">
+            <img src="https://remembermedisk.s3.ap-northeast-2.amazonaws.com/main/ex.jpeg" class="w-75">
             <a class="btn btn-outline-dark" href="/memorial/example">샘플 추모관 이동</a>
         </div>
     </div>
@@ -111,7 +111,7 @@
         <div class="row">
             <!-- Footer Logo-->
             <div class="col-lg-4 mb-5 mb-lg-0">
-                <img class="logo" th:src="@{/img/logo-white.svg}">
+                <img class="logo" src="https://remembermedisk.s3.ap-northeast-2.amazonaws.com/main/logo-white.svg">
                 <div class="text-center mt-2 lead">리멤버 미, 새로운 추모 문화</div>
             </div>
             <!-- Footer Social-->

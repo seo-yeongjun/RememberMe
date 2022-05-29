@@ -8432,13 +8432,13 @@ textarea.form-control-lg {
     background-color: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity)) !important;
 }
 .bg-bada {
-    background-image: url("../img/bada.jpg");
+    background-image: url("https://remembermedisk.s3.ap-northeast-2.amazonaws.com/main/bada.jpg");
     background-size: cover;
 }
 
 .bg-home {
     --bs-bg-opacity: 1;
-    background-image: url("../img/bg.jpg");
+    background-image: url("https://remembermedisk.s3.ap-northeast-2.amazonaws.com/main/bg.jpg");
 }
 
 .bg-secondary {

@@ -8400,7 +8400,7 @@ textarea.form-control-lg {
 }
 
 .bg-bada {
-    background-image: url("../img/bada.jpg");
+    background-image: url("https://remembermedisk.s3.ap-northeast-2.amazonaws.com/main/bada.jpg");
     background-size: cover;
 }
 
@@ -8410,12 +8410,12 @@ textarea.form-control-lg {
 }
 
 .bg-pastel-gray {
-    background-image: url("../img/pastel-gray.jpg");
+    background-image: url("https://remembermedisk.s3.ap-northeast-2.amazonaws.com/main/pastel-gray.jpg");
     background-size: cover;
 }
 
 .bg-book {
-    background-image: url("../img/bg.jpg");
+    background-image: url("https://remembermedisk.s3.ap-northeast-2.amazonaws.com/main/bg.jpg");
     background-size: cover;
 }
 

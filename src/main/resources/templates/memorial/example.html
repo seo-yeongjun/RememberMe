@@ -57,7 +57,7 @@
             <div class="d-block">
                 <a class="text-white btn" th:href="@{/memorial/edit}" th:if="${owner}"><i class="fa-solid fa-monument"></i> 관리</a>
                 <a class="text-white btn" th:href="@{/edit}" th:if="${member}"><i class="fa-solid fa-user"></i> 프로필</a>
-                <a th:href="@{/}"><img th:src="@{/img/logo-white.svg}" style="width:70px"></a>
+                <a th:href="@{/}"><img src="https://remembermedisk.s3.ap-northeast-2.amazonaws.com/main/logo-white.svg" style="width:70px"></a>
             </div>
         </div>
     </div>
@@ -100,12 +100,12 @@
             </label>
             <button class="btn border-dark p-0 mx-2 mt-4 d-flex flex-column align-items-center"
                     data-bs-toggle="modal" data-bs-target="#write">
-                <img id="f-img" th:src="@{/img/flower-btn.png}" style="width: 90px">
+                <img id="f-img" src="https://remembermedisk.s3.ap-northeast-2.amazonaws.com/main/flower-btn.png" style="width: 90px">
                 <span id="f-span">헌화하기</span>
             </button>
         </div>
-        <img th:src="@{/img/incense.gif}" class="animateIncense" id="animateIncense">
-        <img th:src="@{/img/twoHands.png}" class="animateFlower" id="animateFlower">
+        <img src="https://remembermedisk.s3.ap-northeast-2.amazonaws.com/main/incense.gif" class="animateIncense" id="animateIncense">
+        <img src="https://remembermedisk.s3.ap-northeast-2.amazonaws.com/main/twoHands.png" class="animateFlower" id="animateFlower">
         <div class="animateBack bg-opacity-50" id="animateBack">
         </div>
     </div>
@@ -157,7 +157,7 @@
     <!--로딩 이미지-->
     <div style="z-index: 10; display: none" class="w-100 pt-5 h-100 position-absolute text-center mt-5 bg-light bg-opacity-90"
          id="loading">
-        <img th:src="@{/img/loading.svg}" class="w-25">
+        <img src="https://remembermedisk.s3.ap-northeast-2.amazonaws.com/main/loading.svg" class="w-25">
         <span class="d-block fs-3" style="font-family: '나눔 손글씨 펜',serif">업로드 중...</span>
         <span class="d-block fs-5" style="font-family: '나눔 손글씨 펜',serif">이미지 양에 따라 몇 초~ 몇 분</span>
         <span class="d-block fs-5 mb-3" style="font-family: '나눔 손글씨 펜',serif">정도 소요 됩니다.</span>
@@ -169,7 +169,7 @@
                 <!--아이템-->
                 <div class="carousel-item active">
                     <div class="item p-1 bg-white bg-opacity-75 rounded text-center">
-                        <img th:data-src="@{/img/movBack.png}">
+                        <img data-src="https://remembermedisk.s3.ap-northeast-2.amazonaws.com/main/movBack.png">
                         <div>
                             <p class="fs-4 mt-galName" th:utext="${memorial.name}+' 님 <br>추모 갤러리'"
                                style="font-family: '나눔 손글씨 붓',serif;"></p>
@@ -192,7 +192,7 @@
         <div class="carousel-controls photo-index d-flex flex-row justify-content-between bg-black bg-opacity-25 pt-2 px-3">
             <div class="d-flex align-items-center">
                 <a href="index.html">
-                    <img style="height: 50px" th:src="@{/img/logo-white.svg}">
+                    <img style="height: 50px" src="https://remembermedisk.s3.ap-northeast-2.amazonaws.com/main/logo-white.svg">
                 </a>
             </div>
             <div class="d-flex flex-column align-items-center justify-content-center">
@@ -266,7 +266,7 @@
         <div class="position-absolute bottom-0 w-100 bg-secondary bg-opacity-50 rounded-top">
             <div class="container p-1">
                 <div class="col-lg-4 d-flex">
-                    <a th:href="@{/}"><img th:src="@{/img/logo.svg}" style="height:80px"/></a>
+                    <a th:href="@{/}"><img src="https://remembermedisk.s3.ap-northeast-2.amazonaws.com/main/logo.svg" style="height:80px"/></a>
                     <p class="my-auto" style="font-family:'Nanum Myeongjo'">
                         새로운 추모 문화를 만들다.
                     </p>
@@ -623,12 +623,12 @@
         });
         $('#f-select').change(function (){
             if($(this).val()==1){
-                $('#f-img').attr('src', '/img/flower-btn.png');
+                $('#f-img').attr('src', 'https://remembermedisk.s3.ap-northeast-2.amazonaws.com/main/flower-btn.png');
                 $('#f-span').text('헌화하기');
                 $('#type').val('1');
             }
             else {
-                $('#f-img').attr('src','/img/incense.png');
+                $('#f-img').attr('src','https://remembermedisk.s3.ap-northeast-2.amazonaws.com/main/incense.png');
                 $('#f-span').text('분향하기');
                 $('#type').val('2');
             }
