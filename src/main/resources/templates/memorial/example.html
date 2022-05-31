@@ -45,7 +45,7 @@
                 <i class="fas fa-bars"></i>
             </button>
         </div>
-        <div class="navbar-collapse collapse mt-4" id="navbarResponsive">
+        <div class="navbar-collapse collapse" id="navbarResponsive">
             <div class="d-block ms-2 me-4 mb-2">
                 <th:block th:if="${SNSList !=null}" th:each="sns : ${SNSList}">
                     <a type="button" th:class="${sns.name}+' btn text-white me-3 nav-item mx-0 mx-lg-1'" th:href="${sns.url}" target='_blank'></a>
@@ -64,8 +64,8 @@
 </nav>
 <div id="fullpage">
     <!--프로핊 섹션-->
-    <div class="section active bg-bada">
-        <div class="container bg-black bg-opacity-25 rounded p-5">
+    <div class="section active bg-bada fp-overflow d-flex">
+        <div class="container bg-black bg-opacity-25 rounded p-5 my-auto">
             <div class="home-div">
                 <div class="home-photo w-yr">
                     <img src="https://remembermedisk.s3.ap-northeast-2.amazonaws.com/52/94841/0bc68c71-f127-4816-b47a-2962d511a5c5" class="w-75 mt-5">
@@ -88,10 +88,11 @@
         </div>
     </div>
     <!-- 헌화 섹션-->
-    <div class="section wreathBack">
-        <div class="container align-items-center d-flex flex-column">
+    <div class="section wreathBack fp-overflow d-flex">
+        <div class="container my-auto">
+            <div class="d-flex flex-column align-items-center justify-content-center mt-5">
             <iframe th:data-src="@{/memorial/{memorialId}/wreath(memorialId=${memorial.id})}"
-                    class="w-75 vh-50 rounded"></iframe>
+                    class="w-75 vh-50 rounded mt-5" id="wreathFrame"></iframe>
             <label>조의 방식:
                 <select class=" form-select-sm mt-lg-5" id="f-select">
                     <option value="1">헌화</option>
@@ -108,9 +109,10 @@
         <img src="https://remembermedisk.s3.ap-northeast-2.amazonaws.com/main/twoHands.png" class="animateFlower" id="animateFlower">
         <div class="animateBack bg-opacity-50" id="animateBack">
         </div>
+            </div>
     </div>
     <!--기억 공유 섹션-->
-    <div class="section bg-bada">
+    <div class="section bg-bada fp-overflow">
         <div class="container d-flex flex-column border  border-1 border-light py-4 rounded bg-white bg-opacity-50 memorize">
             <form enctype="multipart/form-data">
                 <div class="w-75">
@@ -128,7 +130,7 @@
                 </div>
                 <div class="input-photo w-100"></div>
                 <div class="d-flex flex-column align-items-center">
-            <textarea placeholder="김희솔님과의 추억이나 기억,&#13;&#10; 나누고 싶은 이야기를 공유해 주세요." class="w-100 form-text rounded"
+            <textarea th:placeholder="${memorial.name}+'님과의 추억이나 기억,&#13;&#10; 나누고 싶은 이야기를 공유해 주세요.'" class="w-100 form-text rounded"
                       rows="7" style="background-color: rgba(255,255,255,0.6) !important;"
                       id="text"></textarea>
                     <button class="btn btn-outline-secondary mt-3 w-50" type="submit">공유 하기</button>
@@ -218,7 +220,7 @@
         </div>
     </div>
     <!-- 위치 섹션-->
-    <div class="section bg-light-texture" th:if="${map}">
+    <div class="section bg-light-texture fp-overflow" th:if="${map}">
         <i class="fa-solid fa-map-location-dot w-10 text-end fa-xl text-black-75" style="margin-top: 8rem;"></i>
         <span class="text-center w-yr fs-2 text-black-75"  style="font-family:'Nanum Myeongjo'" th:text="${map.name}"></span>
         <div id="map" class="shadow" style="max-width: 1230px; width:90%;height:50vh;margin:1.5rem auto 0;"></div>
@@ -436,22 +438,6 @@
 </div>
 </body>
 <script th:inline="javascript">
-    new fullpage('#fullpage', {
-        [# th:if="${map}or${owner}"]
-    anchors: ['home', 'wreath', 'obituary', 'photo', 'location', 'event'],
-        [/]
-            [# th:unless="${map}or${owner}"]
-    anchors: ['home', 'wreath', 'obituary', 'photo', 'event'],
-        [/]
-            navigation: true,
-        showActiveTooltip: true,
-        menu: '#menu',
-        normalScrollElements: '#photoList, #map, #text',
-        scrollOverflow: true,
-        slideSelector: '.slideNone',
-        scrollOverflowOptions: { click: false }
-    });
-
     <!--지도 시작-->
     [# th:if="${map}"]
     var mapOptions = {
@@ -494,6 +480,23 @@
     [/]
         <!--지도 끝-->
         $(document).ready(function () {
+           fullpage = new fullpage('#fullpage', {
+               scrollOverflow: true,
+                [# th:if="${map}or${owner}"]
+            anchors: ['home', 'wreath', 'obituary', 'photo', 'location', 'event'],
+                [/]
+                    [# th:unless="${map}or${owner}"]
+            anchors: ['home', 'wreath', 'obituary', 'photo', 'event'],
+                [/]
+                navigation: true,
+                showActiveTooltip: true,
+                menu: '#menu',
+                normalScrollElements: '#photoList, #map, .modal, #wreathFrame, #loading',
+                slideSelector: '.slideNone',
+                scrollOverflowOptions: { click: false },
+            scrollOverflowMacStyle: true,
+                css3: false
+        });
             [# th:if="${map}"]
             var title =[[${map.title}]];
             var address =[[${map.address}]];
